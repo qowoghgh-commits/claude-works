@@ -1,0 +1,223 @@
+<!doctype html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><style>body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style></head><body><title>클로드 작품 서랍</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Do+Hyeon&family=Noto+Sans+KR:wght@400;500;700&display=swap">
+<style>
+/* Layout: a set of index-tab drawers — category tabs across the top, cards filed underneath like catalogue cards */
+:root{
+  --bg:#F3F5F2; --surface:#FFFFFF; --ink:#1F2A33; --muted:#5F6B72; --line:#D9DED8; --accent:#2E6B5E;
+  --c-game:#E0663F; --c-lesson:#2E6B5E; --c-slides:#3D5A99; --c-design:#B5487A; --c-class:#D49A1E; --c-plan:#6B5B95; --c-tool:#4A7F96; --c-draft:#8A8F87;
+  --font-display:"Do Hyeon","Noto Sans KR",system-ui,sans-serif;
+  --font-body:"Noto Sans KR",system-ui,-apple-system,"Malgun Gothic",sans-serif;
+  --radius:10px;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#151A1D; --surface:#1E252A; --ink:#E7ECEA; --muted:#9AA6AC; --line:#2F383E; --accent:#6FC1AC;
+  --c-game:#EE8762; --c-lesson:#5FAE98; --c-slides:#7C98D6; --c-design:#DA7BA7; --c-class:#E8B64A; --c-plan:#9C8CC8; --c-tool:#78AFC6; --c-draft:#8E968D;
+  color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#151A1D; --surface:#1E252A; --ink:#E7ECEA; --muted:#9AA6AC; --line:#2F383E; --accent:#6FC1AC;
+  --c-game:#EE8762; --c-lesson:#5FAE98; --c-slides:#7C98D6; --c-design:#DA7BA7; --c-class:#E8B64A; --c-plan:#9C8CC8; --c-tool:#78AFC6; --c-draft:#8E968D;
+  color-scheme:dark}
+body{background:var(--bg);color:var(--ink);font-family:var(--font-body);font-size:15px;line-height:1.6}
+.wrap{max-width:1180px;margin:0 auto;padding-block:32px 64px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));display:flex;flex-direction:column;gap:28px}
+header{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:16px}
+h1{font-family:var(--font-display);font-weight:400;font-size:clamp(34px,6vw,52px);line-height:1.05;margin:0;letter-spacing:-.01em;text-wrap:balance}
+.sub{color:var(--muted);margin:6px 0 0}
+.count{font-variant-numeric:tabular-nums}
+.tools{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+input[type=search],input[type=text],input[type=url],input[type=date],select,textarea{font:inherit;color:var(--ink);background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:9px 12px;min-width:0}
+input[type=search]{width:min(320px,100%)}
+input:focus-visible,select:focus-visible,textarea:focus-visible,button:focus-visible,a:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+button{font:inherit;cursor:pointer;border-radius:8px;border:1px solid var(--line);background:var(--surface);color:var(--ink);padding:8px 14px}
+button.primary{background:var(--accent);border-color:var(--accent);color:var(--bg);font-weight:700}
+/* index tabs */
+.tabs{display:flex;gap:6px;flex-wrap:wrap;border-bottom:2px solid var(--ink);padding-bottom:0}
+.tab{border:2px solid transparent;border-bottom:none;border-radius:8px 8px 0 0;padding:7px 14px 6px;background:transparent;color:var(--muted);display:flex;gap:6px;align-items:center;margin-bottom:-2px}
+.tab .dot{width:9px;height:9px;border-radius:50%;background:var(--c)}
+.tab .n{font-size:12px;font-variant-numeric:tabular-nums;opacity:.8}
+.tab[aria-pressed="true"]{border-color:var(--ink);background:var(--bg);color:var(--ink);font-weight:700}
+.tab.sep{margin-left:auto}
+h2{font-family:var(--font-display);font-weight:400;font-size:24px;margin:0 0 12px}
+.featured{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px}
+.featured .card .cover{aspect-ratio:16/10}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:16px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;display:flex;flex-direction:column;color:inherit;text-decoration:none;transition:transform .15s ease,box-shadow .15s ease;position:relative;min-width:0}
+a.card:hover{transform:translateY(-3px);box-shadow:0 8px 20px -10px color-mix(in srgb,var(--ink) 40%,transparent)}
+.cover img.shot{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:top center;background:var(--surface)}
+.cover .label{z-index:1}
+a.card:hover img.shot{transform:scale(1.03)}
+.cover img.shot{transition:transform .3s ease}
+.cover{aspect-ratio:16/10;max-width:100%;background:var(--c);position:relative;overflow:hidden;display:flex;align-items:flex-end;padding:12px 14px}
+.cover::before{content:"";position:absolute;inset:0;opacity:.22;background-image:var(--pat)}
+.cover .glyph{position:absolute;right:-6px;top:-18px;font-family:var(--font-display);font-size:120px;line-height:1;color:var(--bg);opacity:.35}
+.cover .label{position:relative;font-size:12px;font-weight:700;letter-spacing:.06em;color:var(--bg);background:color-mix(in srgb,var(--ink) 25%,transparent);padding:2px 8px;border-radius:999px}
+.body{padding:12px 14px 14px;display:flex;flex-direction:column;gap:4px;flex:1;min-width:0}
+.title{font-weight:700;font-size:16px;line-height:1.35;overflow-wrap:anywhere}
+.desc{color:var(--muted);font-size:13.5px;overflow-wrap:anywhere}
+.meta{margin-top:auto;padding-top:8px;display:flex;justify-content:space-between;gap:8px;font-size:12px;color:var(--muted);font-variant-numeric:tabular-nums}
+.badge-local{color:var(--c-class);font-weight:700}
+.edit-btns{position:absolute;top:8px;right:8px;display:flex;gap:4px}
+.edit-btns button{padding:4px 9px;font-size:12px;background:var(--surface)}
+.empty,.notice{color:var(--muted);background:var(--surface);border:1px dashed var(--line);border-radius:var(--radius);padding:28px;text-align:center}
+.notice{padding:10px 14px;text-align:left;font-size:13px}
+/* patterns per category */
+.k-game{--c:var(--c-game);--pat:radial-gradient(circle at 2px 2px,var(--bg) 2px,transparent 2.5px);background-size:auto}
+.k-game .cover::before{background-size:14px 14px}
+.k-lesson{--c:var(--c-lesson)} .k-lesson .cover::before{background-image:linear-gradient(var(--bg) 1px,transparent 1px),linear-gradient(90deg,var(--bg) 1px,transparent 1px);background-size:16px 16px}
+.k-slides{--c:var(--c-slides)} .k-slides .cover::before{background-image:repeating-linear-gradient(0deg,var(--bg) 0 2px,transparent 2px 22px)}
+.k-design{--c:var(--c-design)} .k-design .cover::before{background-image:repeating-linear-gradient(45deg,var(--bg) 0 2px,transparent 2px 12px)}
+.k-class{--c:var(--c-class)} .k-class .cover::before{background-image:radial-gradient(circle,var(--bg) 3px,transparent 3.5px);background-size:22px 22px}
+.k-plan{--c:var(--c-plan)} .k-plan .cover::before{background-image:repeating-linear-gradient(0deg,var(--bg) 0 1px,transparent 1px 14px)}
+.k-tool{--c:var(--c-tool)} .k-tool .cover::before{background-image:repeating-linear-gradient(90deg,var(--bg) 0 2px,transparent 2px 18px)}
+.k-draft{--c:var(--c-draft)} .k-draft .cover::before{background-image:repeating-linear-gradient(-45deg,var(--bg) 0 1px,transparent 1px 8px)}
+.k-game .cover::before{background-image:radial-gradient(circle at 2px 2px,var(--bg) 2px,transparent 2.5px)}
+/* modal */
+.modal{position:fixed;inset:0;background:color-mix(in srgb,var(--ink) 45%,transparent);display:flex;align-items:center;justify-content:center;padding:16px;z-index:20}
+.sheet{background:var(--surface);border-radius:14px;padding:22px;width:min(520px,100%);max-height:90vh;overflow:auto;display:flex;flex-direction:column;gap:12px}
+.sheet label{display:flex;flex-direction:column;gap:4px;font-size:13px;color:var(--muted)}
+.sheet .row{display:flex;gap:10px;flex-wrap:wrap}
+.sheet .row>*{flex:1 1 160px}
+.sheet .check{flex-direction:row;align-items:center;gap:8px;color:var(--ink)}
+.sheet .actions{display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap}
+.err{color:var(--c-game);font-size:13px}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+@media (max-width:520px){.tab.sep{margin-left:0}.cover .glyph{font-size:90px}}
+</style>
+
+<div class="wrap">
+  <header>
+    <div>
+      <h1>클로드 작품 서랍</h1>
+      <p class="sub">Claude와 함께 만든 게임, 수업자료, 디자인을 한곳에 모았어요. <span class="count" id="count"></span></p>
+    </div>
+    <div class="tools">
+      <input type="search" id="q" placeholder="제목이나 설명으로 찾기" aria-label="작품 검색">
+      <button id="addBtn" class="primary" hidden>작품 추가</button>
+    </div>
+  </header>
+
+  <nav class="tabs" id="tabs" aria-label="카테고리"></nav>
+  <div id="notice" class="notice" hidden></div>
+
+  <section id="featSec">
+    <h2>대표 작품</h2>
+    <div class="featured" id="featured"></div>
+  </section>
+
+  <section>
+    <h2 id="listTitle">모든 작품</h2>
+    <div class="grid" id="grid"></div>
+  </section>
+</div>
+
+<div class="modal" id="modal" hidden>
+  <form class="sheet" id="form">
+    <h2 id="formTitle" style="margin:0">작품 추가</h2>
+    <label>제목<input type="text" id="f-title" required></label>
+    <label>한 줄 설명<textarea id="f-desc" rows="2"></textarea></label>
+    <label>주소 (Claude 작품 링크나 배포 주소)<input type="url" id="f-url" placeholder="https://claude.ai/artifact/..."></label>
+    <div class="row">
+      <label>카테고리<select id="f-cat"></select></label>
+      <label>만든 날<input type="date" id="f-date"></label>
+    </div>
+    <label class="check"><input type="checkbox" id="f-featured"> 대표 작품으로 보이기</label>
+    <p class="err" id="f-err" hidden></p>
+    <div class="actions">
+      <button type="button" id="f-del" hidden>삭제</button>
+      <span style="display:flex;gap:8px;margin-left:auto">
+        <button type="button" id="f-cancel">취소</button>
+        <button type="submit" class="primary">저장</button>
+      </span>
+    </div>
+  </form>
+</div>
+
+<script>const WORKS=[{"id":"truck-robot","title":"트럭 로봇 대장 미래 도시 구출 작전","cat":"game","url":"https://claude.ai/artifact/14HdVwGGoNc4uuNrh3fg6Q","date":"2026-11-07","featured":true,"desc":"트럭 로봇이 되어 미래 도시를 구하는 액션 게임"},{"id":"neon-rider","title":"네온 라이더","cat":"game","url":"https://claude.ai/artifact/91iGAR38TNxqTfnb3uDLs6","date":"2026-10-31","featured":true,"desc":"네온 도로를 달리는 레이싱 게임"},{"id":"gogo","title":"고고전진","cat":"game","url":"https://claude.ai/artifact/V9EQxEZenk6ULWoKwvQjaR","date":"2026-11-09","featured":true,"desc":"역사 수업과 함께 쓰는 고고전진 본편"},{"id":"angel-rescue","title":"천사 구출 대작전","cat":"game","url":"https://claude.ai/artifact/AygeEyJTxK5FVMfCpenmjs","date":"2026-11-03","desc":"천사를 구하러 떠나는 모험 게임"},{"id":"snake-grid","title":"모눈 뱀꼬리잡기","cat":"game","url":"https://claude.ai/artifact/ScBDZ6YbVVwBXyf25m41LL","date":"2026-10-18","desc":"모눈판 위에서 꼬리를 잡는 게임"},{"id":"labyrinth","title":"움직이는 미로, 라비린스","cat":"game","url":"https://claude.ai/artifact/XkibbKN6Pa28LcxqgksJxV","date":"2026-10-18","desc":"판을 밀어 길을 바꾸는 미로 게임"},{"id":"mugunghwa-3d","title":"무궁화 3D 테스트","cat":"game","url":"https://claude.ai/artifact/GXhDdAe4eQDofAavkRKDLk","date":"2026-11-11","desc":"무궁화 꽃이 피었습니다 3D 버전 시험판"},{"id":"mugunghwa-local","title":"무궁화 꽃이 피었습니다 (멀티플레이)","cat":"game","url":"","date":"2026-11-11","place":"local","desc":"여럿이 함께하는 무궁화 게임."},{"id":"cat-home-3d","title":"우리 집 냥이 3D","cat":"game","url":"https://claude.ai/artifact/8gmv5YZ2U4gn3nwXfXrMjS","date":"2026-11-06","desc":"우리 집 고양이를 3D로 돌보는 놀이"},{"id":"cat-home","title":"우리 집 냥이","cat":"game","url":"https://claude.ai/artifact/9XB4jP6frRT2Gq5AKTMyQi","date":"2026-11-06","desc":"우리 집 고양이 놀이 2D 버전"},{"id":"hamoha","title":"하모하","cat":"class","url":"https://claude.ai/artifact/GXB78sC9Jnb6jTYicmDTMv","date":"2026-11-16","featured":true,"desc":"하모하 활동 페이지"},{"id":"joseon","title":"조선과 유교","cat":"lesson","url":"https://claude.ai/artifact/SAFgC51Z7ME3BtMRR1164j","date":"2026-11-05","desc":"5학년 사회, 조선과 유교 수업 자료"},{"id":"joseon-sheet","title":"조선과 유교 학습자료","cat":"lesson","url":"https://claude.ai/artifact/N6oQnLC9rBLHDBi7DSu5m6","date":"2026-11-05","desc":"5학년 사회 학습지"},{"id":"fact-opinion","title":"사실과 해석 구분하기","cat":"lesson","url":"https://claude.ai/artifact/KSvURqNowfovJRX2u5NpNn","date":"2026-10-22","featured":true,"desc":"사실과 해석을 가려 읽는 연습 (새 디자인)"},{"id":"vocab","title":"최강 영단어","cat":"lesson","url":"https://claude.ai/artifact/46oHXpbCTWUbpUdLYNXp1B","date":"2026-11-05","desc":"영단어 익히기 연습"},{"id":"dictation","title":"한글 받아쓰기 연습장","cat":"lesson","url":"https://claude.ai/artifact/7sV1Z4xjPE4gbMpk2CLFGa","date":"2026-10-25","desc":"한글 받아쓰기 연습"},{"id":"neon-sheet-v2","title":"네온 라이더 버전업 학습지","cat":"lesson","url":"https://claude.ai/artifact/KWNw3HDku7EsYPUfS8Th7P","date":"2026-10-31","desc":"네온 라이더를 고쳐 보며 배우는 학습지"},{"id":"neon-sheet","title":"네온 라이더 학습지","cat":"lesson","url":"https://claude.ai/artifact/PCTxbT5RkvtR4bG9irf5tk","date":"2026-11-01","desc":"네온 라이더 학습지 첫 버전"},{"id":"bunny-coloring","title":"토끼 인형 색칠 도안 5종","cat":"lesson","url":"https://claude.ai/artifact/WLvddFVByDscMhEQ58VPBK","date":"2026-11-02","desc":"토끼 인형 색칠 도안 다섯 가지"},{"id":"comments","title":"댓글에도 생각을 담아요","cat":"lesson","url":"https://claude.ai/artifact/2vWzhAxuZ1xccAMCoaLsGm","date":"2026-10-20","desc":"생각을 담은 댓글 쓰기 수업"},{"id":"gogo-slides","title":"고고전진 역사 수업 슬라이드","cat":"slides","url":"https://claude.ai/artifact/XV8sEFfZCJnb9m6EJRd9V2","date":"2026-11-09","desc":"고고전진과 함께하는 역사 수업 슬라이드"},{"id":"choco-training","title":"초코클래스 활용 연수","cat":"slides","url":"https://claude.ai/artifact/2YxUZ4T2BkpKQAFGPyZqRJ","date":"2026-11-02","desc":"달달수학 부진아 지도, 달달독해 아침활동"},{"id":"choco-lesson","title":"초코클래스 활용 수업안","cat":"slides","url":"https://claude.ai/artifact/6C2CZpMoUK1aHoaaJxUjNH","date":"2026-11-02","desc":"초코클래스를 쓰는 수업안"},{"id":"udeosi-poster","title":"우더시 포스터","cat":"design","url":"https://claude.ai/artifact/WAH2fXPFo8CHjeJrZTAFov","date":"2026-11-14","desc":"우더시 행사 포스터"},{"id":"booth-poster","title":"말하는대로 부스 포스터","cat":"design","url":"https://claude.ai/artifact/PNtNznxn9cpnMRZtnWk1AG","date":"2026-10-18","desc":"말하는대로 부스 홍보 포스터"},{"id":"cookie-payday","title":"쿠키 월급날 캐릭터","cat":"design","url":"https://claude.ai/artifact/Su9RxSS4f3RbBsvC7F9c7r","date":"2026-11-08","desc":"쿠키 월급날 캐릭터 디자인"},{"id":"arin-shower","title":"아린이 응원 샤워","cat":"class","url":"https://claude.ai/artifact/84ssTbuJqawoVgEQoAvirp","date":"2026-11-04","desc":"친구에게 응원을 쏟아 주는 활동"},{"id":"arin-rolling","title":"아린이 롤링페이퍼","cat":"class","url":"https://claude.ai/artifact/762xhKRXBdVPYHuRjyo7Sk","date":"2026-11-04","desc":"반 친구들이 함께 쓰는 롤링페이퍼"},{"id":"umasi","title":"우마시, 우리들의 마음 나누는 시간","cat":"class","url":"https://claude.ai/artifact/EPR12VmrTdLywduw2crbSp","date":"2026-10-21","desc":"마음을 나누는 학급 활동"},{"id":"cat-deploy","title":"냥이 배포 도우미","cat":"tool","url":"https://claude.ai/artifact/WdKTA7jv7UP7GekUUo6nGT","date":"2026-11-06","desc":"냥이 게임 배포를 돕는 도구"},{"id":"cheongjang","title":"청장 메이커","cat":"tool","url":"https://claude.ai/artifact/Rh7ohZ6pwTLpMAY3qDAMen","date":"2026-10-20","desc":"청장을 만드는 도구"},{"id":"collector","title":"교과자료수집기","cat":"tool","url":"","date":"2026-11-01","place":"local","desc":"교과 자료를 모아 주는 프로그램."},{"id":"gogo-plan","title":"고고전진 공개수업 계획","cat":"plan","url":"https://claude.ai/artifact/EkjxGeqnvh8PtMmubK5qKW","date":"2026-11-09","desc":"5학년 사회 40분 공개수업 계획"},{"id":"jodal-quest","title":"조달 퀘스트: 불 꺼진 마을","cat":"plan","url":"https://claude.ai/artifact/AzPm4Y5bV5gtCXfTXcyN8h","date":"2026-10-20","desc":"2026 조달청 AI 게임 공모전 기획안"},{"id":"ttang-plan","title":"땅따먹기 점수판 계획","cat":"plan","url":"https://claude.ai/artifact/B6GPPdYzK8KRtNfZc4rXRC","date":"2026-11-09","desc":"땅따먹기 점수판 만들기 계획"},{"id":"fact-slide-plan","title":"사실과 해석 구분하기 슬라이드 제작 계획","cat":"plan","url":"https://claude.ai/artifact/AKFNhaGSbkoCLjhJ6vtCtM","date":"2026-10-22","desc":"슬라이드를 만들기 전 세운 계획"},{"id":"gogo-title","title":"고고전진 제목 시안","cat":"draft","url":"https://claude.ai/artifact/3zu3pyANdgZj8ny82UcV4J","date":"2026-11-09","desc":"고고전진 제목 디자인 시안"},{"id":"gogo-logo","title":"고고전진 로고 시안","cat":"draft","url":"https://claude.ai/artifact/AFso2dwLRggHhjVWE87SnP","date":"2026-11-03","desc":"고고전진 로고 디자인 시안"},{"id":"hamoha-cookie","title":"하모하 쿠키 시안","cat":"draft","url":"https://claude.ai/artifact/3FtNkyDG6XKtFEMBhTFP42","date":"2026-11-09","desc":"하모하 쿠키 디자인 시안"},{"id":"truck-draft","title":"트럭 로봇 대장 시안","cat":"draft","url":"https://claude.ai/artifact/Uz1193VApBxB4ovdMR2m75","date":"2026-11-07","desc":"트럭 로봇 대장 초기 시안"},{"id":"cat-3d-char","title":"냥이 3D 캐릭터","cat":"draft","url":"https://claude.ai/artifact/EF1idgDdNbRpfwXa6LqTMn","date":"2026-11-06","desc":"냥이 3D 캐릭터 시안"},{"id":"fact-opinion-v1","title":"사실과 해석 구분하기 (첫 버전)","cat":"draft","url":"https://claude.ai/artifact/WND95DywioeQ7LxYzgz5EA","date":"2026-10-22","desc":"새 디자인 이전 버전"},{"id":"arin-shower-2","title":"아린이 응원 샤워 (다른 버전)","cat":"draft","url":"https://claude.ai/artifact/JbVyWUu3b7WbJne8aMReQU","date":"2026-11-04","desc":"응원 샤워의 다른 버전"},{"id":"umasi-v1","title":"우마시 (첫 버전)","cat":"draft","url":"https://claude.ai/artifact/KzNKmW5GQYEja7vDQyykEk","date":"2026-10-21","desc":"우마시 첫 버전"}];
+const CATS={game:"게임",lesson:"수업자료",slides:"슬라이드·연수",design:"디자인",class:"학급 활동",plan:"계획·기획",tool:"도구",draft:"작업 과정"};
+const $=id=>document.getElementById(id);
+let works=[],filter="all",query="",db=null,canEdit=false,editing=null,loaded=false;
+
+function esc(s){return String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
+function fmt(d){if(!d)return"";const[y,m,dd]=d.split("-");return `${y}.${m}.${dd}`}
+
+function card(w){
+  const cat=CATS[w.cat]?w.cat:"tool";
+  const glyph=esc((w.title||"?").trim().charAt(0));
+  const local=w.place==="local";
+  const tag=w.url?"a":"div";
+  const href=w.url?` href="${esc(w.url)}" target="_blank" rel="noopener"`:"";
+  return `<${tag} class="card k-${cat}"${href}>
+    <div class="cover"><span class="glyph" aria-hidden="true">${glyph}</span><img class="shot" src="thumbs/${encodeURIComponent(w.id)}.jpg" alt="" loading="lazy"><span class="label">${CATS[cat]}</span></div>
+    <div class="body"><div class="title">${esc(w.title)}</div><div class="desc">${esc(w.desc)}</div>
+    <div class="meta"><span>${fmt(w.date)}</span>${local?'<span class="badge-local">내 컴퓨터</span>':(w.url?"<span>열기 →</span>":"")}</div></div>
+    ${canEdit?`<div class="edit-btns"><button type="button" data-edit="${esc(w.id)}">수정</button></div>`:""}
+  </${tag}>`;
+}
+
+function render(){
+  const q=query.trim().toLowerCase();
+  const match=w=>!q||(w.title+" "+(w.desc||"")).toLowerCase().includes(q);
+  const sorted=[...works].sort((a,b)=>(b.date||"").localeCompare(a.date||""));
+  const main=sorted.filter(w=>w.cat!=="draft");
+  $("count").textContent=works.length?`지금 ${main.length}개가 들어 있어요.`:"";
+  // tabs
+  const counts={};works.forEach(w=>counts[w.cat]=(counts[w.cat]||0)+1);
+  const tabList=[["all","전체",main.length,"var(--ink)"],...Object.keys(CATS).filter(k=>counts[k]).map(k=>[k,CATS[k],counts[k],`var(--c-${k})`])];
+  $("tabs").innerHTML=tabList.map(([k,l,n,c])=>`<button type="button" class="tab${k==="draft"?" sep":""}" data-cat="${k}" aria-pressed="${filter===k}" style="--c:${c}"><span class="dot"></span>${l}<span class="n">${n}</span></button>`).join("");
+  // featured
+  const feat=main.filter(w=>w.featured&&match(w)).slice(0,4);
+  $("featSec").hidden=!(filter==="all"&&feat.length);
+  $("featured").innerHTML=feat.map(card).join("");
+  // list
+  const list=(filter==="all"?main:sorted.filter(w=>w.cat===filter)).filter(match);
+  $("listTitle").textContent=filter==="all"?"모든 작품":CATS[filter];
+  if(!loaded){$("grid").innerHTML=`<div class="empty" style="grid-column:1/-1">작품 목록을 불러오고 있어요.</div>`;return}
+  if(!works.length){$("grid").innerHTML=`<div class="empty" style="grid-column:1/-1">아직 서랍이 비어 있어요. ${canEdit?"오른쪽 위 ‘작품 추가’로 첫 작품을 넣어 보세요.":"주인이 작품을 넣으면 여기에 보여요."}</div>`;return}
+  $("grid").innerHTML=list.length?list.map(card).join(""):`<div class="empty" style="grid-column:1/-1">‘${esc(query)}’와 맞는 작품이 없어요.</div>`;
+}
+
+$("tabs").addEventListener("click",e=>{const b=e.target.closest("[data-cat]");if(!b)return;filter=b.dataset.cat;try{localStorage.setItem("drawer-tab",filter)}catch(_){}render()});
+$("q").addEventListener("input",e=>{query=e.target.value;render()});
+try{const t=localStorage.getItem("drawer-tab");if(t)filter=t}catch(_){}
+
+// editing
+$("f-cat").innerHTML=Object.entries(CATS).map(([k,l])=>`<option value="${k}">${l}</option>`).join("");
+function openForm(w){
+  editing=w||null;
+  $("formTitle").textContent=w?"작품 수정":"작품 추가";
+  $("f-title").value=w?.title||"";$("f-desc").value=w?.desc||"";$("f-url").value=w?.url||"";
+  $("f-cat").value=w?.cat||"game";$("f-date").value=w?.date||new Date().toISOString().slice(0,10);
+  $("f-featured").checked=!!w?.featured;$("f-del").hidden=!w;$("f-err").hidden=true;
+  $("modal").hidden=false;$("f-title").focus();
+}
+function closeForm(){$("modal").hidden=true;editing=null}
+document.addEventListener("click",e=>{const b=e.target.closest("[data-edit]");if(!b)return;e.preventDefault();e.stopPropagation();openForm(works.find(w=>w.id===b.dataset.edit))},true);
+$("addBtn").onclick=()=>openForm(null);
+$("f-cancel").onclick=closeForm;
+$("modal").addEventListener("click",e=>{if(e.target===$("modal"))closeForm()});
+document.addEventListener("keydown",e=>{if(e.key==="Escape"&&!$("modal").hidden)closeForm()});
+function showErr(m){$("f-err").textContent=m;$("f-err").hidden=false}
+$("form").addEventListener("submit",async e=>{
+  e.preventDefault();if(!db)return;
+  const data={title:$("f-title").value.trim(),desc:$("f-desc").value.trim(),url:$("f-url").value.trim(),cat:$("f-cat").value,date:$("f-date").value,featured:$("f-featured").checked};
+  if(editing?.place)data.place=editing.place;
+  try{
+    if(editing)await db.collection("works").doc(editing.id).set(data);
+    else await db.collection("works").add(data);
+    closeForm();
+  }catch(err){showErr(err?.code==="quota_exceeded"?"서랍이 가득 찼어요. 오래된 작품을 지운 뒤 다시 저장해 주세요.":"저장하지 못했어요. 이 페이지를 편집할 권한이 있는지 확인해 주세요.")}
+});
+let delArmed=false;
+$("f-del").onclick=async()=>{
+  if(!editing||!db)return;
+  if(!delArmed){delArmed=true;$("f-del").textContent="한 번 더 누르면 삭제";setTimeout(()=>{delArmed=false;$("f-del").textContent="삭제"},3000);return}
+  delArmed=false;$("f-del").textContent="삭제";
+  try{await db.collection("works").doc(editing.id).delete();closeForm()}catch(_){showErr("삭제하지 못했어요.")}
+};
+
+document.addEventListener("error",e=>{const t=e.target;if(t&&t.classList&&t.classList.contains("shot"))t.remove()},true);
+render();
+works=WORKS;loaded=true;render();
+</script>
+</body></html>
