@@ -1,0 +1,215 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>쿠키 월급날 캐릭터</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Jua&family=Gowun+Dodum&display=swap">
+<style>
+/* Layout: 위쪽은 쿠키 하나를 크게 고르는 '오븐 창', 아래는 맛 7 × 단계 8 쿠키 쟁반 */
+:root{
+  --bg:#eaf1f4; --sheet:#dde7ec; --plate:#ffffff; --ink:#2e2940; --sub:#6c6680;
+  --accent:#e2557a; --gold:#e8a400; --line:#d3dde3;
+  --display:"Jua","Apple SD Gothic Neo","Malgun Gothic",sans-serif;
+  --body:"Gowun Dodum","Apple SD Gothic Neo","Malgun Gothic",sans-serif;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#1d1922; --sheet:#25202c; --plate:#2e2836; --ink:#f3eef8; --sub:#b3abc2;
+  --accent:#ff7d9c; --gold:#ffc73a; --line:#3b3446; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#1d1922; --sheet:#25202c; --plate:#2e2836; --ink:#f3eef8; --sub:#b3abc2;
+  --accent:#ff7d9c; --gold:#ffc73a; --line:#3b3446; color-scheme:dark}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.6;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:24px 48px}
+.wrap{max-width:980px;margin:0 auto;display:flex;flex-direction:column;gap:28px}
+header h1{font-family:var(--display);font-weight:400;font-size:clamp(34px,6vw,52px);line-height:1.1;margin:0;text-wrap:balance}
+header h1 b{color:var(--accent);font-weight:400}
+header p{margin:6px 0 0;color:var(--sub)}
+.oven{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr);gap:24px;background:var(--plate);border-radius:28px;padding:24px;border:1px solid var(--line)}
+@media (max-width:720px){.oven{grid-template-columns:1fr}}
+.stage-view{background:var(--sheet);border-radius:22px;display:grid;place-items:center;aspect-ratio:1/1;max-width:100%;position:relative;overflow:hidden}
+.stage-view svg{width:84%;height:84%}
+.bob{animation:bob 2.4s ease-in-out infinite;transform-origin:50% 80%}
+@keyframes bob{0%,100%{transform:translateY(0) rotate(-2deg)}50%{transform:translateY(-6px) rotate(2deg)}}
+.controls{display:flex;flex-direction:column;gap:18px;min-width:0}
+.label{font-family:var(--display);font-size:15px;letter-spacing:.06em;color:var(--sub)}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chips button{font:inherit;font-size:16px;border:2px solid var(--line);background:var(--plate);color:var(--ink);border-radius:999px;padding:8px 14px;min-height:44px;cursor:pointer;display:flex;align-items:center;gap:6px}
+.chips button .dot{width:14px;height:14px;border-radius:50%;display:inline-block}
+.chips button[aria-pressed="true"]{border-color:var(--accent);background:var(--accent);color:#fff}
+.chips button:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+.steps{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px}
+.steps button{font:inherit;border:2px solid var(--line);background:var(--plate);color:var(--ink);border-radius:14px;padding:8px 4px;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:2px;min-height:60px}
+.steps button b{font-family:var(--display);font-weight:400;font-size:20px}
+.steps button span{font-size:12px;line-height:1.2;text-align:center}
+.steps button[aria-pressed="true"]{border-color:var(--gold);box-shadow:0 0 0 3px color-mix(in srgb,var(--gold) 35%,transparent)}
+.steps button:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+.name{font-family:var(--display);font-size:30px;line-height:1.2;margin:0}
+.desc{margin:0;color:var(--sub)}
+.tray h2{font-family:var(--display);font-weight:400;font-size:26px;margin:0 0 4px}
+.tray>p{margin:0 0 14px;color:var(--sub)}
+.scroll{overflow-x:auto;background:var(--sheet);border-radius:24px;padding:14px;
+  background-image:radial-gradient(color-mix(in srgb,var(--sub) 22%,transparent) 1.2px,transparent 1.3px);background-size:18px 18px}
+table{border-collapse:separate;border-spacing:8px;min-width:960px;width:100%}
+th{font-family:var(--display);font-weight:400;font-size:15px;color:var(--sub)}
+th.row{text-align:left;font-size:18px;color:var(--ink);white-space:nowrap}
+td{background:var(--plate);border-radius:18px;padding:6px;text-align:center;cursor:pointer;transition:transform .15s}
+td:hover{transform:translateY(-3px)}
+td.on{outline:3px solid var(--accent)}
+td svg{width:100%;max-width:110px;height:auto;display:block;margin:0 auto}
+.rule{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px}
+.rule div{background:var(--plate);border:1px solid var(--line);border-radius:16px;padding:10px 14px}
+.rule b{font-family:var(--display);font-weight:400;font-size:18px;display:block}
+.rule small{color:var(--sub);font-variant-numeric:tabular-nums}
+.twinkle{animation:tw 1.6s ease-in-out infinite}
+@keyframes tw{0%,100%{opacity:.25;transform:scale(.7)}50%{opacity:1;transform:scale(1.1)}}
+.spin{animation:spin 14s linear infinite;transform-origin:100px 108px}
+@keyframes spin{to{transform:rotate(360deg)}}
+@media (prefers-reduced-motion:reduce){.bob,.twinkle,.spin{animation:none}}
+</style>
+
+<div class="wrap">
+  <header>
+    <h1>쿠키 <b>월급날</b></h1>
+    <p>1인 1역 쿠키 캐릭터 시안 · 맛 7가지 × 업그레이드 8단계. 쿠키를 눌러 크게 보세요.</p>
+  </header>
+
+  <section class="oven" aria-label="쿠키 크게 보기">
+    <div class="stage-view"><div id="big" class="bob" style="width:100%;height:100%;display:grid;place-items:center"></div></div>
+    <div class="controls">
+      <div>
+        <div class="label">쿠키 맛 고르기</div>
+        <div class="chips" id="flavorBtns"></div>
+      </div>
+      <div>
+        <div class="label">업그레이드 단계</div>
+        <div class="steps" id="stageBtns"></div>
+      </div>
+      <h2 class="name" id="name"></h2>
+      <p class="desc" id="desc"></p>
+    </div>
+  </section>
+
+  <section class="tray">
+    <h2>쿠키 쟁반</h2>
+    <p>학생은 처음 들어올 때 맛을 하나 고르고, 선생님께 받은 쿠키가 쌓일수록 오른쪽 단계로 자라요.</p>
+    <div class="scroll"><table id="tray"></table></div>
+  </section>
+
+  <section class="tray">
+    <h2>단계 기준 (예시)</h2>
+    <p>누적 쿠키 수 기준이에요. 실제 숫자는 교사 모드 설정에서 선생님이 정해요.</p>
+    <div class="rule" id="rule"></div>
+  </section>
+</div>
+
+<script>
+const FLAVORS=[
+ {id:'berry',name:'딸기',dough:'#f6b3c0',edge:'#d97a90',chip:'#cf2d4b',raw:'#fcdbe2',icing:'#fff3f6',sp:['#ff6f91','#ffffff','#ffd166']},
+ {id:'choco',name:'초코',dough:'#ad7550',edge:'#7a4b2e',chip:'#3b2014',raw:'#d8b597',icing:'#f6dfc2',sp:['#ff6f91','#7bd3ea','#ffd166']},
+ {id:'milk',name:'우유',dough:'#f6e7c9',edge:'#d6b98a',chip:'#c9975a',raw:'#fdf5e6',icing:'#ffffff',sp:['#9cc7e8','#ffb3c6','#ffe08a']},
+ {id:'matcha',name:'말차',dough:'#a9c97a',edge:'#759a45',chip:'#46622a',raw:'#d6e6bd',icing:'#f1f8e2',sp:['#ff8fab','#ffffff','#f6d860']},
+ {id:'lemon',name:'레몬',dough:'#f6d966',edge:'#d9ad2c',chip:'#f08c12',raw:'#fbedb3',icing:'#fffbea',sp:['#7bd389','#ff8fab','#7bc8f6']},
+ {id:'blue',name:'블루베리',dough:'#a9a3e0',edge:'#6f66b8',chip:'#3c2f86',raw:'#d9d6f3',icing:'#f3f1ff',sp:['#ff8fab','#ffffff','#ffd166']},
+ {id:'mint',name:'민트초코',dough:'#8fd9c8',edge:'#4fae98',chip:'#3b2014',raw:'#cdeee6',icing:'#f0fffb',sp:['#5b3a29','#ff8fab','#ffffff']}
+];
+const STAGES=[
+ {name:'반죽 쿠키',desc:'아직 오븐에 들어가기 전, 말랑말랑 졸린 반죽이에요. 모든 쿠키는 여기서 시작해요.',min:0},
+ {name:'구운 쿠키',desc:'노릇하게 구워져서 눈을 떴어요. 머리에 맛 장식이 생겼어요.',min:10},
+ {name:'칩 쿠키',desc:'쿠키 칩이 콕콕 박혀서 더 맛있어졌어요.',min:25},
+ {name:'토핑 쿠키',desc:'달콤한 아이싱과 알록달록 스프링클을 얹었어요.',min:45},
+ {name:'리본 쿠키',desc:'멋진 리본을 매고 활짝 웃는 쿠키가 되었어요.',min:70},
+ {name:'왕관 쿠키',desc:'맡은 역할을 꾸준히 해낸 쿠키에게 금빛 왕관이 생겨요.',min:100},
+ {name:'별빛 쿠키',desc:'몸에서 따뜻한 빛이 나고 별이 반짝반짝 맴돌아요.',min:140},
+ {name:'전설의 쿠키',desc:'날개와 무지개 빛을 두른, 우리 반 최고의 쿠키예요.',min:190}
+];
+let uid=0;
+const star=(x,y,r,c,cls='')=>`<path class="${cls}" style="transform-origin:${x}px ${y}px" d="M${x} ${y-r} Q${x+r*.18} ${y-r*.18} ${x+r} ${y} Q${x+r*.18} ${y+r*.18} ${x} ${y+r} Q${x-r*.18} ${y+r*.18} ${x-r} ${y} Q${x-r*.18} ${y-r*.18} ${x} ${y-r}Z" fill="${c}"/>`;
+function topper(id,x,y,k){
+  let s='';
+  if(id==='berry') s=`<path d="M0 -10 C10 -10 14 0 8 10 C4 16 -4 16 -8 10 C-14 0 -10 -10 0 -10Z" fill="#e8384f"/><g fill="#ffe08a"><circle cx="-4" cy="-2" r="1.3"/><circle cx="4" cy="0" r="1.3"/><circle cx="0" cy="6" r="1.3"/><circle cx="-3" cy="9" r="1.1"/><circle cx="4" cy="8" r="1.1"/></g><path d="M-9 -9 L-3 -11 L0 -17 L3 -11 L9 -9 L3 -7 L0 -10 L-3 -7Z" fill="#4caf50"/>`;
+  if(id==='choco') s=`<path d="M0 -16 C2 -8 12 -2 12 6 C12 13 6 16 0 16 C-6 16 -12 13 -12 6 C-12 -2 -2 -8 0 -16Z" fill="#4a2818"/><path d="M-5 0 C-6 4 -5 8 -2 10" stroke="#8a5a3a" stroke-width="2.5" fill="none" stroke-linecap="round"/>`;
+  if(id==='milk') s=`<path d="M0 -16 C2 -8 12 -2 12 6 C12 13 6 16 0 16 C-6 16 -12 13 -12 6 C-12 -2 -2 -8 0 -16Z" fill="#ffffff" stroke="#8fbde3" stroke-width="2.5"/><circle cx="-4" cy="4" r="2.6" fill="#cfe5f7"/>`;
+  if(id==='matcha') s=`<ellipse cx="-7" cy="0" rx="6" ry="13" transform="rotate(-30 -7 0)" fill="#5d8f38"/><ellipse cx="7" cy="0" rx="6" ry="13" transform="rotate(30 7 0)" fill="#78ad4c"/><path d="M-7 -8 L-7 8 M7 -8 L7 8" stroke="#d9ecc4" stroke-width="1.4" transform="rotate(0)"/>`;
+  if(id==='lemon') s=`<circle r="13" fill="#ffe066" stroke="#f0b400" stroke-width="3"/><g stroke="#fff6c8" stroke-width="2"><path d="M0 -10 V10 M-10 0 H10 M-7 -7 L7 7 M7 -7 L-7 7"/></g><circle r="2.5" fill="#fff6c8"/>`;
+  if(id==='blue') s=`<circle cx="-6" cy="3" r="8" fill="#4b3fa8"/><circle cx="6" cy="3" r="8" fill="#5d50c4"/><circle cx="0" cy="-7" r="8" fill="#6f62d6"/><path d="M-2 -10 L0 -13 L2 -10" stroke="#2c2370" stroke-width="2" fill="none"/><circle cx="-8" cy="0" r="2" fill="#fff" opacity=".5"/>`;
+  if(id==='mint') s=`<path d="M-13 12 Q-15 2 -6 2 Q-12 -6 -3 -8 Q-4 -16 5 -16 Q2 -8 9 -6 Q16 2 10 4 Q16 6 13 12Z" fill="#c8f2e8" stroke="#4fae98" stroke-width="2"/><circle cx="-4" cy="5" r="2" fill="#3b2014"/><circle cx="5" cy="-4" r="1.8" fill="#3b2014"/>`;
+  return `<g transform="translate(${x} ${y}) scale(${k})">${s}</g>`;
+}
+function cookie(f,s){
+  uid++; const g='c'+uid; let o=`<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="${f.name} ${STAGES[s].name}"><defs>
+   <clipPath id="${g}cl"><circle cx="100" cy="108" r="59"/></clipPath>
+   <radialGradient id="${g}gl"><stop offset="0" stop-color="#fff6b0" stop-opacity=".95"/><stop offset=".6" stop-color="#ffd86b" stop-opacity=".35"/><stop offset="1" stop-color="#ffd86b" stop-opacity="0"/></radialGradient>
+   <linearGradient id="${g}rb" x1="0" x2="1"><stop offset="0" stop-color="#ff6b6b"/><stop offset=".25" stop-color="#ffd166"/><stop offset=".5" stop-color="#5dd39e"/><stop offset=".75" stop-color="#5aa9ff"/><stop offset="1" stop-color="#b47cff"/></linearGradient></defs>`;
+  if(s>=6) o+=`<circle cx="100" cy="108" r="96" fill="url(#${g}gl)"/>`;
+  if(s>=7){
+    o+=`<circle class="spin" cx="100" cy="108" r="84" fill="none" stroke="url(#${g}rb)" stroke-width="5" stroke-dasharray="10 9" stroke-linecap="round" opacity=".85"/>`;
+    const w=`<path d="M44 98 C14 72 2 108 18 118 C6 126 18 142 32 134 C26 146 42 150 50 132Z" fill="#ffffff" stroke="#bcd6f5" stroke-width="2.5"/>`;
+    o+=w+`<g transform="translate(200 0) scale(-1 1)">${w}</g>`;
+  }
+  if(s===0){
+    o+=`<ellipse cx="100" cy="168" rx="58" ry="7" fill="#000" opacity=".08"/>
+    <path d="M100 56 C142 52 170 80 165 114 C161 150 134 170 99 168 C62 170 34 148 37 112 C40 78 62 58 100 56Z" fill="${f.raw}" stroke="${f.dough}" stroke-width="4"/>
+    <g fill="#ffffff" opacity=".8"><circle cx="70" cy="80" r="2.2"/><circle cx="132" cy="86" r="1.8"/><circle cx="58" cy="140" r="2"/><circle cx="142" cy="140" r="2.4"/><circle cx="104" cy="74" r="1.6"/></g>`;
+  } else {
+    o+=`<ellipse cx="100" cy="172" rx="56" ry="7" fill="#000" opacity=".1"/>
+    <circle cx="100" cy="108" r="62" fill="${f.dough}" stroke="${f.edge}" stroke-width="6"/>
+    <ellipse cx="78" cy="78" rx="22" ry="9" transform="rotate(-28 78 78)" fill="#fff" opacity=".28"/>`;
+    if(s>=2) [[66,80,0],[134,78,40],[50,112,80],[150,114,20],[78,152,60],[124,154,110],[100,166,10]].forEach(([x,y,r])=>{
+      o+=`<ellipse cx="${x}" cy="${y}" rx="6.5" ry="5" transform="rotate(${r} ${x} ${y})" fill="${f.chip}"/>`});
+  }
+  if(s>=3){
+    o+=`<g clip-path="url(#${g}cl)"><path d="M30 30 H170 V82 Q160 98 150 84 Q140 100 130 86 Q120 100 110 86 Q100 102 90 86 Q80 100 70 86 Q60 100 50 84 Q40 98 30 82Z" fill="${f.icing}"/>`;
+    [[62,70,20],[80,60,-30],[98,72,60],[118,62,10],[136,72,-50],[90,82,30],[124,84,-10],[72,84,70],[108,56,45],[146,84,0]].forEach(([x,y,r],i)=>{
+      o+=`<rect x="${x-4}" y="${y-1.6}" width="8" height="3.2" rx="1.6" transform="rotate(${r} ${x} ${y})" fill="${f.sp[i%3]}"/>`});
+    o+=`</g>`;
+  }
+  // 얼굴
+  const dark='#3a2418';
+  o+=`<ellipse cx="66" cy="126" rx="8.5" ry="5" fill="#ff7f9a" opacity=".5"/><ellipse cx="134" cy="126" rx="8.5" ry="5" fill="#ff7f9a" opacity=".5"/>`;
+  if(s===0){
+    o+=`<path d="M74 112 Q81 117 88 112 M112 112 Q119 117 126 112" stroke="${dark}" stroke-width="3.2" fill="none" stroke-linecap="round"/><path d="M95 128 Q100 132 105 128" stroke="${dark}" stroke-width="3" fill="none" stroke-linecap="round"/>
+    <text x="140" y="74" font-family="Jua,sans-serif" font-size="16" fill="${f.edge}">z</text><text x="150" y="62" font-family="Jua,sans-serif" font-size="12" fill="${f.edge}">z</text>`;
+  } else {
+    o+=`<ellipse cx="82" cy="110" rx="6.5" ry="8.5" fill="${dark}"/><ellipse cx="118" cy="110" rx="6.5" ry="8.5" fill="${dark}"/><circle cx="84.5" cy="106.5" r="2.4" fill="#fff"/><circle cx="120.5" cy="106.5" r="2.4" fill="#fff"/>`;
+    if(s>=6) o+=`<circle cx="79" cy="113" r="1.6" fill="#fff"/><circle cx="115" cy="113" r="1.6" fill="#fff"/>`;
+    if(s<4) o+=`<path d="M90 124 Q100 134 110 124" stroke="${dark}" stroke-width="3.4" fill="none" stroke-linecap="round"/>`;
+    else o+=`<path d="M88 122 Q100 142 112 122Z" fill="${dark}"/><path d="M94 132 Q100 128 106 132 Q100 138 94 132Z" fill="#ff7f9a"/>`;
+  }
+  // 리본
+  if(s>=4) o+=`<g transform="translate(100 158)"><path d="M0 0 L-22 -11 Q-27 0 -22 11Z" fill="#ff5d8f" stroke="#d63a6c" stroke-width="2" stroke-linejoin="round"/><path d="M0 0 L22 -11 Q27 0 22 11Z" fill="#ff5d8f" stroke="#d63a6c" stroke-width="2" stroke-linejoin="round"/><rect x="-6" y="-6" width="12" height="12" rx="4" fill="#ff86aa" stroke="#d63a6c" stroke-width="2"/></g>`;
+  // 맛 장식
+  if(s>=1&&s<5) o+=topper(f.id,100,50,1.15);
+  if(s>=5){
+    o+=topper(f.id,152,64,.8);
+    const gem=s>=7?'#e8384f':s>=6?'#9b5cff':'#5aa9ff';
+    o+=`<g transform="translate(100 46)"><path d="M-23 9 L-25 -14 L-11 -2 L0 -19 L11 -2 L25 -14 L23 9Z" fill="#ffcc33" stroke="#d99100" stroke-width="2.5" stroke-linejoin="round"/><rect x="-23" y="4" width="46" height="6" rx="2" fill="#f2b300"/><circle cx="0" cy="-1" r="${s>=6?5:3.8}" fill="${gem}"/><circle cx="-25" cy="-15" r="3" fill="#fff3a6"/><circle cx="0" cy="-20" r="3" fill="#fff3a6"/><circle cx="25" cy="-15" r="3" fill="#fff3a6"/></g>`;
+    const sp=s>=7?[[34,56,9],[170,52,8],[22,150,7],[178,156,9],[60,24,6],[146,22,7]]:s>=6?[[34,60,9],[168,96,8],[28,150,7],[172,160,8],[56,26,6]]:[[40,60,8],[164,96,7],[34,150,6]];
+    sp.forEach(([x,y,r],i)=>{o+=`<g style="animation-delay:${i*.27}s" class="twinkle">${star(x,y,r,'#ffc928')}</g>`});
+  }
+  return o+`</svg>`;
+}
+
+let cur={f:0,s:5};
+const $=id=>document.getElementById(id);
+function render(){
+  const f=FLAVORS[cur.f], st=STAGES[cur.s];
+  $('big').innerHTML=cookie(f,cur.s);
+  $('name').textContent=`${f.name} · ${st.name}`;
+  $('desc').textContent=st.desc;
+  [...$('flavorBtns').children].forEach((b,i)=>b.setAttribute('aria-pressed',i===cur.f));
+  [...$('stageBtns').children].forEach((b,i)=>b.setAttribute('aria-pressed',i===cur.s));
+  document.querySelectorAll('#tray td').forEach(td=>td.classList.toggle('on',+td.dataset.f===cur.f&&+td.dataset.s===cur.s));
+}
+FLAVORS.forEach((f,i)=>{const b=document.createElement('button');b.type='button';b.id='fl-'+f.id;
+  b.innerHTML=`<span class="dot" style="background:${f.dough};border:2px solid ${f.edge}"></span>${f.name}`;
+  b.onclick=()=>{cur.f=i;render()};$('flavorBtns').appendChild(b)});
+STAGES.forEach((s,i)=>{const b=document.createElement('button');b.type='button';b.id='st-'+i;
+  b.innerHTML=`<b>${i+1}</b><span>${s.name}</span>`;b.onclick=()=>{cur.s=i;render()};$('stageBtns').appendChild(b)});
+let t='<tr><th></th>'+STAGES.map((s,i)=>`<th>${i+1}. ${s.name}</th>`).join('')+'</tr>';
+FLAVORS.forEach((f,fi)=>{t+=`<tr><th class="row">${f.name}</th>`+STAGES.map((s,si)=>`<td data-f="${fi}" data-s="${si}" tabindex="0">${cookie(f,si)}</td>`).join('')+'</tr>'});
+$('tray').innerHTML=t;
+document.querySelectorAll('#tray td').forEach(td=>{const go=()=>{cur={f:+td.dataset.f,s:+td.dataset.s};render();window.scrollTo({top:0,behavior:'smooth'})};
+  td.onclick=go;td.onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();go()}}});
+$('rule').innerHTML=STAGES.map((s,i)=>`<div><b>${i+1}. ${s.name}</b><small>${i<STAGES.length-1?`쿠키 ${s.min}개부터`:`쿠키 ${s.min}개 이상`}</small></div>`).join('');
+render();
+</script>
+
+</body></html>

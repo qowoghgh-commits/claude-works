@@ -1,0 +1,538 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>청장 메이커</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Jua&family=Gowun+Dodum&family=IBM+Plex+Mono:wght@500&display=swap">
+<style>
+/* Layout: 한 화면 육성 대시보드. 왼쪽 = 캐릭터와 AI 멘토, 오른쪽 = 인사기록카드, 아래 = 결재 서류 6장 */
+:root{
+  --paper:#EEF2F4;      /* 공문서 용지빛 바탕 */
+  --card:#FFFFFF;
+  --ink:#1E2A3A;        /* 결재 잉크 남색 */
+  --ink-soft:#5B6878;
+  --line:#D5DDE3;
+  --seal:#C8372D;       /* 인주 빨강: 결재 도장 */
+  --joy:#2F7D7A;        /* AI 멘토 조이 청록 */
+  --joy-tint:#E1F0EE;
+  --gold:#B8862B;
+  --warn:#D9822B;
+  --bar-bg:#E4E9ED;
+  --f-display:"Jua","Apple SD Gothic Neo","Malgun Gothic",sans-serif;
+  --f-body:"Gowun Dodum","Apple SD Gothic Neo","Malgun Gothic",sans-serif;
+  --f-num:"IBM Plex Mono",ui-monospace,Menlo,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --paper:#141B24;--card:#1D2733;--ink:#E6ECF1;--ink-soft:#9AA8B6;--line:#2E3B4A;
+  --seal:#E2574B;--joy:#5BC0B8;--joy-tint:#1C3634;--gold:#D9AA52;--warn:#E89A4C;--bar-bg:#2A3644;color-scheme:dark}}
+:root[data-theme="dark"]{
+  --paper:#141B24;--card:#1D2733;--ink:#E6ECF1;--ink-soft:#9AA8B6;--line:#2E3B4A;
+  --seal:#E2574B;--joy:#5BC0B8;--joy-tint:#1C3634;--gold:#D9AA52;--warn:#E89A4C;--bar-bg:#2A3644;color-scheme:dark}
+
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+html,body{min-height:100%}
+body{background:var(--paper);color:var(--ink);font-family:var(--f-body);font-size:15px;line-height:1.55;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:16px 32px}
+button{font:inherit;color:inherit;cursor:pointer}
+button:focus-visible,input:focus-visible{outline:3px solid var(--joy);outline-offset:2px}
+.wrap{max-width:1040px;margin:0 auto;display:flex;flex-direction:column;gap:16px}
+
+/* 상단 */
+.top{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.logo{font-family:var(--f-display);font-size:28px;letter-spacing:-.5px;display:flex;align-items:center;gap:10px}
+.logo .stamp{font-size:13px;color:var(--seal);border:2px solid var(--seal);border-radius:6px;padding:0 6px;transform:rotate(-8deg);display:inline-block}
+.when{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.chip{background:var(--card);border:1px solid var(--line);border-radius:999px;padding:4px 12px;font-size:14px;white-space:nowrap}
+.chip b{font-family:var(--f-display);font-weight:400}
+.ghost{background:none;border:1px solid var(--line);border-radius:999px;padding:4px 12px;font-size:14px}
+.ghost:hover{border-color:var(--ink-soft)}
+
+/* 메인 */
+.main{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr);gap:16px}
+@media (max-width:760px){.main{grid-template-columns:minmax(0,1fr)}}
+.panel{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px;min-width:0}
+.hero{display:flex;flex-direction:column;gap:12px}
+.portrait{display:flex;gap:14px;align-items:flex-end}
+.portrait svg{width:150px;height:auto;flex:none}
+.idcard{display:flex;flex-direction:column;gap:2px;min-width:0}
+.idcard .name{font-family:var(--f-display);font-size:24px}
+.idcard .rank{color:var(--seal);font-family:var(--f-display);font-size:17px}
+.idcard .sub{color:var(--ink-soft);font-size:13px}
+.joy{background:var(--joy-tint);border-radius:12px;padding:12px 14px;display:flex;gap:10px;align-items:flex-start}
+.joy .face{flex:none;width:38px;height:38px;border-radius:10px;background:var(--joy);display:grid;place-items:center}
+.joy .face svg{width:26px;height:26px}
+.joy .who{font-family:var(--f-display);color:var(--joy);font-size:15px}
+.joy p{margin:2px 0 6px}
+.joy .basis{font-size:13px;color:var(--ink-soft);border-top:1px dashed var(--line);padding-top:6px;margin-top:4px}
+.joy .basis.err{color:var(--seal)}
+.linkbtn{background:none;border:0;padding:0;color:var(--joy);text-decoration:underline;font-size:13px}
+.trust{font-family:var(--f-num);font-size:12px;color:var(--ink-soft)}
+
+/* 인사기록카드 */
+.record h2,.desk h2{font-family:var(--f-display);font-weight:400;font-size:18px;margin:0 0 10px;display:flex;justify-content:space-between;align-items:baseline;gap:4px 8px;flex-wrap:wrap}
+.record h2 small,.desk h2 small{font-family:var(--f-body);font-size:13px;color:var(--ink-soft)}
+.stats{display:grid;gap:9px}
+.stat{display:grid;grid-template-columns:76px minmax(0,1fr) 34px;gap:10px;align-items:center}
+.stat .lbl{font-size:14px}
+.stat .num{font-family:var(--f-num);font-size:13px;text-align:right;font-variant-numeric:tabular-nums}
+.bar{height:12px;background:var(--bar-bg);border-radius:6px;overflow:hidden}
+.bar i{display:block;height:100%;border-radius:6px;background:var(--ink);transition:width .5s ease}
+.stat.stress .bar i{background:var(--warn)}
+.stat.stress.hot .bar i{background:var(--seal)}
+.stat .delta{font-family:var(--f-num);font-size:11px;color:var(--joy);margin-left:4px}
+.divider{height:1px;background:var(--line);margin:4px 0}
+.badges{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px;font-size:13px;color:var(--ink-soft)}
+.badges span{border:1px solid var(--line);border-radius:6px;padding:2px 8px}
+
+/* 결재 서류 */
+.desk .docs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+@media (max-width:640px){.desk .docs{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.doc{position:relative;text-align:left;background:var(--card);border:1px solid var(--line);border-radius:10px;padding:12px 12px 10px;display:flex;flex-direction:column;gap:4px;min-height:112px;transition:transform .12s ease,border-color .12s ease}
+.doc:hover:not(:disabled){transform:translateY(-2px);border-color:var(--ink-soft)}
+.doc:disabled{cursor:default;opacity:.55}
+.doc .kind{font-size:11px;letter-spacing:.08em;color:var(--ink-soft)}
+.doc .t{font-family:var(--f-display);font-size:17px;line-height:1.25}
+.doc .eff{font-size:12.5px;color:var(--ink-soft)}
+.doc.rec{border-color:var(--joy);box-shadow:0 0 0 1px var(--joy) inset}
+.doc .rectag{position:absolute;top:8px;right:8px;font-size:11px;color:var(--joy);font-family:var(--f-display)}
+.doc .seal{position:absolute;right:10px;bottom:8px;width:54px;height:54px;border:3px solid var(--seal);border-radius:50%;color:var(--seal);font-family:var(--f-display);display:grid;place-items:center;font-size:15px;transform:rotate(-14deg) scale(1.6);opacity:0;pointer-events:none}
+.doc.stamped .seal{animation:stamp .35s ease-out forwards}
+@keyframes stamp{to{transform:rotate(-14deg) scale(1);opacity:.9}}
+
+.log{font-size:14px;color:var(--ink-soft);display:flex;flex-direction:column;gap:2px;margin-top:12px;border-top:1px dashed var(--line);padding-top:10px}
+.log div:first-child{color:var(--ink)}
+.foot{font-size:12px;color:var(--ink-soft);text-align:center}
+
+/* 모달 */
+.overlay{position:fixed;inset:0;background:rgba(10,16,24,.55);display:grid;place-items:center;padding:16px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));z-index:20;overflow-y:auto}
+.modal{background:var(--card);color:var(--ink);border-radius:16px;max-width:520px;width:100%;padding:22px;border:1px solid var(--line);display:flex;flex-direction:column;gap:12px;max-height:calc(100% - 16px);overflow-y:auto}
+.modal .eyebrow{font-size:12px;letter-spacing:.1em;color:var(--seal)}
+.modal h3{font-family:var(--f-display);font-weight:400;font-size:24px;margin:0;text-wrap:balance}
+.modal p{margin:0}
+.choices{display:flex;flex-direction:column;gap:8px}
+.choice{text-align:left;background:var(--paper);border:1px solid var(--line);border-radius:10px;padding:12px 14px}
+.choice:hover{border-color:var(--ink)}
+.choice small{display:block;color:var(--ink-soft);font-size:12.5px}
+.primary{background:var(--ink);color:var(--card);border:0;border-radius:10px;padding:12px 18px;font-family:var(--f-display);font-size:18px}
+.primary:hover{opacity:.9}
+.row{display:flex;gap:8px;flex-wrap:wrap}
+.row>*{flex:1 1 140px}
+input[type=text]{width:100%;font:inherit;font-size:18px;padding:10px 12px;border:1px solid var(--line);border-radius:10px;background:var(--paper);color:var(--ink)}
+.title-art{display:flex;justify-content:center}
+.title-art svg{width:150px}
+.big{font-family:var(--f-display);font-size:38px;line-height:1.1;text-align:center;margin:0}
+.center{text-align:center}
+.muted{color:var(--ink-soft);font-size:13px}
+
+/* 발령장 */
+.cert{border:2px double var(--ink-soft);border-radius:8px;padding:18px;position:relative;display:flex;flex-direction:column;gap:10px;background:var(--paper)}
+.cert .kicker{text-align:center;font-family:var(--f-display);font-size:15px;color:var(--ink-soft);letter-spacing:.3em}
+.cert h3{text-align:center;font-size:28px}
+.cert .bigseal{position:absolute;right:14px;top:14px;width:62px;height:62px;border:3px solid var(--seal);border-radius:8px;color:var(--seal);font-family:var(--f-display);display:grid;place-items:center;text-align:center;line-height:1.1;font-size:15px;transform:rotate(-10deg);opacity:.85}
+.mini{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px;font-size:13px}
+.mini span{font-family:var(--f-num)}
+.gallery{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+@media (max-width:420px){.gallery{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.slot{border:1px solid var(--line);border-radius:10px;padding:10px;min-height:84px;display:flex;flex-direction:column;gap:2px;background:var(--paper)}
+.slot b{font-family:var(--f-display);font-weight:400;font-size:15px}
+.slot small{color:var(--ink-soft);font-size:12px}
+.slot.locked b{color:var(--ink-soft)}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}.doc.stamped .seal{opacity:.9;transform:rotate(-14deg)}}
+</style>
+
+<div class="wrap">
+  <header class="top">
+    <div class="logo">청장 메이커 <span class="stamp">결재</span></div>
+    <div class="when">
+      <span class="chip" id="chipDate"><b>2026년 봄</b></span>
+      <span class="chip" id="chipYear">1년차 · 1/40분기</span>
+      <button class="ghost" id="btnGallery" type="button">엔딩 도감</button>
+    </div>
+  </header>
+
+  <section class="main">
+    <div class="panel hero">
+      <div class="portrait">
+        <div id="charBox"></div>
+        <div class="idcard">
+          <span class="sub">조달청 공무원증</span>
+          <span class="name" id="pName">김하늘</span>
+          <span class="rank" id="pRank">9급 주무관</span>
+          <span class="sub" id="pDept">공공조달 신입 연수생</span>
+        </div>
+      </div>
+      <div class="joy" aria-live="polite">
+        <div class="face" aria-hidden="true"><svg viewBox="0 0 26 26"><rect x="3" y="5" width="20" height="16" rx="5" fill="#fff"/><circle cx="9.5" cy="13" r="2.2" fill="#1E2A3A"/><circle cx="16.5" cy="13" r="2.2" fill="#1E2A3A"/><rect x="12" y="1" width="2" height="4" fill="#fff"/></svg></div>
+        <div style="min-width:0;flex:1">
+          <div class="who">AI 멘토 조이 <span class="trust" id="joyTrust"></span></div>
+          <p id="joyMsg">이번 분기 업무를 골라 주세요.</p>
+          <button class="linkbtn" id="btnBasis" type="button">추천 근거 확인하기</button>
+          <div class="basis" id="joyBasis" hidden></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel record">
+      <h2>인사기록카드 <small id="recHint">스탯 0~100</small></h2>
+      <div class="stats" id="stats"></div>
+      <div class="badges" id="badges"></div>
+    </div>
+  </section>
+
+  <section class="panel desk">
+    <h2>이번 분기 업무 결재 <small>서류 한 장을 골라 결재하세요</small></h2>
+    <div class="docs" id="docs"></div>
+    <div class="log" id="log"></div>
+  </section>
+
+  <p class="foot">등장인물과 사건은 모두 가상입니다. 2026 조달청 AI 게임·콘텐츠 공모전 출품용 프로토타입.</p>
+</div>
+
+<div class="overlay" id="overlay" hidden><div class="modal" id="modal" role="dialog" aria-modal="true"></div></div>
+
+<script>
+(() => {
+const STATS = [
+  {k:'integrity', n:'청렴'},
+  {k:'expertise', n:'전문성'},
+  {k:'innovation',n:'혁신감각'},
+  {k:'safety',    n:'안전의식'},
+  {k:'comms',     n:'소통력'},
+];
+const NAME = Object.fromEntries(STATS.map(s=>[s.k,s.n])); NAME.stress='스트레스';
+const RANKS = ['9급 주무관','8급 주무관','7급 주무관','6급 주무관','사무관','서기관 (과장)','고위공무원 (국장)'];
+const DEPTS = ['공공조달 신입 연수생','물품구매과','혁신조달과','품질관리과','공정조달과','혁신조달기획과 과장','조달정책국 국장'];
+const PROMO = [14,21,28,35,43,52]; // 연말 평균 스탯 기준
+const SEASONS = ['봄','여름','가을','겨울'];
+const TURNS = 40;
+
+const JOBS = [
+  {id:'g2b', kind:'교육', t:'나라장터 실무 연수', gain:{expertise:[4,7]}, stress:7, eff:'전문성 ↑↑'},
+  {id:'demo',kind:'현장', t:'혁신제품 데모데이 참관', gain:{innovation:[4,7],comms:[0,2]}, stress:7, eff:'혁신감각 ↑↑ 소통력 ↑'},
+  {id:'qc',  kind:'현장', t:'납품 현장 품질검사', gain:{safety:[4,7],integrity:[0,1]}, stress:8, eff:'안전의식 ↑↑'},
+  {id:'sme', kind:'소통', t:'중소기업 현장 간담회', gain:{comms:[4,7],innovation:[0,1]}, stress:6, eff:'소통력 ↑↑'},
+  {id:'audit',kind:'교육',t:'청렴·감사 실무 교육', gain:{integrity:[4,7]}, stress:6, eff:'청렴 ↑↑'},
+  {id:'rest',kind:'휴식', t:'연가 쓰고 푹 쉬기', gain:{}, stress:-28, eff:'스트레스 ↓↓'},
+];
+const JOB_FOR = {integrity:'audit',expertise:'g2b',innovation:'demo',safety:'qc',comms:'sme'};
+
+const EVENTS = [
+ {id:'broker',t:'브로커의 저녁 초대',d:'"입찰 정보 조금만 미리 알려주시면 섭섭지 않게 해드리죠." 처음 보는 사람이 식사를 권합니다.',
+  a:{l:'정중히 거절하고 청렴신고센터에 알린다',e:{integrity:10,stress:3},r:'원칙을 지켰습니다. 공정조달에는 한 번의 예외도 없습니다.'},
+  b:{l:'밥 한 끼 정도는 괜찮겠지',e:{integrity:-28},r:'원스트라이크아웃 제도를 잊으면 안 됩니다. 청렴 수치가 크게 떨어졌습니다.'}},
+ {id:'heli',t:'산불 진화 헬기 긴급 조달',d:'산불 시즌을 앞두고 헬기 임차를 서둘러야 합니다. 업체가 안전 인증 서류를 나중에 내겠다고 합니다.',
+  a:{l:'안전 기준을 확인한 뒤 계약한다',e:{safety:8,stress:6},r:'조금 늦었지만 기준을 통과한 헬기가 현장에 투입됐습니다.'},
+  b:{l:'급하니 서류는 생략한다',e:{safety:-8,comms:3},r:'빨랐지만 정비 이력 문제가 뒤늦게 드러났습니다.'}},
+ {id:'metal',t:'원자재 가격 급등',d:'알루미늄과 구리 가격이 치솟아 중소 제조업체들이 비명을 지릅니다. 정부 비축 물량을 풀 수 있습니다.',
+  a:{l:'비축 물량을 방출해 중소기업을 돕는다',e:{comms:6,expertise:4},r:'비축 제도가 공급망 충격을 막아 냈습니다.'},
+  b:{l:'더 오를지 모르니 일단 지켜본다',e:{expertise:-3,stress:5},r:'타이밍을 놓쳐 현장 불만이 커졌습니다.'}},
+ {id:'startup',t:'실적 없는 AI 스타트업',d:'기술은 뛰어나지만 납품 실적이 하나도 없는 AI 안전관리 솔루션 업체가 찾아왔습니다.',
+  a:{l:'혁신제품 시범구매로 첫 구매자가 된다',e:{innovation:10,stress:3},r:'공공기관 현장 검증을 통과했고, 1년 뒤 해외 수출 소식이 들려왔습니다.'},
+  b:{l:'실적부터 쌓고 다시 오라고 한다',e:{innovation:-4,safety:2},r:'안전한 선택이었지만 좋은 기술이 판로를 찾지 못했습니다.'}},
+ {id:'rush',t:'입찰 마감일 접속 폭주',d:'나라장터 마감 직전 접속이 몰려 일부 업체가 투찰을 못 했다는 민원이 쏟아집니다.',
+  a:{l:'원인을 분석하고 마감 연장을 공지한다',e:{expertise:5,comms:4,stress:6},r:'신속한 대응으로 공정한 경쟁 기회를 지켰습니다.'},
+  b:{l:'규정대로 마감한다',e:{integrity:2,comms:-5},r:'규정은 지켰지만 업체들의 신뢰가 흔들렸습니다.'}},
+ {id:'meal',t:'군 급식 품질 민원',d:'"급식 식재료 상태가 이상해요." 장병 가족의 민원이 접수됐습니다.',
+  a:{l:'불시 품질검사를 나간다',e:{safety:8,stress:5},r:'문제 납품분을 찾아 즉시 교체했습니다.'},
+  b:{l:'업체 해명을 믿고 넘어간다',e:{safety:-6},r:'한 달 뒤 같은 민원이 또 들어왔습니다.'}},
+ {id:'rival',t:'동기의 승진 소식',d:'입사 동기가 먼저 승진했다는 소식이 들려옵니다.',
+  a:{l:'축하하고 노하우를 물어본다',e:{comms:5,stress:-5},r:'동기가 업무 꿀팁을 잔뜩 알려 줬습니다.'},
+  b:{l:'질투심에 밤새 야근한다',e:{expertise:5,stress:12},r:'실력은 늘었지만 몸이 무겁습니다.'}},
+ {id:'mas',t:'다수공급자계약 2단계 경쟁',d:'친분 있는 업체 대표가 "평가 항목만 살짝 귀띔해 달라"고 전화를 걸어왔습니다.',
+  a:{l:'원칙대로 공개된 기준만 안내한다',e:{integrity:6,expertise:3},r:'모든 업체가 같은 출발선에서 경쟁했습니다.'},
+  b:{l:'이 정도 귀띔은 괜찮겠지',e:{integrity:-16},r:'작은 특혜도 공정성을 무너뜨립니다.'}},
+ {id:'audit',t:'국정감사 자료 요청',d:'내일까지 3년 치 계약 현황 자료를 정리해 제출해야 합니다.',
+  a:{l:'밤새 한 건 한 건 직접 정리한다',e:{expertise:6,stress:12},r:'완벽한 자료였지만 녹초가 됐습니다.'},
+  b:{l:'AI로 초안을 만들고 꼼꼼히 검증한다',e:{expertise:3,innovation:5,stress:4},r:'AI가 낸 오류 두 건을 검증 단계에서 잡아냈습니다.'}},
+ {id:'local',t:'지역 업체의 호소',d:'"지역 공사인데 우리 지역 업체는 참여 기회가 없어요."',
+  a:{l:'지역 업체 참여 확대 방안을 검토한다',e:{comms:8,stress:3},r:'지역 균형 성장에 한 걸음 다가갔습니다.'},
+  b:{l:'효율을 위해 대형 업체 위주로 간다',e:{comms:-4,expertise:2},r:'빠르긴 했지만 지역 상생 점수는 낮아졌습니다.'}},
+ {id:'accident',t:'중대재해 이력 업체의 최저가 입찰',d:'최근 중대재해가 난 건설사가 가장 낮은 가격을 써냈습니다.',
+  a:{l:'안전 평가 감점 기준을 적용한다',e:{safety:8,integrity:3},r:'안전을 가격보다 앞에 두었습니다.'},
+  b:{l:'최저가니까 낙찰시킨다',e:{safety:-10},r:'현장에서 또다시 아찔한 사고가 날 뻔했습니다.'}},
+ {id:'green',t:'탄소 감축 신제품 제안',d:'탄소 배출을 30% 줄인 공공건물 자재가 나왔지만 단가가 조금 비쌉니다.',
+  a:{l:'녹색제품 기준에 반영해 구매한다',e:{innovation:5,comms:3},r:'기후테크 기업이 첫 공공 판로를 얻었습니다.'},
+  b:{l:'예산이 빠듯하니 보류한다',e:{expertise:2,innovation:-3},r:'아쉽지만 다음 기회로 미뤘습니다.'}},
+ {id:'expo',t:'해외 조달 박람회 출장',d:'해외 정부 조달 담당자들과 우리 혁신제품을 소개하는 자리입니다.',
+  a:{l:'직접 발표에 도전한다',e:{comms:6,innovation:3,stress:8},r:'떨렸지만 우리 기업 세 곳이 상담 요청을 받았습니다.'},
+  b:{l:'자료만 받아 온다',e:{expertise:3},r:'무난하게 출장을 마쳤습니다.'}},
+ {id:'hike',t:'주말 등산 동호회',d:'과 사람들이 주말 등산을 가자고 합니다.',
+  a:{l:'함께 간다',e:{stress:-12,comms:3},r:'정상에서 먹은 컵라면이 최고였습니다.'},
+  b:{l:'집에서 푹 쉰다',e:{stress:-15},r:'오랜만에 늦잠을 잤습니다.'}},
+ {id:'social',t:'사회적경제기업의 문의',d:'"저희 같은 사회적기업도 공공조달에 참여할 수 있나요?"',
+  a:{l:'우대 제도를 자세히 안내한다',e:{comms:6,integrity:2},r:'첫 납품 계약 소식을 들었습니다.'},
+  b:{l:'담당이 아니라며 넘긴다',e:{comms:-5},r:'민원 만족도가 떨어졌습니다.'}},
+ {id:'aiprice',t:'AI 가격조사 시스템 시범 도입',d:'시장 가격을 AI가 자동으로 조사해 주는 시스템을 시험해 볼 부서를 찾습니다.',
+  a:{l:'우리 팀이 먼저 써 본다',e:{innovation:8,stress:4},r:'조사 시간이 크게 줄었고, AI 결과를 사람이 검증하는 절차도 만들었습니다.'},
+  b:{l:'하던 대로 수기 조사를 한다',e:{expertise:3,innovation:-5},r:'익숙했지만 시간이 오래 걸렸습니다.'}},
+ {id:'subcon',t:'하도급 대금 미지급 신고',d:'공공공사 하도급 업체가 몇 달째 대금을 못 받았다고 호소합니다.',
+  a:{l:'하도급지킴이로 대금 지급을 확인한다',e:{integrity:5,comms:5},r:'밀린 대금이 지급됐습니다.'},
+  b:{l:'업체끼리 해결할 문제라고 본다',e:{comms:-6},r:'공정한 조달 생태계에 금이 갔습니다.'}},
+ {id:'cold',t:'감기 몸살',d:'아침부터 열이 오르고 온몸이 쑤십니다.',
+  a:{l:'병가를 내고 쉰다',e:{stress:-15},r:'푹 쉬고 회복했습니다.'},
+  b:{l:'그래도 출근한다',e:{stress:15,expertise:2},r:'일은 했지만 회복이 늦어졌습니다.'}},
+ {id:'emcee',t:'혁신제품 국민 데모데이 사회',d:'국민이 직접 혁신제품을 평가하는 행사의 사회를 맡아 달라는 요청입니다.',
+  a:{l:'흔쾌히 맡는다',e:{comms:6,innovation:4,stress:6},r:'행사가 성황리에 끝났습니다.'},
+  b:{l:'정중히 거절한다',e:{stress:-3},r:'다른 직원이 맡았습니다.'}},
+ {id:'rotate',t:'비축기지 순환근무 제안',d:'지방 비축기지에서 1년간 일해 볼 사람을 찾습니다.',
+  a:{l:'자원해서 간다',e:{expertise:3,safety:3,comms:3,stress:5},r:'현장을 알게 되니 보이는 게 많아졌습니다.'},
+  b:{l:'지금 부서에 남는다',e:{stress:-5},r:'익숙한 자리에서 업무를 이어갑니다.'}},
+];
+
+const ENDINGS = [
+ {id:'chief',t:'조달청장',d:'10년의 원칙과 도전이 쌓여 마침내 조달청장으로 임명되었습니다. 연간 225조 원 공공조달의 방향을 정하는 자리입니다.',seal:'조달<br>청장'},
+ {id:'auditor',t:'공정조달 감사관',d:'어떤 유혹에도 흔들리지 않는 원칙주의자. 담합과 브로커를 잡아내는 공정조달의 수호자가 되었습니다.',seal:'공정'},
+ {id:'architect',t:'나라장터 아키텍트',d:'계약 제도와 시스템을 꿰뚫는 전문가. 차세대 전자조달 시스템 설계를 이끌게 되었습니다.',seal:'전문'},
+ {id:'scout',t:'혁신제품 스카우터',d:'숨은 기술을 알아보는 눈. 스타트업의 첫 구매자가 되어 수많은 혁신기업을 키워 냈습니다.',seal:'혁신'},
+ {id:'meister',t:'품질·안전 마이스터',d:'국민이 쓰는 물건과 현장의 안전을 끝까지 확인하는 품질관리의 달인이 되었습니다.',seal:'안전'},
+ {id:'partner',t:'상생조달 지원관',d:'중소기업과 지역 업체의 목소리를 정책으로 연결하는 상생조달 전문가가 되었습니다.',seal:'상생'},
+ {id:'steady',t:'성실한 조달인',d:'눈에 띄는 한 방은 없었지만 10년 동안 묵묵히 나라살림을 지켰습니다. 그것도 충분히 멋진 일입니다.',seal:'성실'},
+ {id:'burnout',t:'번아웃 엔딩',d:'너무 달리기만 했습니다. 휴식도 업무 능력입니다. 다음에는 조이의 휴식 권고를 들어 보세요.',seal:'휴직'},
+ {id:'fired',t:'원스트라이크아웃',d:'작은 유혹이 모든 것을 무너뜨렸습니다. 공정조달에서는 한 번의 비위도 용납되지 않습니다.',seal:'파면'},
+];
+
+/* ---------- 저장 ---------- */
+const store = {
+  get(){ try{ return JSON.parse(localStorage.getItem('cjm-endings')||'[]'); }catch(e){ return []; } },
+  add(id){ try{ const s=new Set(this.get()); s.add(id); localStorage.setItem('cjm-endings',JSON.stringify([...s])); }catch(e){} }
+};
+
+/* ---------- 상태 ---------- */
+let S;
+const rnd=(a,b)=>a+Math.floor(Math.random()*(b-a+1));
+const clamp=v=>Math.max(0,Math.min(100,v));
+function fresh(name){
+  return {name:name||'김하늘',turn:0,rank:0,stress:10,
+    integrity:rnd(28,36),expertise:rnd(10,16),innovation:rnd(10,16),safety:rnd(10,16),comms:rnd(10,16),
+    used:[],log:['2026년 봄, 조달청에 첫 출근했습니다.'],advice:null,verified:0,caught:0,last:{},started:false,done:null,busy:false};
+}
+const avg=()=>STATS.reduce((s,x)=>s+S[x.k],0)/STATS.length;
+
+/* ---------- 캐릭터 (오리지널 SVG) ---------- */
+function charSVG(rank,mood){
+  const suit=['#5C7FA8','#5C7FA8','#4C6E96','#3F5F86','#34507A','#2B3F63','#232F4A'][rank];
+  const skin='#F5D3B5', hair='#3A2A24';
+  const eyes = mood==='happy' ? '<path d="M78 100q6-8 12 0M110 100q6-8 12 0" stroke="#2A1F1A" stroke-width="3.2" fill="none" stroke-linecap="round"/>'
+    : mood==='tired' ? '<path d="M78 101h12M110 101h12" stroke="#2A1F1A" stroke-width="3.2" stroke-linecap="round"/><path d="M79 107q5 3 10 0M111 107q5 3 10 0" stroke="#9C7B6A" stroke-width="1.6" fill="none"/>'
+    : '<circle cx="84" cy="100" r="4.6" fill="#2A1F1A"/><circle cx="116" cy="100" r="4.6" fill="#2A1F1A"/><circle cx="85.5" cy="98.5" r="1.4" fill="#fff"/><circle cx="117.5" cy="98.5" r="1.4" fill="#fff"/>';
+  const mouth = mood==='happy' ? '<path d="M89 117q11 12 22 0z" fill="#B5473C"/>'
+    : mood==='tired' ? '<path d="M91 121q4.5-4 9 0t9 0" stroke="#7A3A30" stroke-width="2.4" fill="none" stroke-linecap="round"/>'
+    : '<path d="M92 119q8 6 16 0" stroke="#7A3A30" stroke-width="2.6" fill="none" stroke-linecap="round"/>';
+  const lanyard = rank<=3 ? '<path d="M86 156L96 190M114 156L104 190" stroke="#2F7D7A" stroke-width="3"/><rect x="88" y="188" width="24" height="28" rx="3" fill="#fff" stroke="#2F7D7A" stroke-width="2"/><rect x="93" y="194" width="14" height="10" rx="2" fill="#CFE5E2"/>' : '';
+  const tie = rank>=4 ? `<path d="M96 160h8l3 34-7 9-7-9z" fill="${rank>=6?'#B8862B':'#C8372D'}"/>` : '';
+  const glasses = rank>=5 ? '<g fill="none" stroke="#2A1F1A" stroke-width="2"><circle cx="84" cy="100" r="11"/><circle cx="116" cy="100" r="11"/><path d="M95 100h10"/></g>' : '';
+  const pin = rank>=6 ? '<circle cx="134" cy="182" r="7" fill="#D9AA52" stroke="#8C6420" stroke-width="1.5"/>' : '';
+  const sweat = mood==='tired' ? '<path d="M146 78q5 8 0 12q-5-4 0-12z" fill="#8EC5E8"/>' : '';
+  return `<svg viewBox="0 0 200 220" role="img" aria-label="${RANKS[rank]} 캐릭터">
+  <circle cx="100" cy="112" r="92" fill="var(--joy-tint)"/>
+  <path d="M38 220q4-62 62-70q58 8 62 70z" fill="${suit}"/>
+  <path d="M83 154l17 26 17-26z" fill="#fff"/>${tie}${lanyard}${pin}
+  <rect x="90" y="132" width="20" height="22" rx="6" fill="${skin}"/>
+  <circle cx="100" cy="94" r="48" fill="${skin}"/>
+  <path d="M50 98q-4-58 50-60q54 2 50 60q-6-22-26-30q-14 12-46 10q-18 4-28 20z" fill="${hair}"/>
+  <path d="M52 92q-6 26 6 40q0-20 4-34z M148 92q6 26-6 40q0-20-4-34z" fill="${hair}"/>
+  ${eyes}${glasses}
+  <ellipse cx="73" cy="114" rx="7" ry="4.5" fill="#F29C92" opacity=".55"/><ellipse cx="127" cy="114" rx="7" ry="4.5" fill="#F29C92" opacity=".55"/>
+  ${mouth}${sweat}</svg>`;
+}
+const mood=()=> S.stress>=70?'tired':(S.last.happy?'happy':'normal');
+
+/* ---------- AI 멘토 조이 ---------- */
+function makeAdvice(){
+  const weakest=[...STATS].sort((a,b)=>S[a.k]-S[b.k])[0];
+  const strongest=[...STATS].sort((a,b)=>S[b.k]-S[a.k])[0];
+  const glitch = S.turn>1 && Math.random()<0.2;
+  if(!glitch){
+    if(S.stress>=65) return {job:'rest',glitch:false,trust:rnd(88,97),msg:'스트레스가 높아요. 이번 분기는 쉬는 게 좋겠어요.',basis:`스트레스 ${S.stress}. 70을 넘으면 성장 효율이 절반으로 떨어지고, 100이 되면 번아웃이에요.`};
+    return {job:JOB_FOR[weakest.k],glitch:false,trust:rnd(82,96),msg:`${weakest.n}이(가) 가장 약해요. "${JOBS.find(j=>j.id===JOB_FOR[weakest.k]).t}"을(를) 추천해요.`,basis:`현재 가장 낮은 스탯은 ${weakest.n} ${S[weakest.k]}. 청장이 되려면 다섯 역량이 고르게 높아야 해요.`};
+  }
+  // 조이의 실수: 그럴듯하지만 틀린 추천
+  if(S.stress>=55) return {job:'g2b',glitch:true,trust:rnd(93,99),msg:'데이터상 지금이 연수 효율 최고 시점이에요! 연수를 강력 추천해요.',basis:`⚠ 근거를 보니 스트레스 수치(${S.stress})가 계산에서 빠져 있어요. 조이의 추천 오류를 발견했습니다!`};
+  return {job:JOB_FOR[strongest.k],glitch:true,trust:rnd(93,99),msg:`${strongest.n} 분야가 요즘 뜨고 있어요! 이쪽을 더 키우는 걸 추천해요.`,basis:`⚠ 근거를 보니 이미 가장 높은 ${strongest.n}(${S[strongest.k]})을 또 키우라는 추천이에요. 약한 역량을 놓친 오류입니다!`};
+}
+
+/* ---------- 렌더 ---------- */
+const $=id=>document.getElementById(id);
+function render(){
+  const y=Math.floor(S.turn/4), q=S.turn%4;
+  $('chipDate').innerHTML=`<b>${2026+y}년 ${SEASONS[q]}</b>`;
+  $('chipYear').textContent=`${y+1}년차 · ${Math.min(S.turn+1,TURNS)}/${TURNS}분기`;
+  $('charBox').innerHTML=charSVG(S.rank,mood());
+  $('pName').textContent=S.name;
+  $('pRank').textContent=RANKS[S.rank];
+  $('pDept').textContent=DEPTS[S.rank];
+  const rows=STATS.map(s=>statRow(s.n,S[s.k],S.last[s.k],'')).join('')
+    + '<div class="divider"></div>' + statRow('스트레스',S.stress,S.last.stress,'stress'+(S.stress>=70?' hot':''));
+  $('stats').innerHTML=rows;
+  const nextP = S.rank<PROMO.length ? `다음 승진 기준: 평균 ${PROMO[S.rank]} (현재 ${avg().toFixed(1)})` : '최고 직급 도달';
+  $('badges').innerHTML=`<span>${nextP}</span><span>AI 오류 검증 ${S.caught}회</span>`;
+  const a=S.advice;
+  $('joyTrust').textContent=a?`신뢰도 ${a.trust}%`:'';
+  $('joyMsg').textContent=a?a.msg:'';
+  $('joyBasis').hidden=!a||!a.shown;
+  if(a){ $('joyBasis').textContent=a.basis; $('joyBasis').className='basis'+(a.glitch?' err':''); }
+  $('btnBasis').hidden=!a||a.shown;
+  $('docs').innerHTML=JOBS.map(j=>`<button class="doc${a&&a.job===j.id?' rec':''}" type="button" data-job="${j.id}" ${S.busy?'disabled':''}>
+    ${a&&a.job===j.id?'<span class="rectag">조이 추천</span>':''}
+    <span class="kind">${j.kind}</span><span class="t">${j.t}</span><span class="eff">${j.eff} · 스트레스 ${j.stress>0?'+':''}${j.stress}</span><span class="seal">결재</span></button>`).join('');
+  $('log').innerHTML=S.log.slice(0,3).map(l=>`<div>${l}</div>`).join('');
+}
+function statRow(n,v,d,cls){
+  const dd = d ? `<span class="delta">${d>0?'+':''}${d}</span>` : '';
+  return `<div class="stat ${cls}"><span class="lbl">${n}${dd}</span><div class="bar"><i style="width:${v}%"></i></div><span class="num">${v}</span></div>`;
+}
+
+/* ---------- 진행 ---------- */
+function apply(eff){
+  const out={};
+  for(const [k,v] of Object.entries(eff)){
+    let val=v;
+    if(k!=='stress' && v>0 && S.stress>=70) val=Math.max(1,Math.round(v/2));
+    if(k!=='stress' && v>0 && S[k]>=70) val=Math.max(1,Math.round(val*0.5)); // 고른 성장 유도
+    const before=S[k]; S[k]=clamp(S[k]+val); out[k]=(out[k]||0)+(S[k]-before);
+  }
+  return out;
+}
+function merge(a,b){ const o={...a}; for(const k in b) o[k]=(o[k]||0)+b[k]; return o; }
+function describe(d){ return Object.entries(d).filter(([,v])=>v).map(([k,v])=>`${NAME[k]} ${v>0?'+':''}${v}`).join(', '); }
+
+function doJob(id){
+  if(S.busy||S.done) return;
+  const j=JOBS.find(x=>x.id===id);
+  S.busy=true;
+  const btn=document.querySelector(`[data-job="${id}"]`);
+  if(btn) btn.classList.add('stamped');
+  const eff={stress:j.stress};
+  for(const [k,[a,b]] of Object.entries(j.gain)) eff[k]=rnd(a,b);
+  const followed = S.advice && S.advice.job===id;
+  if(followed && S.advice.glitch && !S.advice.shown) eff.stress=(eff.stress||0)+4; // 검증 없이 따른 오류 추천
+  const d=apply(eff);
+  S.last={...d,happy:j.id==='rest'||Object.values(d).some(v=>v>=8)};
+  const y=Math.floor(S.turn/4), q=S.turn%4;
+  S.log.unshift(`${2026+y}년 ${SEASONS[q]}: ${j.t} (${describe(d)})`);
+  setTimeout(()=>{ S.busy=false; afterJob(); },reduced()?0:420);
+  render(); if(btn){ const b2=document.querySelector(`[data-job="${id}"]`); b2&&b2.classList.add('stamped'); }
+}
+const reduced=()=>window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+function checkInstant(){
+  if(S.stress>=100) return 'burnout';
+  if(S.integrity<12) return 'fired';
+  return null;
+}
+function afterJob(){
+  const inst=checkInstant(); if(inst) return finish(inst);
+  if(Math.random()<0.38){
+    const pool=EVENTS.filter(e=>!S.used.includes(e.id));
+    if(pool.length){ const e=pool[rnd(0,pool.length-1)]; S.used.push(e.id); return showEvent(e); }
+  }
+  endTurn();
+}
+function endTurn(){
+  const inst=checkInstant(); if(inst) return finish(inst);
+  const q=S.turn%4;
+  S.turn++;
+  if(q===3){ // 연말 인사평가
+    if(S.rank<PROMO.length && avg()>=PROMO[S.rank]){ S.rank++; S.last.happy=true; S.log.unshift(`연말 인사평가: ${RANKS[S.rank]}(으)로 승진했습니다!`); showPromo(); }
+    else if(S.rank<PROMO.length) S.log.unshift(`연말 인사평가: 이번에는 승진하지 못했습니다. (평균 ${avg().toFixed(1)})`);
+    else S.log.unshift(`연말 인사평가: 최고 평가를 받았습니다. (평균 ${avg().toFixed(1)})`);
+  }
+  if(S.turn>=TURNS) return finish(judge());
+  S.advice=makeAdvice();
+  render();
+}
+function judge(){
+  const ks=STATS.map(s=>s.k);
+  if(S.rank>=6 && ks.every(k=>S[k]>=66) && S.integrity>=75) return 'chief';
+  const top=[...ks].sort((a,b)=>S[b]-S[a])[0];
+  if(S[top]>=60) return {integrity:'auditor',expertise:'architect',innovation:'scout',safety:'meister',comms:'partner'}[top];
+  return 'steady';
+}
+
+/* ---------- 모달 ---------- */
+function open(html){ $('modal').innerHTML=html; $('overlay').hidden=false; const f=$('modal').querySelector('button,input'); f&&f.focus(); }
+function close(){ $('overlay').hidden=true; }
+
+function showEvent(e){
+  open(`<span class="eyebrow">돌발 상황 · 공문 도착</span><h3>${e.t}</h3><p>${e.d}</p>
+  <div class="choices">${(Math.random()<.5?['a','b']:['b','a']).map(k=>`<button class="choice" type="button" data-c="${k}">${e[k].l}</button>`).join('')}</div>`);
+  $('modal').querySelectorAll('[data-c]').forEach(b=>b.onclick=()=>{
+    const c=e[b.dataset.c]; const d=apply(c.e);
+    S.last=merge(S.last,d); S.last.happy = Object.values(d).reduce((s,v)=>s+v,0)>0;
+    S.log.unshift(`${e.t}: ${c.l} (${describe(d)})`);
+    open(`<span class="eyebrow">결과</span><h3>${e.t}</h3><p>${c.r}</p><p class="muted">${describe(d)||'변화 없음'}</p><button class="primary" type="button" id="ok">확인</button>`);
+    $('ok').onclick=()=>{ close(); endTurn(); };
+    render();
+  });
+}
+function showPromo(){
+  if(S.turn>=TURNS) return;
+  open(`<span class="eyebrow">인사 발령</span><h3>${RANKS[S.rank]} 승진!</h3><div class="title-art">${charSVG(S.rank,'happy')}</div><p class="center">${S.name} 님이 ${DEPTS[S.rank]}(으)로 발령받았습니다.</p><button class="primary" type="button" id="ok">축하해요</button>`);
+  $('ok').onclick=close;
+}
+function finish(id){
+  S.done=id; store.add(id);
+  const e=ENDINGS.find(x=>x.id===id);
+  const y=Math.min(2026+Math.floor(S.turn/4),2036);
+  render();
+  open(`<div class="cert"><div class="kicker">발 령 장</div><h3>${e.t}</h3>
+    <div class="title-art">${charSVG(id==='chief'?6:S.rank, id==='burnout'||id==='fired'?'tired':'happy')}</div>
+    <p><b>${S.name}</b> · ${y}년</p><p>${e.d}</p>
+    <div class="mini">${STATS.map(s=>`<div>${s.n} <span>${S[s.k]}</span></div>`).join('')}<div>AI 검증 <span>${S.caught}회</span></div></div>
+    <div class="bigseal">${e.seal}</div></div>
+    <p class="muted center">모은 엔딩 ${store.get().length} / ${ENDINGS.length}</p>
+    <div class="row"><button class="primary" type="button" id="again">다시 키우기</button><button class="choice" type="button" id="gal">엔딩 도감</button></div>`);
+  $('again').onclick=()=>titleScreen();
+  $('gal').onclick=()=>gallery(true);
+}
+function gallery(fromEnd){
+  const got=new Set(store.get());
+  open(`<span class="eyebrow">엔딩 도감 · ${got.size} / ${ENDINGS.length}</span><h3>어떤 조달인이 될까요?</h3>
+   <div class="gallery">${ENDINGS.map(e=>got.has(e.id)?`<div class="slot"><b>${e.t}</b><small>${e.d.split('.')[0]}.</small></div>`:`<div class="slot locked"><b>???</b><small>아직 보지 못한 엔딩</small></div>`).join('')}</div>
+   <button class="primary" type="button" id="ok">${fromEnd?'다시 키우기':'닫기'}</button>`);
+  $('ok').onclick=()=> fromEnd ? titleScreen() : (S.started?close():titleScreen());
+}
+function titleScreen(){
+  S=fresh(); render();
+  open(`<div class="title-art">${charSVG(0,'happy')}</div>
+   <p class="big">청장 메이커</p>
+   <p class="center">2026년 봄, 조달청에 신입 주무관이 들어왔습니다.<br>당신은 AI 멘토 <b>조이</b>. 10년 뒤 이 사람을 <b>조달청장</b>으로 키워 낼 수 있을까요?</p>
+   <label class="muted" for="nm">신입 주무관 이름</label>
+   <input type="text" id="nm" maxlength="8" value="김하늘" autocomplete="off">
+   <div class="row"><button class="primary" type="button" id="go">첫 출근</button><button class="choice" type="button" id="howto">플레이 방법</button></div>`);
+  $('go').onclick=start; $('nm').onkeydown=e=>{ if(e.key==='Enter') start(); };
+  $('howto').onclick=howto;
+}
+function howto(){
+  open(`<span class="eyebrow">플레이 방법</span><h3>10년, 40분기의 육성</h3>
+  <p>매 분기 업무 서류 한 장을 골라 결재하면 스탯이 오릅니다. 일할수록 스트레스가 쌓이니 틈틈이 쉬어야 합니다.</p>
+  <p>AI 멘토 조이가 매 분기 업무를 추천합니다. 대부분 맞지만 가끔 틀립니다. <b>추천 근거 확인하기</b>로 오류를 잡아내세요.</p>
+  <p>해마다 겨울이 끝나면 인사평가로 승진이 결정됩니다. 70을 넘은 역량은 잘 오르지 않으니 고르게 키우세요. 국장까지 오르고 다섯 역량이 모두 66 이상, 청렴이 75 이상이면 조달청장이 됩니다. 엔딩은 모두 9개입니다.</p>
+  <button class="primary" type="button" id="ok">알겠어요</button>`);
+  $('ok').onclick=titleScreen;
+}
+function start(){
+  const nm=($('nm')&&$('nm').value.trim())||'김하늘';
+  S=fresh(nm); S.started=true; S.advice=makeAdvice(); close(); render();
+}
+
+/* ---------- 이벤트 ---------- */
+$('docs').addEventListener('click',e=>{ const b=e.target.closest('[data-job]'); if(b) doJob(b.dataset.job); });
+$('btnBasis').onclick=()=>{ if(!S.advice||S.advice.shown) return; S.advice.shown=true; S.verified++;
+  if(S.advice.glitch){ S.caught++; const d=apply({expertise:2}); S.log.unshift(`AI 추천 오류를 검증으로 발견했습니다 (전문성 +${d.expertise||0})`); }
+  render(); };
+$('btnGallery').onclick=()=>gallery(false);
+document.addEventListener('keydown',e=>{ if(e.key==='Escape' && !$('overlay').hidden && S.started && !S.done && !$('modal').querySelector('[data-c]')) close(); });
+
+/* ---------- 부팅 (뷰어 업데이트 시 진행 상태 유지) ---------- */
+function boot(data){
+  if(data && data.S && data.S.started){ S=data.S; S.busy=false; render(); if(S.done) finish(S.done); }
+  else titleScreen();
+}
+window.claude?.hot?.snapshot?.(()=>({S}));
+window.claude?.hot?.ready ? window.claude.hot.ready(boot) : boot(window.claude?.hot?.data ?? {});
+})();
+</script>
+
+</body></html>

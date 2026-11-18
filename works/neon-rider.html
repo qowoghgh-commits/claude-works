@@ -1,0 +1,528 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>네온 라이더</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=IBM+Plex+Sans+KR:wght@400;600&display=swap">
+<style>
+/* 한 화면 게임: 검은 밤하늘 위 네온 트랙, 화면 전체가 버튼 */
+:root {
+  --bg: #05060d;
+  --ink: #e8f1ff;
+  --dim: #7d8aa8;
+  --track: #2ee6ff;
+  --bike: #ff3fa4;
+  --gem: #ffc23d;
+  --panel: rgba(8, 10, 22, 0.82);
+  --display: "Black Han Sans", "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+  --body: "IBM Plex Sans KR", "Apple SD Gothic Neo", "Malgun Gothic", system-ui, sans-serif;
+  color-scheme: dark;
+}
+html, body { height: 100%; }
+body {
+  margin: 0; background: var(--bg); color: var(--ink);
+  font-family: var(--body); overflow: hidden;
+  touch-action: none; user-select: none; -webkit-user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+#game { position: fixed; inset: 0; width: 100%; height: 100%; display: block; }
+
+.hud {
+  position: fixed; top: 0; left: 0; right: 0; pointer-events: none;
+  padding-top: calc(12px + env(safe-area-inset-top, 0px));
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  display: flex; flex-direction: column; gap: 8px;
+}
+.hud-row { display: flex; justify-content: space-between; align-items: center; gap: 12px; }
+.stat { display: flex; align-items: baseline; gap: 6px; font-variant-numeric: tabular-nums; }
+.stat b { font-family: var(--display); font-weight: 400; font-size: 26px; letter-spacing: 0.02em; }
+.stat span { font-size: 12px; color: var(--dim); letter-spacing: 0.08em; }
+.stat.flip b { color: var(--bike); text-shadow: 0 0 12px rgba(255, 63, 164, 0.6); }
+.stat.gem b { color: var(--gem); text-shadow: 0 0 12px rgba(255, 194, 61, 0.55); }
+.bar { height: 4px; border-radius: 2px; background: rgba(46, 230, 255, 0.15); overflow: hidden; }
+.bar i { display: block; height: 100%; width: 0; background: var(--track); box-shadow: 0 0 10px var(--track); }
+
+#pop {
+  position: fixed; left: 0; right: 0; top: 26%; text-align: center; pointer-events: none;
+  font-family: var(--display); font-size: clamp(28px, 8vw, 54px); color: var(--bike);
+  text-shadow: 0 0 18px rgba(255, 63, 164, 0.8); opacity: 0; transform: scale(0.8);
+  transition: opacity 0.25s, transform 0.25s;
+}
+#pop.show { opacity: 1; transform: scale(1); }
+
+.overlay {
+  position: fixed; inset: 0; display: grid; place-items: center;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  background: radial-gradient(ellipse at center, rgba(5, 6, 13, 0.55), rgba(5, 6, 13, 0.9));
+}
+.card {
+  width: min(360px, 100%); text-align: center; display: flex; flex-direction: column; gap: 14px;
+  padding: 26px 22px; border: 1px solid rgba(46, 230, 255, 0.35); border-radius: 14px;
+  background: var(--panel); box-shadow: 0 0 40px rgba(46, 230, 255, 0.12);
+}
+.card h1, .card h2 {
+  margin: 0; font-family: var(--display); font-weight: 400; letter-spacing: 0.03em; text-wrap: balance;
+}
+.card h1 { font-size: 44px; color: var(--track); text-shadow: 0 0 22px rgba(46, 230, 255, 0.7); }
+.card h1 em { font-style: normal; color: var(--bike); text-shadow: 0 0 22px rgba(255, 63, 164, 0.7); }
+.card h2 { font-size: 32px; }
+.card p { margin: 0; color: var(--dim); line-height: 1.6; font-size: 14px; }
+.howto { display: grid; grid-template-columns: auto 1fr; gap: 8px 12px; text-align: left; font-size: 14px; line-height: 1.5; }
+.howto dt { color: var(--track); font-weight: 600; }
+.howto dd { margin: 0; color: var(--ink); }
+.result { display: flex; justify-content: center; gap: 22px; }
+.result div { display: flex; flex-direction: column; gap: 2px; font-variant-numeric: tabular-nums; }
+.result b { font-family: var(--display); font-weight: 400; font-size: 30px; }
+.result span { font-size: 12px; color: var(--dim); letter-spacing: 0.06em; }
+.btn {
+  font: 600 16px var(--body); color: var(--bg); background: var(--track);
+  border: 0; border-radius: 999px; padding: 13px 20px; cursor: pointer;
+  box-shadow: 0 0 22px rgba(46, 230, 255, 0.5);
+}
+.btn.ghost { background: transparent; color: var(--ink); border: 1px solid rgba(232, 241, 255, 0.3); box-shadow: none; }
+.btn:focus-visible { outline: 2px solid var(--bike); outline-offset: 3px; }
+.btns { display: flex; flex-direction: column; gap: 10px; }
+.hint { font-size: 12px; color: var(--dim); }
+</style>
+
+<canvas id="game"></canvas>
+
+<div class="hud" id="hud" hidden>
+  <div class="hud-row">
+    <div class="stat flip"><b id="flips">0</b><span>플립</span></div>
+    <div class="stat gem"><span>다이아</span><b id="gems">0</b></div>
+  </div>
+  <div class="bar"><i id="progress"></i></div>
+</div>
+<div id="pop"></div>
+
+<div class="overlay" id="startScreen">
+  <div class="card">
+    <h1>네온 <em>라이더</em></h1>
+    <dl class="howto">
+      <dt>누르기</dt><dd>바이크가 앞으로 달려요</dd>
+      <dt>공중에서</dt><dd>누르고 있으면 뒤로 빙글빙글</dd>
+      <dt>손 떼기</dt><dd>회전을 멈추고 바퀴로 착지</dd>
+      <dt>조심</dt><dd>머리부터 떨어지면 실패!</dd>
+    </dl>
+    <div class="btns"><button class="btn" id="startBtn">스테이지 1 시작</button></div>
+    <p class="hint" id="bestLine">컴퓨터는 스페이스 키로도 할 수 있어요</p>
+  </div>
+</div>
+
+<div class="overlay" id="crashScreen" hidden>
+  <div class="card">
+    <h2>쿵! 넘어졌어요</h2>
+    <p>마지막 체크포인트에서 다시 달려요.</p>
+    <div class="btns">
+      <button class="btn" id="retryBtn">다시 달리기</button>
+      <button class="btn ghost" id="restartBtn">처음부터</button>
+    </div>
+  </div>
+</div>
+
+<div class="overlay" id="finishScreen" hidden>
+  <div class="card">
+    <h2>스테이지 클리어!</h2>
+    <div class="result">
+      <div><b id="rFlips">0</b><span>플립</span></div>
+      <div><b id="rGems">0</b><span>다이아</span></div>
+      <div><b id="rCrash">0</b><span>넘어짐</span></div>
+    </div>
+    <p id="rBest"></p>
+    <div class="btns"><button class="btn" id="againBtn">다시 하기</button></div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/planck@1.3.0/dist/planck.min.js"></script>
+<script>
+(() => {
+const pl = planck;
+const $ = id => document.getElementById(id);
+const canvas = $("game"), ctx = canvas.getContext("2d");
+const C = { track: "#2ee6ff", bike: "#ff3fa4", gem: "#ffc23d", ink: "#e8f1ff", bg: "#05060d" };
+
+/* ---------- 트랙 만들기 ---------- */
+function buildTrack() {
+  const chains = [], gems = [], checkpoints = [];
+  let x = -12, y = 0, cur = [[x, y]];
+  const to = (nx, ny) => { cur.push([nx, ny]); x = nx; y = ny; };
+  const flat = l => to(x + l, y);
+  const slope = (l, dy) => { const x0 = x, y0 = y, n = Math.max(2, Math.ceil(l)); for (let i = 1; i <= n; i++) { const t = i / n; to(x0 + l * t, y0 + dy * (1 - Math.cos(Math.PI * t)) / 2); } };
+  const hills = (c, amp, wl) => { const x0 = x, y0 = y, n = Math.ceil(c * wl); for (let i = 1; i <= n; i++) { const t = i / n; to(x0 + c * wl * t, y0 + amp * (1 - Math.cos(2 * Math.PI * c * t)) / 2); } };
+  const kicker = (l, h) => { const x0 = x, y0 = y, n = Math.ceil(l); for (let i = 1; i <= n; i++) { const t = i / n; to(x0 + l * t, y0 + h * t * t); } };
+  const gap = (l, dy) => { gems.push([x + l / 2, y + 3.2]); chains.push(cur); x += l; y += dy; cur = [[x, y]]; };
+  const gem = (gx, gy) => gems.push([gx, gy]);
+  const cp = () => checkpoints.push([x, y]);
+
+  flat(10); cp(); flat(8);
+  hills(3, 1.2, 16); gem(x - 24, y + 2.4);
+  flat(6);
+  kicker(10, 2.6); gap(7, -1); slope(12, -3);
+  flat(8); cp(); flat(4);
+  slope(22, -7); kicker(12, 3.6); gap(10, -2); slope(14, -3.5);
+  flat(6);
+  hills(3, 1.8, 20); gem(x - 30, y + 3.2); gem(x - 50, y + 3.2);
+  flat(6); cp(); flat(4);
+  slope(14, -5); slope(14, 5); gem(x - 14, y - 2.4);
+  flat(4);
+  kicker(10, 3.2); gap(11, -3); slope(16, -4);
+  flat(8); cp(); flat(4);
+  slope(20, 7); flat(4); slope(18, -9);
+  kicker(14, 4.4); gap(13, -4); slope(20, -5);
+  flat(10); cp(); flat(4);
+  hills(2, 2.4, 26); flat(4);
+  kicker(12, 4); gap(12, -2); slope(16, -4);
+  flat(8);
+  const finishX = x + 6;
+  flat(40);
+  chains.push(cur);
+  let minY = Infinity;
+  chains.forEach(c => c.forEach(p => { minY = Math.min(minY, p[1]); }));
+  return { chains, gems: gems.map(g => ({ x: g[0], y: g[1], got: false })), checkpoints, finishX, minY, startX: -12 };
+}
+
+/* ---------- 물리 세계 ---------- */
+let world, track, bike, groundContacts, wheelTouch = { rear: 0, front: 0 }, crashed, finished, started, holding = false;
+let flips = 0, gemCount = 0, crashes = 0, cpIndex = 0;
+let air = { on: false, t: 0, startAngle: 0 }, trail = [], parts = [];
+const cam = { x: 0, y: 0 };
+
+function makeWorld() {
+  world = new pl.World({ gravity: pl.Vec2(0, -11) });
+  track = buildTrack();
+  const ground = world.createBody();
+  track.chains.forEach(c => {
+    ground.createFixture(pl.Chain(c.map(p => pl.Vec2(p[0], p[1])), false), { friction: 0.9, userData: "ground" });
+  });
+  world.on("begin-contact", c => onContact(c, 1));
+  world.on("end-contact", c => onContact(c, -1));
+}
+
+function onContact(contact, d) {
+  const a = contact.getFixtureA().getUserData(), b = contact.getFixtureB().getUserData();
+  const other = a === "ground" ? b : b === "ground" ? a : null;
+  if (!other) return;
+  if (other === "rear" || other === "front") {
+    wheelTouch[other] = Math.max(0, wheelTouch[other] + d);
+    groundContacts = wheelTouch.rear + wheelTouch.front;
+  }
+  if (d > 0 && !crashed && !finished) {
+    if (other === "head") crashed = "pending";
+    if (other === "frame" && bike && Math.cos(bike.chassis.getAngle()) < -0.2) crashed = "pending";
+  }
+}
+
+function makeBike(px, py) {
+  if (bike && !bike.dead) { world.destroyBody(bike.chassis); world.destroyBody(bike.rear); world.destroyBody(bike.front); }
+  const chassis = world.createBody({ type: "dynamic", position: pl.Vec2(px, py), angularDamping: 0.4 });
+  chassis.createFixture(pl.Box(0.75, 0.16), { density: 2.4, friction: 0.5, userData: "frame" });
+  chassis.createFixture(pl.Circle(pl.Vec2(0.08, 0.78), 0.22), { density: 0.3, userData: "head" });
+  const mkWheel = (dx, tag) => {
+    const w = world.createBody({ type: "dynamic", position: pl.Vec2(px + dx, py - 0.34), angularDamping: 0.15 });
+    w.createFixture(pl.Circle(0.34), { density: 1, friction: 1.6, restitution: 0.05, userData: tag });
+    return w;
+  };
+  const rear = mkWheel(-0.62, "rear"), front = mkWheel(0.62, "front");
+  const opt = { frequencyHz: 5, dampingRatio: 0.75, enableMotor: true, maxMotorTorque: 0, motorSpeed: 0 };
+  const rearJ = world.createJoint(pl.WheelJoint(opt, chassis, rear, rear.getPosition(), pl.Vec2(0, 1)));
+  const frontJ = world.createJoint(pl.WheelJoint({ ...opt, enableMotor: false }, chassis, front, front.getPosition(), pl.Vec2(0, 1)));
+  bike = { chassis, rear, front, rearJ, frontJ };
+  groundContacts = 0; wheelTouch = { rear: 0, front: 0 }; crashed = false;
+  air = { on: false, t: 0, startAngle: 0 }; trail = [];
+}
+
+function spawnAtCheckpoint() {
+  const [cx, cy] = track.checkpoints[cpIndex];
+  makeBike(cx, cy + 0.72);
+  cam.x = cx + 4; cam.y = cy + 1.5;
+}
+
+function newRun() {
+  makeWorld();
+  bike = null; flips = 0; gemCount = 0; crashes = 0; cpIndex = 0;
+  finished = false; parts = [];
+  spawnAtCheckpoint();
+  updateHud();
+}
+
+/* ---------- 게임 규칙 ---------- */
+function step(dt) {
+  if (!bike) return;
+  if (bike.dead) { world.step(dt, 8, 3); return; }
+  const ch = bike.chassis;
+  const grounded = groundContacts > 0;
+  const drive = holding && started && !crashed && !finished;
+
+  bike.rearJ.setMotorSpeed(drive ? -46 : 0);
+  bike.rearJ.setMaxMotorTorque(drive ? 9 : (finished ? 3 : 0.15));
+
+  const av = ch.getAngularVelocity();
+  if (drive && !grounded && air.t > 0.12) {
+    // 공중에서 누르면 뒤로 회전
+    ch.setAngularVelocity(av + (9.5 - av) * 0.25);
+  } else if (!grounded && !drive) {
+    // 손을 떼면 회전이 멈춰요
+    ch.setAngularVelocity(av * 0.8);
+  } else if (grounded && wheelTouch.front === 0 && av > 0) {
+    // 땅에서 앞바퀴가 들리면 앞으로 눌러줘서 뒤로 넘어가지 않게
+    ch.setAngularVelocity(av * 0.8 - 0.05);
+  }
+
+  world.step(dt, 8, 3);
+
+  // 공중 시간과 플립 세기
+  if (!grounded && !crashed) {
+    if (!air.on) { air.on = true; air.t = 0; air.startAngle = ch.getAngle(); }
+    air.t += dt;
+  } else if (grounded && air.on) {
+    if (air.t > 0.25 && !crashed) {
+      const turned = Math.abs(ch.getAngle() - air.startAngle);
+      const n = Math.floor((turned + 0.7) / (Math.PI * 2));
+      if (n > 0) { flips += n; showPop(n === 1 ? "백플립!" : `백플립 ×${n}!`); buzz(15); }
+      else if (air.t > 1.1) showPop("멋진 점프!");
+    }
+    air.on = false;
+  }
+
+  const p = ch.getPosition();
+  // 다이아몬드
+  track.gems.forEach(g => {
+    if (!g.got && Math.hypot(g.x - p.x, g.y - p.y) < 1.2) { g.got = true; gemCount++; spark(g.x, g.y, C.gem, 10); }
+  });
+  // 체크포인트
+  while (cpIndex + 1 < track.checkpoints.length && p.x > track.checkpoints[cpIndex + 1][0]) {
+    cpIndex++; if (started) showPop("체크포인트");
+  }
+  // 떨어짐
+  if (!crashed && p.y < track.minY - 12) crashed = "pending";
+  if (crashed === "pending") crash();
+  // 결승
+  if (!finished && !crashed && p.x > track.finishX) finish();
+
+  trail.push([bike.rear.getPosition().x, bike.rear.getPosition().y]);
+  if (trail.length > 36) trail.shift();
+  updateHud();
+}
+
+function crash() {
+  crashed = true; crashes++;
+  const p = bike.chassis.getPosition(), v = bike.chassis.getLinearVelocity();
+  for (let i = 0; i < 26; i++) {
+    parts.push({ x: p.x, y: p.y, vx: v.x * 0.4 + (Math.random() - 0.5) * 9, vy: v.y * 0.3 + Math.random() * 8,
+      a: Math.random() * 6, va: (Math.random() - 0.5) * 14, len: 0.2 + Math.random() * 0.5,
+      color: i % 3 ? C.bike : C.track, life: 1.6 + Math.random() });
+  }
+  world.destroyBody(bike.chassis); world.destroyBody(bike.rear); world.destroyBody(bike.front);
+  bike.dead = true;
+  buzz([40, 30, 60]);
+  setTimeout(() => { $("crashScreen").hidden = false; $("retryBtn").focus(); }, 750);
+}
+
+function finish() {
+  finished = true; holding = false;
+  let best = null;
+  try { best = JSON.parse(localStorage.getItem("neonrider-best") || "null"); } catch (e) {}
+  const isBest = !best || flips + gemCount * 2 > best.flips + best.gems * 2;
+  if (isBest) { try { localStorage.setItem("neonrider-best", JSON.stringify({ flips, gems: gemCount })); } catch (e) {} }
+  $("rFlips").textContent = flips; $("rGems").textContent = `${gemCount}/${track.gems.length}`; $("rCrash").textContent = crashes;
+  $("rBest").textContent = isBest ? "새 최고 기록이에요!" : `최고 기록: 플립 ${best.flips} · 다이아 ${best.gems}`;
+  setTimeout(() => { $("finishScreen").hidden = false; $("againBtn").focus(); }, 900);
+}
+
+function spark(x, y, color, n) {
+  for (let i = 0; i < n; i++) parts.push({ x, y, vx: (Math.random() - 0.5) * 6, vy: (Math.random() - 0.3) * 6,
+    a: Math.random() * 6, va: 8, len: 0.18, color, life: 0.7 });
+}
+
+let popTimer;
+function showPop(text) {
+  const el = $("pop"); el.textContent = text; el.classList.add("show");
+  clearTimeout(popTimer); popTimer = setTimeout(() => el.classList.remove("show"), 900);
+}
+function buzz(p) { try { navigator.vibrate && navigator.vibrate(p); } catch (e) {} }
+
+function updateHud() {
+  $("flips").textContent = flips; $("gems").textContent = gemCount;
+  if (bike && !bike.dead) {
+    const x = bike.chassis.getPosition().x;
+    const pct = Math.max(0, Math.min(1, (x - track.startX) / (track.finishX - track.startX)));
+    $("progress").style.width = (pct * 100).toFixed(1) + "%";
+  }
+}
+
+/* ---------- 그리기 ---------- */
+let W = 0, H = 0, S = 30, DPR = 1;
+function resize() {
+  DPR = Math.min(window.devicePixelRatio || 1, 2);
+  W = canvas.clientWidth; H = canvas.clientHeight;
+  canvas.width = W * DPR; canvas.height = H * DPR;
+  S = Math.min(H / 13, W / 15);
+}
+window.addEventListener("resize", resize);
+
+function toWorld() { ctx.setTransform(S * DPR, 0, 0, -S * DPR, (W / 2 - cam.x * S) * DPR, (H * 0.55 + cam.y * S) * DPR); }
+
+function draw(t) {
+  ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+  ctx.fillStyle = C.bg; ctx.fillRect(0, 0, W, H);
+
+  // 배경 격자 (천천히 따라오는 원근감)
+  const g = 2.5 * S * 0.6, ox = -(cam.x * S * 0.3) % g, oy = (cam.y * S * 0.3) % g;
+  ctx.strokeStyle = "rgba(46,230,255,0.06)"; ctx.lineWidth = 1; ctx.beginPath();
+  for (let x = ox; x < W; x += g) { ctx.moveTo(x, 0); ctx.lineTo(x, H); }
+  for (let y = oy; y < H; y += g) { ctx.moveTo(0, y); ctx.lineTo(W, y); }
+  ctx.stroke();
+
+  toWorld();
+  const lw = 1 / S;
+  const left = cam.x - W / S, right = cam.x + W / S;
+
+  // 트랙: 아래 채우기 + 빛 번짐 + 선
+  track.chains.forEach(c => {
+    if (c[c.length - 1][0] < left || c[0][0] > right) return;
+    const bottom = track.minY - 40;
+    ctx.beginPath(); ctx.moveTo(c[0][0], bottom);
+    c.forEach(p => ctx.lineTo(p[0], p[1]));
+    ctx.lineTo(c[c.length - 1][0], bottom); ctx.closePath();
+    const grad = ctx.createLinearGradient(0, cam.y, 0, cam.y - 10);
+    grad.addColorStop(0, "rgba(46,230,255,0.10)"); grad.addColorStop(1, "rgba(46,230,255,0)");
+    ctx.fillStyle = grad; ctx.fill();
+    const line = () => { ctx.beginPath(); ctx.moveTo(c[0][0], bottom); c.forEach(p => ctx.lineTo(p[0], p[1])); ctx.lineTo(c[c.length - 1][0], bottom); };
+    ctx.lineJoin = "round"; ctx.lineCap = "round";
+    line(); ctx.strokeStyle = "rgba(46,230,255,0.18)"; ctx.lineWidth = 9 * lw; ctx.stroke();
+    line(); ctx.strokeStyle = C.track; ctx.lineWidth = 2.4 * lw; ctx.stroke();
+  });
+
+  // 체크포인트 · 결승선
+  track.checkpoints.forEach((p, i) => {
+    if (i === 0) return;
+    ctx.strokeStyle = i <= cpIndex ? "rgba(255,194,61,0.8)" : "rgba(232,241,255,0.25)";
+    ctx.lineWidth = 2 * lw; ctx.setLineDash([0.3, 0.25]);
+    ctx.beginPath(); ctx.moveTo(p[0], p[1]); ctx.lineTo(p[0], p[1] + 3); ctx.stroke(); ctx.setLineDash([]);
+  });
+  const fy = track.chains[track.chains.length - 1][0][1];
+  for (let i = 0; i < 10; i++) for (let j = 0; j < 2; j++) {
+    ctx.fillStyle = (i + j) % 2 ? C.ink : "rgba(232,241,255,0.12)";
+    ctx.fillRect(track.finishX + j * 0.35, fy + i * 0.35, 0.35, 0.35);
+  }
+
+  // 다이아몬드
+  track.gems.forEach(gm => {
+    if (gm.got || gm.x < left || gm.x > right) return;
+    const bob = Math.sin(t / 300 + gm.x) * 0.15, r = 0.32;
+    ctx.save(); ctx.translate(gm.x, gm.y + bob);
+    ctx.beginPath(); ctx.moveTo(0, r * 1.3); ctx.lineTo(r, 0); ctx.lineTo(0, -r * 1.3); ctx.lineTo(-r, 0); ctx.closePath();
+    ctx.fillStyle = "rgba(255,194,61,0.25)"; ctx.fill();
+    ctx.strokeStyle = C.gem; ctx.lineWidth = 2 * lw; ctx.stroke(); ctx.restore();
+  });
+
+  // 바이크 꼬리 빛
+  if (bike && !bike.dead && trail.length > 2) {
+    for (let i = 1; i < trail.length; i++) {
+      ctx.strokeStyle = `rgba(255,63,164,${(i / trail.length) * 0.5})`;
+      ctx.lineWidth = (i / trail.length) * 6 * lw;
+      ctx.beginPath(); ctx.moveTo(trail[i - 1][0], trail[i - 1][1]); ctx.lineTo(trail[i][0], trail[i][1]); ctx.stroke();
+    }
+  }
+
+  if (bike && !bike.dead) drawBike();
+
+  // 부서진 조각
+  parts.forEach(pt => {
+    ctx.save(); ctx.translate(pt.x, pt.y); ctx.rotate(pt.a);
+    ctx.globalAlpha = Math.max(0, Math.min(1, pt.life));
+    ctx.strokeStyle = pt.color; ctx.lineWidth = 2.4 * lw;
+    ctx.beginPath(); ctx.moveTo(-pt.len / 2, 0); ctx.lineTo(pt.len / 2, 0); ctx.stroke(); ctx.restore();
+  });
+  ctx.globalAlpha = 1;
+}
+
+function drawWheel(w) {
+  const p = w.getPosition(), a = w.getAngle(), r = 0.34, lw = 1 / S;
+  ctx.save(); ctx.translate(p.x, p.y); ctx.rotate(a);
+  ctx.strokeStyle = "rgba(255,63,164,0.25)"; ctx.lineWidth = 7 * lw;
+  ctx.beginPath(); ctx.arc(0, 0, r, 0, Math.PI * 2); ctx.stroke();
+  ctx.strokeStyle = C.bike; ctx.lineWidth = 2.6 * lw;
+  ctx.beginPath(); ctx.arc(0, 0, r, 0, Math.PI * 2); ctx.stroke();
+  ctx.lineWidth = 1.4 * lw; ctx.beginPath();
+  for (let i = 0; i < 3; i++) { const k = i * Math.PI * 2 / 3; ctx.moveTo(0, 0); ctx.lineTo(Math.cos(k) * r, Math.sin(k) * r); }
+  ctx.stroke(); ctx.restore();
+}
+
+function drawBike() {
+  const lw = 1 / S, ch = bike.chassis;
+  // 바퀴와 차체를 잇는 포크 (실제 바퀴 위치까지)
+  const rp = bike.rear.getPosition(), fp = bike.front.getPosition();
+  const rl = ch.getWorldPoint(pl.Vec2(-0.45, 0)), fl = ch.getWorldPoint(pl.Vec2(0.55, 0.15));
+  ctx.strokeStyle = C.bike; ctx.lineWidth = 2.2 * lw; ctx.lineCap = "round";
+  ctx.beginPath(); ctx.moveTo(rl.x, rl.y); ctx.lineTo(rp.x, rp.y); ctx.moveTo(fl.x, fl.y); ctx.lineTo(fp.x, fp.y); ctx.stroke();
+  drawWheel(bike.rear); drawWheel(bike.front);
+
+  const p = ch.getPosition();
+  ctx.save(); ctx.translate(p.x, p.y); ctx.rotate(ch.getAngle());
+  // 차체
+  const frame = () => { ctx.beginPath(); ctx.moveTo(-0.7, 0.05); ctx.lineTo(-0.25, 0.2); ctx.lineTo(0.35, 0.2); ctx.lineTo(0.6, 0.38); ctx.moveTo(-0.45, 0); ctx.lineTo(0.5, 0.05); ctx.lineTo(0.35, 0.2); ctx.moveTo(-0.25, 0.2); ctx.lineTo(-0.05, 0); };
+  frame(); ctx.strokeStyle = "rgba(255,63,164,0.25)"; ctx.lineWidth = 8 * lw; ctx.stroke();
+  frame(); ctx.strokeStyle = C.bike; ctx.lineWidth = 2.6 * lw; ctx.stroke();
+  // 라이더
+  ctx.strokeStyle = C.ink; ctx.lineWidth = 2.4 * lw; ctx.lineJoin = "round";
+  ctx.beginPath();
+  ctx.moveTo(-0.15, 0.22); ctx.lineTo(0.02, 0.58);          // 몸통
+  ctx.moveTo(0.02, 0.5); ctx.lineTo(0.3, 0.42); ctx.lineTo(0.58, 0.4); // 팔
+  ctx.moveTo(-0.15, 0.22); ctx.lineTo(0.12, 0.12); ctx.lineTo(0.08, -0.05); // 다리
+  ctx.stroke();
+  ctx.beginPath(); ctx.arc(0.08, 0.78, 0.2, 0, Math.PI * 2);
+  ctx.fillStyle = C.bg; ctx.fill(); ctx.stroke();
+  ctx.strokeStyle = C.track; ctx.lineWidth = 2 * lw; // 헬멧 바이저
+  ctx.beginPath(); ctx.arc(0.08, 0.78, 0.2, -0.5, 0.6); ctx.stroke();
+  ctx.restore();
+}
+
+/* ---------- 반복 ---------- */
+let last = performance.now(), acc = 0;
+const DT = 1 / 60;
+function loop(now) {
+  let frame = Math.min(0.05, (now - last) / 1000); last = now;
+  acc += frame;
+  while (acc >= DT) { step(DT); acc -= DT; }
+  parts.forEach(pt => { pt.vy -= 14 * frame; pt.x += pt.vx * frame; pt.y += pt.vy * frame; pt.a += pt.va * frame; pt.life -= frame; });
+  parts = parts.filter(pt => pt.life > 0);
+  if (bike && !bike.dead) {
+    const p = bike.chassis.getPosition(), v = bike.chassis.getLinearVelocity();
+    cam.x += (p.x + 3 + v.x * 0.15 - cam.x) * 0.08;
+    cam.y += (p.y + 0.5 - cam.y) * 0.06;
+  }
+  draw(now);
+  requestAnimationFrame(loop);
+}
+
+/* ---------- 조작 ---------- */
+const isUI = e => e.target.closest && e.target.closest("button, .overlay");
+window.addEventListener("pointerdown", e => { if (!isUI(e)) { holding = true; e.preventDefault(); } }, { passive: false });
+window.addEventListener("pointerup", () => { holding = false; });
+window.addEventListener("pointercancel", () => { holding = false; });
+window.addEventListener("blur", () => { holding = false; });
+window.addEventListener("keydown", e => { if (e.code === "Space" || e.code === "ArrowUp") { if (!e.target.closest("button")) e.preventDefault(); if (started && !crashed && !finished) holding = true; } });
+window.addEventListener("keyup", e => { if (e.code === "Space" || e.code === "ArrowUp") holding = false; });
+document.addEventListener("contextmenu", e => e.preventDefault());
+
+function begin() { started = true; holding = false; $("startScreen").hidden = true; $("hud").hidden = false; }
+$("startBtn").addEventListener("click", begin);
+$("retryBtn").addEventListener("click", () => { $("crashScreen").hidden = true; holding = false; spawnAtCheckpoint(); });
+$("restartBtn").addEventListener("click", () => { $("crashScreen").hidden = true; holding = false; newRun(); });
+$("againBtn").addEventListener("click", () => { $("finishScreen").hidden = true; holding = false; newRun(); });
+
+try {
+  const best = JSON.parse(localStorage.getItem("neonrider-best") || "null");
+  if (best) $("bestLine").textContent = `최고 기록: 플립 ${best.flips} · 다이아 ${best.gems}`;
+} catch (e) {}
+
+resize();
+newRun();
+requestAnimationFrame(loop);
+})();
+</script>
+
+</body></html>

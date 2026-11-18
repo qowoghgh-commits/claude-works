@@ -1,0 +1,354 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>트럭 로봇 대장 시안</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Gowun+Dodum&family=Jua&display=swap">
+<style>
+/* 레이아웃: 위는 3D 차고 무대(드래그로 돌려 보기 + 변신 조작), 아래는 계획 카드. 밝은 하늘·아스팔트 한 가지 화면 */
+:root{
+  color-scheme: light;
+  --bg:#eaf6fc; --ink:#1f2630; --muted:#5a6675; --paper:#ffffff; --line:#d5e3ec; --pop:#e8383d; --pop-ink:#7a3400;
+  --f-display:"Black Han Sans","Jua",system-ui,sans-serif;
+  --f-round:"Jua",system-ui,sans-serif;
+  --f-body:"Gowun Dodum",system-ui,sans-serif;
+}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:16px;line-height:1.6;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:20px 40px}
+.wrap{max-width:1020px;margin:0 auto;display:flex;flex-direction:column;gap:20px}
+header h1{font-family:var(--f-display);font-weight:400;font-size:clamp(28px,6vw,44px);line-height:1.15;margin:0;text-wrap:balance}
+header p{margin:6px 0 0;color:var(--muted)}
+.tag{display:inline-block;font-family:var(--f-round);font-size:14px;background:var(--ink);color:#fff;border-radius:999px;padding:2px 12px;margin-bottom:8px;letter-spacing:.02em}
+
+.stage{position:relative;border:3px solid var(--ink);border-radius:22px;overflow:hidden;height:min(68vh,560px);min-height:380px;background:#cfe9f7;touch-action:none;cursor:grab}
+.stage:active{cursor:grabbing}
+.stage canvas{display:block;width:100%;height:100%}
+.badge{position:absolute;top:12px;left:12px;font-family:var(--f-round);font-size:18px;background:#fff;border:3px solid var(--ink);border-radius:999px;padding:2px 14px;pointer-events:none}
+.caption{position:absolute;top:58px;left:50%;transform:translateX(-50%);font-family:var(--f-display);font-size:clamp(22px,4.5vw,34px);color:#fff;
+  -webkit-text-stroke:1.5px var(--ink);paint-order:stroke fill;white-space:nowrap;pointer-events:none;opacity:0;transition:opacity .2s}
+.caption.on{opacity:1}
+.drag{position:absolute;right:12px;top:14px;font-size:13px;color:var(--ink);background:rgba(255,255,255,.8);border-radius:999px;padding:2px 10px;pointer-events:none}
+
+.controls{background:var(--paper);border:3px solid var(--ink);border-radius:22px;padding:16px;display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:16px;align-items:center}
+@media (max-width:760px){.controls{grid-template-columns:1fr}}
+.btn{font-family:var(--f-display);font-size:26px;border:3px solid var(--ink);border-radius:16px;background:var(--pop);color:#fff;
+  padding:12px 22px;cursor:pointer;box-shadow:0 5px 0 var(--ink);-webkit-text-stroke:.5px var(--ink)}
+.btn:active{transform:translateY(4px);box-shadow:0 1px 0 var(--ink)}
+.btn:focus-visible,.sw:focus-visible,.chip:focus-visible,input:focus-visible{outline:4px solid #27a3d3;outline-offset:3px}
+.scrub{display:flex;flex-direction:column;gap:4px;min-width:0}
+.scrub .ends{display:flex;justify-content:space-between;font-family:var(--f-round);font-size:15px;color:var(--muted)}
+.scrub input{width:100%;accent-color:var(--pop);height:28px}
+.side{display:flex;flex-direction:column;gap:8px}
+.chip{font-family:var(--f-round);font-size:16px;border:3px solid var(--line);background:#fff;color:var(--ink);border-radius:12px;padding:4px 12px;cursor:pointer}
+.chip[aria-pressed="true"]{border-color:var(--ink);background:#fff4e6}
+.swatches{display:flex;gap:8px}
+.faces{display:flex;gap:6px;flex-wrap:wrap}
+.faces .chip{font-size:15px;padding:3px 10px}
+.sw{width:36px;height:36px;border-radius:10px;border:3px solid var(--line);cursor:pointer;padding:0}
+.sw[aria-pressed="true"]{border-color:var(--ink);box-shadow:0 0 0 2px #fff inset}
+
+.cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+@media (max-width:760px){.cards{grid-template-columns:1fr}}
+.card{background:var(--paper);border:2px solid var(--line);border-radius:16px;padding:16px;min-width:0}
+.card h3{font-family:var(--f-round);font-weight:400;font-size:20px;margin:0 0 6px}
+.card ul,.card ol{margin:0;padding-left:20px}
+.card li{margin:3px 0}
+.ask{background:#fff4e6;border:2px dashed var(--pop);border-radius:16px;padding:14px 16px}
+.ask h3{font-family:var(--f-round);font-weight:400;font-size:20px;margin:0 0 4px}
+.ask ul{margin:0;padding-left:18px}
+@media (prefers-reduced-motion:reduce){.caption{transition:none}}
+</style>
+
+<div class="wrap">
+  <header>
+    <span class="tag">캐릭터 시안 2 · 3D</span>
+    <h1>트럭 로봇 대장 (이름 정하기 전)</h1>
+    <p>아이 그림을 바탕으로 만든 오리지널 주인공이에요. 변신 버튼을 누르거나 막대를 밀면 한 부분씩 접히며 트럭이 돼요.</p>
+  </header>
+
+  <div class="stage" id="stage">
+    <div class="badge" id="badge">로봇 모드</div>
+    <div class="caption" id="caption"></div>
+    <div class="drag">손가락으로 끌어서 돌려 보기</div>
+  </div>
+
+  <div class="controls">
+    <button class="btn" id="go" type="button">변신!</button>
+    <div class="scrub">
+      <div class="ends"><span>로봇</span><span id="pct">0%</span><span>트럭</span></div>
+      <input id="slider" type="range" min="0" max="1000" value="0" aria-label="변신 과정 막대">
+    </div>
+    <div class="side">
+      <button class="chip" id="slow" type="button" aria-pressed="false">🐢 천천히 보기</button>
+      <div class="swatches" id="swatches">
+        <button class="sw" type="button" aria-pressed="true" aria-label="파랑과 빨강" style="background:linear-gradient(135deg,#2e6bd6 60%,#e8383d 60%)" data-main="#2e6bd6" data-accent="#e8383d" data-leg="#9aa5b2" data-visor="#ffd23f"></button>
+        <button class="sw" type="button" aria-pressed="false" aria-label="하늘파랑과 빨강" style="background:linear-gradient(135deg,#3fa3f0 60%,#e8383d 60%)" data-main="#3fa3f0" data-accent="#e8383d" data-leg="#5d6a78" data-visor="#ffd23f"></button>
+        <button class="sw" type="button" aria-pressed="false" aria-label="남색과 빨강" style="background:linear-gradient(135deg,#283c8f 60%,#ff4b4b 60%)" data-main="#283c8f" data-accent="#ff4b4b" data-leg="#c9ced6" data-visor="#5ef0ff"></button>
+      </div>
+    </div>
+  </div>
+
+  <section class="cards">
+    <div class="card">
+      <h3>변신 순서</h3>
+      <ol>
+        <li>머리가 몸속으로 쏙</li>
+        <li>팔이 옆구리로 접힘</li>
+        <li>가슴 그릴이 앞으로 눕고 어깨 바퀴가 내려옴</li>
+        <li>다리가 뒤로 접혀 뒷바퀴가 땅에 닿음</li>
+        <li>등의 짐칸이 뒤로 착, 운전석이 철컥 덮임</li>
+      </ol>
+    </div>
+    <div class="card">
+      <h3>아이 그림에서 가져온 것</h3>
+      <ul>
+        <li>네모난 큰 몸통과 넓은 어깨</li>
+        <li>배의 동그라미 4개와 네모 → 불빛</li>
+        <li>동그란 주먹, 줄무늬 다리, 쐐기 발</li>
+        <li>몸에 붙은 바퀴 → 트럭 바퀴</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>게임에서는</h3>
+      <ul>
+        <li>로봇: 걷기, 2단 점프, 주먹·광선·방패</li>
+        <li>트럭: 빠른 질주, 점프대, 들이받기</li>
+        <li>판마다 로봇 길·트럭 길이 섞여 있어 변신을 골라야 함</li>
+        <li>태블릿 터치 + 키보드, 음성 안내</li>
+      </ul>
+    </div>
+  </section>
+
+  <div class="ask">
+    <h3>정해 주세요</h3>
+    <ul>
+      <li>로봇 이름 (아이가 지으면 제일 좋아요)</li>
+      <li>파랑 세 가지 중 어떤 파랑이 좋은지 (빨강은 주먹·발·띠 포인트)</li>
+      <li>10까지 더하기·빼기 문제로 문 열기를 넣을지</li>
+    </ul>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+(function(){
+const stage=document.getElementById('stage');
+const renderer=new THREE.WebGLRenderer({antialias:true});
+renderer.setPixelRatio(Math.min(2,window.devicePixelRatio||1));
+renderer.shadowMap.enabled=true; renderer.shadowMap.type=THREE.PCFSoftShadowMap;
+stage.appendChild(renderer.domElement);
+const scene=new THREE.Scene(); scene.background=new THREE.Color('#cfe9f7'); scene.fog=new THREE.Fog('#cfe9f7',18,40);
+const camera=new THREE.PerspectiveCamera(38,1,0.1,100);
+
+scene.add(new THREE.HemisphereLight('#ffffff','#7b8794',0.75));
+const sun=new THREE.DirectionalLight('#ffffff',0.85); sun.position.set(5,9,6); sun.castShadow=true;
+sun.shadow.mapSize.set(1024,1024); Object.assign(sun.shadow.camera,{left:-6,right:6,top:6,bottom:-6}); scene.add(sun);
+
+// 바닥과 도로
+const ground=new THREE.Mesh(new THREE.PlaneGeometry(80,80),new THREE.MeshLambertMaterial({color:'#9fc7a0'}));
+ground.rotation.x=-Math.PI/2; ground.receiveShadow=true; scene.add(ground);
+const cv=document.createElement('canvas'); cv.width=64; cv.height=256; const cx=cv.getContext('2d');
+cx.fillStyle='#4a515b'; cx.fillRect(0,0,64,256); cx.fillStyle='#f6d646'; cx.fillRect(28,0,8,128);
+const roadTex=new THREE.CanvasTexture(cv); roadTex.wrapS=roadTex.wrapT=THREE.RepeatWrapping; roadTex.repeat.set(1,10);
+const road=new THREE.Mesh(new THREE.PlaneGeometry(5,60),new THREE.MeshLambertMaterial({map:roadTex}));
+road.rotation.x=-Math.PI/2; road.position.y=0.01; road.receiveShadow=true; scene.add(road);
+
+// 재질 (만화 느낌)
+const grad=new THREE.DataTexture(new Uint8Array([90,170,255]),3,1,THREE.LuminanceFormat);
+grad.minFilter=grad.magFilter=THREE.NearestFilter; grad.needsUpdate=true;
+const toon=c=>new THREE.MeshToonMaterial({color:c,gradientMap:grad});
+const M={main:toon('#2e6bd6'),accent:toon('#e8383d'),leg:toon('#9aa5b2'),visor:toon('#ffd23f'),dark:toon('#2a3038'),tire:toon('#1b1f24'),hub:toon('#c9d2dc'),
+  white:toon('#ffffff'),yellow:new THREE.MeshBasicMaterial({color:'#ffe066'}),red:new THREE.MeshBasicMaterial({color:'#ff5a5a'}),
+  green:new THREE.MeshBasicMaterial({color:'#7dff9b'}),glow:new THREE.MeshBasicMaterial({color:'#ffffff'})};
+const edgeMat=new THREE.LineBasicMaterial({color:'#1f2630'});
+
+function mesh(geo,mat,x=0,y=0,z=0,edges=false){const m=new THREE.Mesh(geo,mat);m.position.set(x,y,z);m.castShadow=true;
+  if(edges){m.add(new THREE.LineSegments(new THREE.EdgesGeometry(geo),edgeMat));}return m;}
+function box(w,h,d,mat,x,y,z,edges=true){return mesh(new THREE.BoxGeometry(w,h,d),mat,x,y,z,edges);}
+function sphere(r,mat,x,y,z){return mesh(new THREE.SphereGeometry(r,20,14),mat,x,y,z);}
+function eye(g,x,y,z,r){const w=sphere(r,M.white,x,y,z);w.scale.z=.45;g.add(w);g.add(sphere(r*.48,M.dark,x+r*.2,y-r*.1,z+r*.38));}
+const wheels=[];
+function wheel(side){const g=new THREE.Group();const spin=new THREE.Group();g.add(spin);
+  const t=mesh(new THREE.CylinderGeometry(.38,.38,.24,24),M.tire);t.rotation.z=Math.PI/2;spin.add(t);
+  const h=mesh(new THREE.CylinderGeometry(.17,.17,.26,12),M.hub);h.rotation.z=Math.PI/2;spin.add(h);
+  const s=box(.27,.05,.3,M.dark,0,0,0,false);spin.add(s);
+  wheels.push(spin);return g;}
+
+// 부품 만들기
+const root=new THREE.Group(); scene.add(root);
+const parts=[];
+const D=Math.PI/180;
+function part(obj,R,C,win,lift=0,label){root.add(obj);
+  const q0=new THREE.Quaternion().setFromEuler(new THREE.Euler(...(R.r||[0,0,0]).map(v=>v*D)));
+  const q1=new THREE.Quaternion().setFromEuler(new THREE.Euler(...(C.r||[0,0,0]).map(v=>v*D)));
+  parts.push({obj,p0:new THREE.Vector3(...R.p),p1:new THREE.Vector3(...C.p),q0,q1,s0:R.s??1,s1:C.s??1,a:win[0],b:win[1],lift,clicked:false});}
+
+// 머리
+const glowC=new THREE.MeshBasicMaterial({color:'#5ef0ff'});
+M.glass=toon('#bfe6ff');
+const blinkers=[];
+function buildFace(kind,sc){const g=new THREE.Group();
+  if(kind==='visor'){g.add(box(.54*sc,.2*sc,.03,M.dark,0,.05*sc,-.01,false));g.add(box(.48*sc,.08*sc,.04,glowC,0,.05*sc,.01,false));
+    g.add(box(.2*sc,.08*sc,.03,M.leg,0,-.13*sc,0,false));}
+  if(kind==='brave'){g.add(box(.46*sc,.32*sc,.03,M.dark,0,.02*sc,-.01,false));
+    [-1,1].forEach(k=>{const e=box(.15*sc,.065*sc,.04,M.yellow,k*.11*sc,.07*sc,.01,false);e.rotation.z=-k*.28;g.add(e);});
+    g.add(box(.14*sc,.035*sc,.04,M.yellow,0,-.08*sc,.01,false));}
+  if(kind==='screen'){g.add(box(.46*sc,.34*sc,.03,M.dark,0,0,-.01,false));
+    const eyes=new THREE.Group();[-1,1].forEach(k=>eyes.add(box(.08*sc,.12*sc,.04,glowC,k*.1*sc,.04*sc,.01,false)));g.add(eyes);blinkers.push(eyes);
+    const m=mesh(new THREE.TorusGeometry(.07*sc,.012*sc,6,12,Math.PI),glowC,0,-.06*sc,.01);m.rotation.z=Math.PI;g.add(m);}
+  return g;}
+const FACE_KINDS=['visor'];
+const faces={},cabFaces={};
+const head=new THREE.Group();
+head.add(box(.6,.55,.55,M.main,0,0,0));
+head.add(box(.62,.08,.57,M.accent,0,-.2,0,false));
+[-1,1].forEach(k=>{const b=mesh(new THREE.CylinderGeometry(.08,.08,.06,12),M.leg,k*.32,.02,0);b.rotation.z=Math.PI/2;head.add(b);});
+head.add(mesh(new THREE.CylinderGeometry(.025,.025,.22,8),M.dark,0,.38,0));
+head.add(sphere(.065,M.yellow,0,.52,0));
+FACE_KINDS.forEach(k=>{const f=buildFace(k,1);f.position.set(0,.02,.285);head.add(f);faces[k]=f;});
+part(head,{p:[0,3.33,0]},{p:[0,1.15,.9],s:.05},[0,.25],0);
+
+// 운전석 지붕 (로봇일 땐 등에 누워 있음)
+const cab=new THREE.Group();
+cab.add(box(1.5,.6,.9,M.main,0,0,0));
+cab.add(box(1.3,.42,.05,M.glass,0,.02,.46,false));
+FACE_KINDS.forEach(k=>{const f=buildFace(k,1.2);f.position.set(0,.02,.49);cab.add(f);cabFaces[k]=f;});
+function setFace(k){FACE_KINDS.forEach(x=>{faces[x].visible=cabFaces[x].visible=(x===k);});}
+setFace('visor');
+part(cab,{p:[0,3.4,-.75],r:[-90,0,0]},{p:[0,1.75,1.15]},[.6,.95],.7);
+
+// 짐칸 (로봇일 땐 등에 멘 배낭)
+const cargo=new THREE.Group();
+cargo.add(box(1.4,1.6,.7,M.leg,0,0,0));
+cargo.add(box(1.44,1.62,.14,M.accent,0,0,.2,false));
+[[-1,.45,M.red],[-1,.15,M.yellow],[1,.45,M.green],[1,.15,M.glow]].forEach(([s,y,m])=>{const l=sphere(.07,m,s*.71,y,-.12);cargo.add(l);});
+part(cargo,{p:[0,2.1,-.75]},{p:[0,1.0,-1.15],r:[90,0,0]},[.5,.85],.4);
+
+// 가슴 그릴
+const chest=new THREE.Group();
+chest.add(box(1.5,.8,.9,M.dark,0,0,0));
+[-.02,-.16,-.30].forEach(y=>chest.add(box(1.0,.06,.04,M.hub,0,y,.46,false)));
+[-1,1].forEach(s=>{const h=mesh(new THREE.CylinderGeometry(.11,.11,.06,16),M.yellow,s*.56,.22,.46);h.rotation.x=Math.PI/2;chest.add(h);});
+part(chest,{p:[0,2.65,0]},{p:[0,1.05,1.15]},[.28,.68],0);
+
+// 배 (동그라미 불빛 4개 + 네모)
+const belly=new THREE.Group();
+belly.add(box(1.3,.6,.7,M.main,0,0,0));
+[[-.45,.13,M.red],[-.45,-.12,M.yellow],[.45,.13,M.green],[.45,-.12,M.glow]].forEach(([x,y,m])=>belly.add(sphere(.075,m,x,y,.36)));
+belly.add(box(.4,.1,.04,M.dark,0,-.12,.36,false));
+part(belly,{p:[0,2.0,0]},{p:[0,.75,.25]},[.28,.65],0);
+
+// 엉덩이
+const hip=new THREE.Group(); hip.add(box(1.3,.3,.6,M.dark,0,0,0));
+part(hip,{p:[0,1.6,0]},{p:[0,.5,-.2]},[.32,.7],0);
+
+[-1,1].forEach(s=>{
+  // 어깨 + 앞바퀴
+  const sh=new THREE.Group(); sh.add(box(.6,.6,.9,M.main,0,0,0));
+  const w=wheel(); w.position.set(s*.36,0,0); sh.add(w);
+  part(sh,{p:[s*1.05,2.75,0]},{p:[s*.6,.4,1.15]},[.25,.65],.25);
+  // 팔
+  const arm=new THREE.Group(); arm.add(box(.4,.8,.4,M.dark,0,0,0));
+  part(arm,{p:[s*1.05,2.1,0]},{p:[s*.72,.95,.15],r:[90,0,0]},[.08,.42],.15);
+  // 주먹
+  const fist=new THREE.Group(); fist.add(sphere(.28,M.accent,0,0,0));
+  [-.08,.06].forEach(y=>fist.add(box(.3,.03,.05,M.dark,0,y,.26,false)));
+  part(fist,{p:[s*1.05,1.55,0]},{p:[s*.72,.95,.6],s:.55},[.08,.42],.15);
+  // 줄무늬 다리 + 뒷바퀴
+  const shin=new THREE.Group(); shin.add(box(.5,1.2,.5,M.leg,0,0,0));
+  [-.35,-.12,.12,.35].forEach(y=>shin.add(box(.53,.045,.53,M.dark,0,y,0,false)));
+  const w2=wheel(); w2.position.set(s*.33,-.35,0); shin.add(w2);
+  part(shin,{p:[s*.45,.9,0]},{p:[s*.45,.42,-1.1],r:[90,0,0]},[.35,.78],.35);
+  // 쐐기 발
+  const foot=new THREE.Group();
+  const fg=new THREE.BufferGeometry();
+  const v=[-.27,-.15,-.4, .27,-.15,-.4, .27,-.15,.45, -.27,-.15,.45, -.27,.15,-.4, .27,.15,-.4, .27,.15,.05, -.27,.15,.05];
+  const idx=[0,2,1,0,3,2, 4,5,6,4,6,7, 0,1,5,0,5,4, 3,7,6,3,6,2, 0,4,7,0,7,3, 1,2,6,1,6,5];
+  fg.setAttribute('position',new THREE.Float32BufferAttribute(v,3)); fg.setIndex(idx); fg.computeVertexNormals();
+  foot.add(mesh(fg,M.accent,0,0,0,true));
+  part(foot,{p:[s*.45,.15,.1]},{p:[s*.45,.45,-1.95],r:[90,0,0]},[.42,.8],.2);
+});
+
+// 단계 안내
+const PHASES=[[.12,'머리가 쏙!'],[.3,'팔을 접어요'],[.45,'몸이 앞으로 눕고 바퀴가 내려와요'],[.6,'다리가 뒤로 접혀요'],[.75,'짐칸이 착!'],[1,'운전석 철컥!']];
+
+// 상태
+let t=0,target=0,slow=false,lastT=0;
+const ease=k=>k<.5?4*k*k*k:1-Math.pow(-2*k+2,3)/2;
+const tmpQ=new THREE.Quaternion();
+function apply(){
+  for(const p of parts){
+    const k=ease(Math.min(1,Math.max(0,(t-p.a)/(p.b-p.a))));
+    p.obj.position.lerpVectors(p.p0,p.p1,k);
+    p.obj.position.y+=Math.sin(Math.PI*k)*p.lift;
+    tmpQ.copy(p.q0).slerp(p.q1,k); p.obj.quaternion.copy(tmpQ);
+    const s=p.s0+(p.s1-p.s0)*k; p.obj.scale.setScalar(s);
+    p.obj.visible=s>0.06;
+  }
+}
+
+// 소리
+let ac=null;
+function click(i){try{ac=ac||new (window.AudioContext||window.webkitAudioContext)();const now=ac.currentTime;
+  const o=ac.createOscillator(),g=ac.createGain();o.type='square';o.frequency.setValueAtTime(320+i*40,now);o.frequency.exponentialRampToValueAtTime(140,now+.08);
+  g.gain.setValueAtTime(.07,now);g.gain.exponentialRampToValueAtTime(.001,now+.09);o.connect(g).connect(ac.destination);o.start(now);o.stop(now+.1);}catch(e){}}
+function vroom(){try{ac=ac||new (window.AudioContext||window.webkitAudioContext)();const now=ac.currentTime;
+  const o=ac.createOscillator(),g=ac.createGain();o.type='sawtooth';o.frequency.setValueAtTime(60,now);o.frequency.linearRampToValueAtTime(140,now+.5);o.frequency.linearRampToValueAtTime(90,now+.9);
+  g.gain.setValueAtTime(.06,now);g.gain.exponentialRampToValueAtTime(.001,now+1);o.connect(g).connect(ac.destination);o.start(now);o.stop(now+1);}catch(e){}}
+
+// 화면 요소
+const badge=document.getElementById('badge'),caption=document.getElementById('caption'),slider=document.getElementById('slider'),pct=document.getElementById('pct');
+function ui(){
+  pct.textContent=Math.round(t*100)+'%';
+  if(document.activeElement!==slider) slider.value=Math.round(t*1000);
+  badge.textContent=t<=0?'로봇 모드':t>=1?'트럭 모드':'변신 중';
+  if(t>0&&t<1){caption.textContent=(PHASES.find(p=>t<p[0])||PHASES[PHASES.length-1])[1];caption.classList.add('on');}
+  else caption.classList.remove('on');
+}
+document.getElementById('go').addEventListener('click',()=>{target=t<.5?1:0;});
+document.getElementById('slow').addEventListener('click',e=>{slow=!slow;e.currentTarget.setAttribute('aria-pressed',slow);});
+slider.addEventListener('input',()=>{t=target=slider.value/1000;});
+document.addEventListener('keydown',e=>{if(e.code==='Space'&&e.target.tagName!=='BUTTON'&&e.target.tagName!=='INPUT'){e.preventDefault();target=t<.5?1:0;}});
+document.querySelectorAll('[data-face]').forEach(b=>b.addEventListener('click',()=>{
+  document.querySelectorAll('[data-face]').forEach(x=>x.setAttribute('aria-pressed','false'));b.setAttribute('aria-pressed','true');setFace(b.dataset.face);}));
+document.querySelectorAll('.sw').forEach(b=>b.addEventListener('click',()=>{
+  document.querySelectorAll('.sw').forEach(x=>x.setAttribute('aria-pressed','false'));b.setAttribute('aria-pressed','true');
+  M.main.color.set(b.dataset.main);M.accent.color.set(b.dataset.accent);M.leg.color.set(b.dataset.leg);M.visor.color.set(b.dataset.visor);}));
+
+// 카메라 돌리기
+let theta=0.75,phi=1.2,dist=8,drag=null;
+stage.addEventListener('pointerdown',e=>{drag={x:e.clientX,y:e.clientY,th:theta,ph:phi};stage.setPointerCapture(e.pointerId);});
+stage.addEventListener('pointermove',e=>{if(!drag)return;theta=drag.th-(e.clientX-drag.x)*.008;phi=Math.min(1.45,Math.max(.55,drag.ph-(e.clientY-drag.y)*.006));});
+stage.addEventListener('pointerup',()=>drag=null); stage.addEventListener('pointercancel',()=>drag=null);
+stage.addEventListener('wheel',e=>{e.preventDefault();dist=Math.min(16,Math.max(7,dist+e.deltaY*.01));},{passive:false});
+
+function resize(){const w=stage.clientWidth,h=stage.clientHeight;renderer.setSize(w,h,false);camera.aspect=w/h;
+  dist=Math.max(dist,w<500?12:8);camera.updateProjectionMatrix();}
+new ResizeObserver(resize).observe(stage); resize();
+
+let prev=performance.now(),time=0;
+function loop(now){
+  const dt=Math.min(.05,(now-prev)/1000); prev=now; time+=dt;
+  if(t!==target){
+    const sp=dt/(slow?7:2.6);
+    t=target>t?Math.min(target,t+sp):Math.max(target,t-sp);
+    parts.forEach((p,i)=>{const crossed=(lastT<p.a&&t>=p.a)||(lastT>p.b&&t<=p.b);if(crossed)click(i%6);});
+    if(t===1&&lastT<1)vroom();
+  }
+  lastT=t;
+  apply();
+  // 로봇일 땐 살짝 숨쉬기, 트럭일 땐 부릉부릉 + 도로가 지나감
+  root.position.y = t<=0 ? Math.sin(time*2.2)*.03 : t>=1 ? Math.abs(Math.sin(time*18))*.015 : 0;
+  if(t>=1){roadTex.offset.y+=dt*1.6; wheels.forEach(w=>w.rotation.x+=dt*9);}
+  const ty=1.5-(t*.4);
+  camera.position.set(Math.sin(theta)*Math.sin(phi)*dist,ty+Math.cos(phi)*dist,Math.cos(theta)*Math.sin(phi)*dist);
+  camera.lookAt(0,ty,-.1);
+  const bl=(time%3.2)<.12?.12:1; blinkers.forEach(e=>e.scale.y=bl);
+  ui();
+  renderer.render(scene,camera);
+  requestAnimationFrame(loop);
+}
+apply(); requestAnimationFrame(loop);
+})();
+</script>
+
+</body></html>

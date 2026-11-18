@@ -1,0 +1,622 @@
+<!doctype html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>댓글에도 생각을 담아요</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Jua&family=Noto+Sans+KR:wght@400;500;600;700;800&family=Gowun+Dodum&family=Gowun+Batang:wght@400;700&family=Song+Myung&family=Nanum+Pen+Script&display=swap">
+<style>
+html,body{margin:0;height:100%;background:#111;overflow:hidden;font-family:'Noto Sans KR',sans-serif}
+#wrap{position:fixed;inset:0 0 56px 0;display:flex;align-items:center;justify-content:center}
+#stage{position:relative;width:1920px;height:1080px;flex:none;transform-origin:center center;box-shadow:0 10px 40px rgba(0,0,0,.5)}
+#stage *{box-sizing:border-box}
+#stage section{position:absolute;inset:0;width:1920px;height:1080px;overflow:hidden;visibility:hidden}
+#stage section.on{visibility:visible}
+#stage p,#stage h1,#stage h2,#stage h3,#stage ul,#stage ol{margin:0}
+#stage ul,#stage ol{padding-left:1.2em}
+#stage aside{display:none}
+#stage table{border-collapse:collapse;width:100%}
+#stage th{text-align:left;padding:20px 24px}
+#stage td{padding:20px 24px;vertical-align:top;border-bottom:1px solid rgba(0,0,0,.08)}
+x-shape{display:block;flex:none}
+x-shape[kind="ellipse"]{border-radius:50%}
+x-shape[kind="arrow-right"]{clip-path:polygon(0 32%,58% 32%,58% 0,100% 50%,58% 100%,58% 68%,0 68%)}
+x-shape[kind="arrow-up"]{clip-path:polygon(32% 100%,32% 42%,0 42%,50% 0,100% 42%,68% 42%,68% 100%)}
+x-icon{display:inline-flex;align-items:center;justify-content:center;flex:none;line-height:1}
+x-connector{display:block;flex:none;align-self:center;height:0;border-top-style:solid;border-top-color:currentColor;position:relative;margin:0 6px}
+x-connector::after{content:"";position:absolute;right:-4px;top:-11px;border-style:solid;border-width:9px 0 9px 14px;border-color:transparent transparent transparent currentColor}
+#bar{position:fixed;left:0;right:0;bottom:0;height:56px;display:flex;align-items:center;justify-content:center;gap:14px;background:#1c1c1c;color:#ddd;font-size:15px}
+#bar button,#bar a{font:inherit;color:#eee;background:#333;border:0;border-radius:8px;padding:8px 14px;cursor:pointer;text-decoration:none}
+#bar button:hover,#bar a:hover{background:#444}
+#n{min-width:70px;text-align:center;font-variant-numeric:tabular-nums}
+</style></head><body>
+<div id="wrap"><div id="stage"><section id="cover" data-transition="fade" style="background:#FBF6EC;color:#1E2A3F;font-family:'Noto Sans KR', Arial, sans-serif;padding:128px;display:flex;flex-direction:column;justify-content:center;gap:32px">
+<img src="img/ec59cb96cfa0246bd487528e4144d5ca.jpg" alt="교실에서 친구들의 글을 읽고 포스트잇 댓글을 붙이며 웃는 아이들" style="position:absolute;left:0px;top:0px;width:1920px;height:1080px;object-fit:cover">
+<div style="position:absolute;left:0px;top:0px;width:1920px;height:1080px;background:linear-gradient(90deg, rgba(251,246,236,0.96) 0%, rgba(251,246,236,0.9) 38%, rgba(251,246,236,0) 58%)"></div>
+<div style="width:820px;display:flex;flex-direction:column;gap:32px">
+<p style="font-size:32px;font-weight:700;color:#B8452B;letter-spacing:2px">우마시 글나눔 · 5학년 국어</p>
+<h1 style="font-family:'Jua', sans-serif;font-size:112px;font-weight:400;line-height:1.15;color:#1E2A3F">댓글에도<br>생각을 담아요</h1>
+<p style="font-size:36px;line-height:1.5;color:#4B5568">친구의 글을 읽은 내가 건네는<br>또 하나의 글</p>
+</div>
+<aside>[25분 사전 연습 수업 흐름]
+도입(5분) 같은 글에 달린 댓글 비교하기 → 2번 슬라이드
+활동 1(7분) 다양한 댓글 유형과 사례 살펴보기 → 3~13번 슬라이드 (8가지 방법은 2~3개만 자세히, 나머지는 빠르게 훑어도 좋습니다)
+활동 2(6분) 짧은 댓글을 구체적인 댓글로 고쳐 쓰기 → 14~16번 슬라이드
+활동 3(5분) 짝의 글에 댓글 쓰고 서로 읽어 보기 → 17~18번 슬라이드
+정리(2분) 우리 반 댓글 약속 세 가지 정하기 → 19~20번 슬라이드
+
+핵심 메시지: 댓글은 친구의 글을 평가하는 말이 아니라, 친구의 글을 읽은 내가 건네는 또 하나의 글입니다.
+표지 그림을 보며 “아이들이 무엇을 하고 있나요? 포스트잇에는 어떤 말이 쓰여 있을까요?”라고 물으며 시작해 보세요.
+(그림: Google Gemini로 생성)</aside>
+</section>
+
+<section id="intro" data-transition="fade" style="background:#FBF6EC;color:#1E2A3F;font-family:'Noto Sans KR', Arial, sans-serif;padding:112px 128px 128px;display:flex;flex-direction:column;gap:44px">
+<div style="display:flex;flex-direction:row;align-items:center;gap:28px">
+<p style="font-family:'Jua', sans-serif;font-size:36px;color:#FBF6EC;background:#B8452B;padding:8px 28px;border-radius:40px">도입</p>
+<h2 style="font-family:'Jua', sans-serif;font-size:64px;font-weight:400;line-height:1.15">같은 글, 다른 댓글</h2>
+</div>
+<div style="width:600px;display:flex;flex-direction:column;gap:20px;background:#FFF1D6;padding:44px;border-radius:24px">
+<p style="font-size:26px;font-weight:700;color:#7A4E0E">친구의 글 · 일상 경험</p>
+<p style="font-size:34px;line-height:1.6">“나는 처음으로 혼자 김치볶음밥을 만들었다. 조금 짰지만 가족들이 맛있다고 해 주어서 정말 기뻤다.”</p>
+</div>
+<div data-build-in="left order 1" style="position:absolute;left:776px;top:250px;width:1016px;display:flex;flex-direction:row;align-items:center;gap:24px;background:#FFFDF8;border:2px solid #E6DFD0;border-radius:20px;padding:24px 32px">
+<p style="font-family:'Jua', sans-serif;font-size:40px;color:#B8452B">A</p>
+<p style="font-size:32px;line-height:1.5">잘 썼어.</p>
+</div>
+<div data-build-in="left order 2" style="position:absolute;left:776px;top:374px;width:1016px;display:flex;flex-direction:row;align-items:center;gap:24px;background:#FFFDF8;border:2px solid #E6DFD0;border-radius:20px;padding:24px 32px">
+<p style="font-family:'Jua', sans-serif;font-size:40px;color:#B8452B">B</p>
+<p style="font-size:32px;line-height:1.5">재미있어!</p>
+</div>
+<div data-build-in="left order 3" style="position:absolute;left:776px;top:498px;width:1016px;display:flex;flex-direction:row;align-items:center;gap:24px;background:#FFFDF8;border:2px solid #E6DFD0;border-radius:20px;padding:24px 32px">
+<p style="font-family:'Jua', sans-serif;font-size:40px;color:#B8452B">C</p>
+<p style="font-size:32px;line-height:1.5">가족들이 맛있다고 해 줬을 때 정말 뿌듯했겠다. 다음에는 어떤 요리에 도전하고 싶어?</p>
+</div>
+<div data-build-in="rise order 4" style="position:absolute;left:128px;top:820px;width:1664px;display:flex;flex-direction:row;align-items:center;gap:20px;background:#E3EFEA;border-radius:20px;padding:26px 36px">
+<x-icon name="Chat" style="color:#23706A;width:44px;height:44px"></x-icon>
+<p style="font-size:32px;font-weight:700">내가 이 글을 썼다면, 어떤 댓글을 받고 싶나요? 왜 그런가요?</p>
+</div>
+<aside>[도입 5분] 처음에는 친구의 글만 보입니다. 함께 소리 내어 읽은 뒤, 클릭할 때마다 댓글 A, B, C가 하나씩 나타나고 마지막에 질문이 나옵니다.
+A, B, C 중 받고 싶은 댓글에 손을 들게 한 뒤 이유를 2~3명에게 들어 봅니다.
+기대하는 답: C는 글의 구체적인 부분(가족들이 맛있다고 한 장면)을 짚고, 글쓴이의 마음을 헤아리고, 질문으로 대화를 이어 간다.
+A와 B가 나쁜 댓글은 아니라는 점도 짚어 주세요. 다만 어떤 글에나 똑같이 달 수 있는 댓글이라 “내 글을 정말 읽었구나”라는 느낌이 적다는 점을 이야기 나눕니다.</aside>
+</section>
+
+<section id="what-is" data-transition="fade" style="background:#EEF4F1;color:#1E2A3F;font-family:'Noto Sans KR', Arial, sans-serif;padding:112px 128px 128px;display:flex;flex-direction:column;gap:56px">
+<h2 style="font-family:'Jua', sans-serif;font-size:64px;font-weight:400;line-height:1.15">댓글은 무엇일까요?</h2>
+<p style="font-size:48px;line-height:1.5;font-weight:500">댓글은 단순한 칭찬이나 감상평이 아니에요.<br>친구의 글을 읽고 <span style="color:#B8452B">내 생각을 글쓴이에게 전하는 글</span>이에요.</p>
+<div data-build-in="pop order 1" style="position:absolute;left:128px;top:640px;width:395px;display:flex;flex-direction:column;gap:20px;background:#FFFDF8;border-radius:24px;padding:40px">
+<x-icon name="Search" style="color:#23706A;width:56px;height:56px"></x-icon>
+<h3 style="font-family:'Jua', sans-serif;font-size:40px;font-weight:400">내가 발견한 것</h3>
+</div>
+<div data-build-in="pop order 2" style="position:absolute;left:551px;top:640px;width:395px;display:flex;flex-direction:column;gap:20px;background:#FFFDF8;border-radius:24px;padding:40px">
+<x-icon name="Lightbulb" style="color:#23706A;width:56px;height:56px"></x-icon>
+<h3 style="font-family:'Jua', sans-serif;font-size:40px;font-weight:400">떠오른 생각</h3>
+</div>
+<div data-build-in="pop order 3" style="position:absolute;left:974px;top:640px;width:395px;display:flex;flex-direction:column;gap:20px;background:#FFFDF8;border-radius:24px;padding:40px">
+<x-icon name="Chat" style="color:#23706A;width:56px;height:56px"></x-icon>
+<h3 style="font-family:'Jua', sans-serif;font-size:40px;font-weight:400">궁금한 점</h3>
+</div>
+<div data-build-in="pop order 4" style="position:absolute;left:1397px;top:640px;width:395px;display:flex;flex-direction:column;gap:20px;background:#FFFDF8;border-radius:24px;padding:40px">
+<x-icon name="Users" style="color:#23706A;width:56px;height:56px"></x-icon>
+<h3 style="font-family:'Jua', sans-serif;font-size:40px;font-weight:400">같거나 다른 생각</h3>
+</div>
+<aside>도입 활동과 연결해 “C 댓글에는 무엇이 들어 있었나요?” 하고 물은 뒤 이 슬라이드를 보여 주세요. 학생들이 하나씩 말할 때마다 클릭하면 아래 카드가 차례로 나타납니다.
+댓글에 담을 수 있는 것: 친구 글에서 내가 발견한 것, 읽고 떠오른 생각, 궁금한 점, 동의하거나 다른 점.</aside>
+</section>
+
+<section id="three-kinds" data-transition="fade" style="background:#FBF6EC;color:#1E2A3F;font-family:'Noto Sans KR', Arial, sans-serif;padding:112px 128px 128px;display:flex;flex-direction:column;gap:48px">
+<h2 style="font-family:'Jua', sans-serif;font-size:64px;font-weight:400;line-height:1.15">이런 댓글, 모두 좋아요</h2>
+<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:32px;flex:1">
+<div style="display:flex;flex-direction:column;gap:24px;background:#FFFDF8;border:2px solid #E6DFD0;border-top:12px solid #B8452B;border-radius:24px;padding:44px">
+<h3 style="font-family:'Jua', sans-serif;font-size:44px;font-weight:400;color:#B8452B">마음을 전하는 댓글</h3>
+<p style="font-size:32px;line-height:1.6">“그 일을 겪었을 때 정말 속상했겠다. 그래도 다시 도전했다는 점이 인상 깊어.”</p>
+</div>
+<div style="display:flex;flex-direction:column;gap:24px;background:#FFFDF8;border:2px solid #E6DFD0;border-top:12px solid #23706A;border-radius:24px;padding:44px">
+<h3 style="font-family:'Jua', sans-serif;font-size:44px;font-weight:400;color:#23706A">생각을 나누는 댓글</h3>
+<p style="font-size:32px;line-height:1.6">“나는 성공하는 게 중요하다고 생각했는데, 네 글을 읽으니 실패하면서 배우는 것도 중요하다는 생각이 들었어.”</p>
+</div>
+<div style="display:flex;flex-direction:column;gap:24px;background:#FFFDF8;border:2px solid #E6DFD0;border-top:12px solid #1E2A3F;border-radius:24px;padding:44px">
+<h3 style="font-family:'Jua', sans-serif;font-size:44px;font-weight:400;color:#1E2A3F">질문을 만드는 댓글</h3>
+<p style="font-size:32px;line-height:1.6">“주인공이 마지막에 그런 선택을 한 이유가 궁금해. 다른 선택을 했다면 이야기가 어떻게 달라졌을까?”</p>
+</div>
+</div>
+<p style="font-size:36px;line-height:1.5;font-weight:700;text-align:center">중요한 것은 <span style="color:#B8452B">친구의 글을 바탕으로</span> 내 생각을 <span style="color:#B8452B">구체적으로</span> 표현하는 것!</p>
+<aside>세 가지 댓글 모두 좋은 댓글이 될 수 있습니다. 공통점을 물어보세요: 세 댓글 모두 친구 글의 내용(속상한 일, 실패, 주인공의 선택)을 직접 짚고 있습니다.</aside>
+</section>
+
+<section id="methods" data-transition="fade" style="background:#EEF4F1;color:#1E2A3F;font-family:'Noto Sans KR', Arial, sans-serif;padding:112px 128px 128px;display:flex;flex-direction:column;gap:48px">
+<div style="display:flex;flex-direction:row;align-items:center;gap:28px">
+<p style="font-family:'Jua', sans-serif;font-size:36px;color:#FBF6EC;background:#23706A;padding:8px 28px;border-radius:40px">활동 1</p>
+<h2 style="font-family:'Jua', sans-serif;font-size:64px;font-weight:400;line-height:1.15">댓글 다는 방법 8가지</h2>
+<div style="flex:1"></div>
+<p style="font-size:30px;color:#4B5568">글의 종류에 따라 골라 써요</p>
+</div>
+<div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;grid-template-rows:1fr 1fr;gap:28px;flex:1">
+<div style="display:flex;flex-direction:column;gap:14px;background:#FFFDF8;border-radius:24px;padding:36px">
+<p style="font-family:'Jua', sans-serif;font-size:32px;color:#B8452B">방법 1</p>
+<h3 style="font-family:'Jua', sans-serif;font-size:44px;font-weight:400">공감하기</h3>
+<p style="font-size:26px;line-height:1.5;color:#4B5568">나와 비슷한 점 발견하기</p>
+</div>
+<div style="display:flex;flex-direction:column;gap:14px;background:#FFFDF8;border-radius:24px;padding:36px">
+<p style="font-family:'Jua', sans-serif;font-size:32px;color:#B8452B">방법 2</p>
+<h3 style="font-family:'Jua', sans-serif;font-size:44px;font-weight:400">새롭게 발견하기</h3>
+<p style="font-size:26px;line-height:1.5;color:#4B5568">몰랐던 사실, 독특한 생각</p>
+</div>
+<div style="display:flex;flex-direction:column;gap:14px;background:#FFFDF8;border-radius:24px;padding:36px">
+<p style="font-family:'Jua', sans-serif;font-size:32px;color:#B8452B">방법 3</p>
+<h3 style="font-family:'Jua', sans-serif;font-size:44px;font-weight:400">궁금한 점 질문하기</h3>
+<p style="font-size:26px;line-height:1.5;color:#4B5568">질문으로 생각 이어 가기</p>
+</div>
+<div style="display:flex;flex-direction:column;gap:14px;background:#FFFDF8;border-radius:24px;padding:36px">
+<p style="font-family:'Jua', sans-serif;font-size:32px;color:#B8452B">방법 4</p>
+<h3 style="font-family:'Jua', sans-serif;font-size:44px;font-weight:400">내 생각 덧붙이기</h3>
+<p style="font-size:26px;line-height:1.5;color:#4B5568">내 관점과 근거 더하기</p>
+</div>
+<div style="display:flex;flex-direction:column;gap:14px;background:#FFFDF8;border-radius:24px;padding:36px">
+<p style="font-family:'Jua', sans-serif;font-size:32px;color:#B8452B">방법 5</p>
+<h3 style="font-family:'Jua', sans-serif;font-size:44px;font-weight:400">상상 이어 가기</h3>
+<p style="font-size:26px;line-height:1.5;color:#4B5568">이야기를 넓혀 보기</p>
+</div>
+<div style="display:flex;flex-direction:column;gap:14px;background:#FFFDF8;border-radius:24px;padding:36px">
+<p style="font-family:'Jua', sans-serif;font-size:32px;color:#B8452B">방법 6</p>
+<h3 style="font-family:'Jua', sans-serif;font-size:44px;font-weight:400">다른 관점 발견하기</h3>
+<p style="font-size:26px;line-height:1.5;color:#4B5568">나와 다른 생각 이해하기</p>
+</div>
+<div style="display:flex;flex-direction:column;gap:14px;background:#FFFDF8;border-radius:24px;padding:36px">
+<p style="font-family:'Jua', sans-serif;font-size:32px;color:#B8452B">방법 7</p>
+<h3 style="font-family:'Jua', sans-serif;font-size:44px;font-weight:400">표현과 구성 발견하기</h3>
+<p style="font-size:26px;line-height:1.5;color:#4B5568">좋은 표현 콕 집어 말하기</p>
+</div>
+<div style="display:flex;flex-direction:column;gap:14px;background:#FFFDF8;border-radius:24px;padding:36px">
+<p style="font-family:'Jua', sans-serif;font-size:32px;color:#B8452B">방법 8</p>
+<h3 style="font-family:'Jua', sans-serif;font-size:44px;font-weight:400">새로운 문제 발견하기</h3>
+<p style="font-size:26px;line-height:1.5;color:#4B5568">더 알아볼 점 찾기</p>
+</div>
+</div>
+<aside>[활동 1, 7분] 8가지를 모두 외울 필요는 없습니다. 글의 종류와 상황에 따라 골라 쓰는 ‘도구 상자’라고 소개해 주세요.
+시간이 부족하면 방법 1(공감), 3(질문), 4(내 생각 덧붙이기)를 자세히 다루고 나머지는 예시만 빠르게 읽어도 좋습니다.</aside>
+</section>
+
+<section id="m1" data-transition="push" style="background:#FBF6EC;color:#1E2A3F;font-family:'Noto Sans KR', Arial, sans-serif;padding:112px 128px 128px;display:flex;flex-direction:column;gap:44px">
+<div style="display:flex;flex-direction:row;align-items:center;gap:28px">
+<p style="font-family:'Jua', sans-serif;font-size:36px;color:#FBF6EC;background:#B8452B;padding:8px 28px;border-radius:40px">방법 1</p>
+<h2 style="font-family:'Jua', sans-serif;font-size:64px;font-weight:400;line-height:1.15">공감하기</h2>
+<p style="font-size:30px;color:#4B5568">나와 비슷한 점을 발견해요</p>
+</div>
+<div style="display:flex;flex-direction:row;gap:48px;flex:1">
+<div style="width:620px;display:flex;flex-direction:column;gap:20px;background:#FFF1D6;padding:44px;border-radius:24px">
+<p style="font-size:26px;font-weight:700;color:#7A4E0E">친구의 글 · 일상 경험</p>
+<p style="font-size:32px;line-height:1.6">“나는 발표할 때마다 긴장한다. 친구들이 나를 쳐다보면 무슨 말을 해야 할지 생각이 나지 않는다. 그래도 이번에는 끝까지 발표를 마쳤다.”</p>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:20px">
+<p style="font-size:26px;font-weight:700;color:#23706A">이런 댓글을 달 수 있어요</p>
+<p style="font-size:30px;line-height:1.5;background:#FFFDF8;border:2px solid #E6DFD0;border-radius:20px;padding:24px 32px">나도 발표할 때 긴장해서 네 마음이 이해돼. 그래도 끝까지 발표를 마쳤다니 정말 뿌듯했을 것 같아.</p>
+<p style="font-size:30px;line-height:1.5;background:#FFFDF8;border:2px solid #E6DFD0;border-radius:20px;padding:24px 32px">나도 긴장되지만, 한 번 발표하고 나면 다음에는 조금 나아지더라.</p>
+<p style="font-size:30px;line-height:1.5;background:#FFFDF8;border:2px solid #E6DFD0;border-radius:20px;padding:24px 32px">발표를 잘하는 것보다 끝까지 해내는 게 중요하다는 생각이 들었어.</p>
+</div>
+</div>
+<div style="display:flex;flex-direction:row;align-items:center;gap:20px;background:#E3EFEA;border-radius:20px;padding:24px 36px">
+<x-icon name="Lightbulb" style="color:#23706A;width:44px;height:44px"></x-icon>
+<p style="font-size:30px"><b>기억해요</b>  ‘나도 그래’에서 끝내지 말고, 어떤 부분에 공감했는지 덧붙여요.</p>
+</div>
+<aside>세 댓글 중 첫 번째는 마음 공감, 두 번째는 내 경험 연결, 세 번째는 공감에서 생각으로 넓힌 댓글입니다. “나도 그래”만 쓴 댓글과 비교해 보게 하세요.</aside>
+</section>
+
+<section id="m2" data-transition="push" style="background:#FBF6EC;color:#1E2A3F;font-family:'Noto Sans KR', Arial, sans-serif;padding:112px 128px 128px;display:flex;flex-direction:column;gap:44px">
+<div style="display:flex;flex-direction:row;align-items:center;gap:28px">
+<p style="font-family:'Jua', sans-serif;font-size:36px;color:#FBF6EC;background:#B8452B;padding:8px 28px;border-radius:40px">방법 2</p>
+<h2 style="font-family:'Jua', sans-serif;font-size:64px;font-weight:400;line-height:1.15">새롭게 발견하기</h2>
+<p style="font-size:30px;color:#4B5568">몰랐던 사실, 독특한 생각을 찾아요</p>
+</div>
+<div style="display:flex;flex-direction:row;gap:48px;flex:1">
+<div style="width:620px;display:flex;flex-direction:column;gap:20px;background:#FFF1D6;padding:44px;border-radius:24px">
+<img src="img/7896f0b08a026fb8237b956e026dc986.jpg" alt="산호 사이에서 몸 색깔을 바꾸는 문어" style="width:532px;height:200px;object-fit:cover;border-radius:16px">
+<p style="font-size:26px;font-weight:700;color:#7A4E0E">친구의 글 · 정보 전달 글</p>
+<p style="font-size:30px;line-height:1.55">“문어는 주변 환경에 따라 몸의 색과 무늬를 바꿀 수 있다. 나는 문어가 바다의 변신 마술사 같다고 생각한다.”</p>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:20px">
+<p style="font-size:26px;font-weight:700;color:#23706A">이런 댓글을 달 수 있어요</p>
+<p style="font-size:30px;line-height:1.5;background:#FFFDF8;border:2px solid #E6DFD0;border-radius:20px;padding:24px 32px">문어가 몸의 색과 무늬를 바꿀 수 있다는 사실을 처음 알았어. 정말 신기하다!</p>
+<p style="font-size:30px;line-height:1.5;background:#FFFDF8;border:2px solid #E6DFD0;border-radius:20px;padding:24px 32px">문어를 ‘변신 마술사’라고 표현한 게 재미있어. 나도 문어를 그렇게 생각하게 됐어.</p>
+<p style="font-size:30px;line-height:1.5;background:#FFFDF8;border:2px solid #E6DFD0;border-radius:20px;padding:24px 32px">과학적인 사실에 재미있는 비유를 더하니까 글이 훨씬 기억에 남아.</p>
+</div>
+</div>
+<div style="display:flex;flex-direction:row;align-items:center;gap:20px;background:#E3EFEA;border-radius:20px;padding:24px 36px">
+<x-icon name="Lightbulb" style="color:#23706A;width:44px;height:44px"></x-icon>
+<p style="font-size:30px"><b>기억해요</b>  새로운 사실뿐 아니라 재미있는 표현이나 아이디어도 발견할 수 있어요.</p>
+</div>
+<aside>정보 전달 글에서는 ‘새로 알게 된 사실’을 짚는 댓글이 자연스럽습니다. 두 번째, 세 번째 예시처럼 글쓴이의 표현 방법까지 발견하면 더 깊이 읽은 댓글이 됩니다.</aside>
+</section>
+
+<section id="m3" data-transition="push" style="background:#FBF6EC;color:#1E2A3F;font-family:'Noto Sans KR', Arial, sans-serif;padding:112px 128px 128px;display:flex;flex-direction:column;gap:44px">
+<div style="display:flex;flex-direction:row;align-items:center;gap:28px">
+<p style="font-family:'Jua', sans-serif;font-size:36px;color:#FBF6EC;background:#B8452B;padding:8px 28px;border-radius:40px">방법 3</p>
+<h2 style="font-family:'Jua', sans-serif;font-size:64px;font-weight:400;line-height:1.15">궁금한 점 질문하기</h2>
+<p style="font-size:30px;color:#4B5568">질문으로 생각을 이어 가요</p>
+</div>
+<div style="display:flex;flex-direction:row;gap:48px;flex:1">
+<div style="width:620px;display:flex;flex-direction:column;gap:20px;background:#FFF1D6;padding:44px;border-radius:24px">
+<p style="font-size:26px;font-weight:700;color:#7A4E0E">친구의 글 · 상상하는 글</p>
+<p style="font-size:32px;line-height:1.6">“나는 무인도에 혼자 남게 된다면 가장 먼저 집을 만들 것이다. 비와 햇빛을 피할 수 있어야 안전하게 지낼 수 있기 때문이다.”</p>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:20px">
+<p style="font-size:26px;font-weight:700;color:#23706A">이런 댓글을 달 수 있어요</p>
+<p style="font-size:30px;line-height:1.5;background:#FFFDF8;border:2px solid #E6DFD0;border-radius:20px;padding:24px 32px">집을 가장 먼저 만들겠다는 생각이 흥미로워. 집을 만들 재료는 무엇을 사용할 거야?</p>
+<p style="font-size:30px;line-height:1.5;background:#FFFDF8;border:2px solid #E6DFD0;border-radius:20px;padding:24px 32px">집을 만든 다음에는 어떤 일을 할 생각이야?</p>
+<p style="font-size:30px;line-height:1.5;background:#FFFDF8;border:2px solid #E6DFD0;border-radius:20px;padding:24px 32px">나는 음식을 먼저 구해야 한다고 생각했는데, 안전한 장소를 먼저 만드는 것도 중요하겠네.</p>
+</div>
+</div>
+<div style="display:flex;flex-direction:row;align-items:center;gap:20px;background:#E3EFEA;border-radius:20px;padding:24px 36px">
+<x-icon name="Lightbulb" style="color:#23706A;width:44px;height:44px"></x-icon>
+<p style="font-size:30px"><b>기억해요</b>  글에 담긴 내용에서 질문을 찾아요. 대답하기 어렵거나 사적인 질문은 피해요.</p>
+</div>
+<aside>질문은 친구가 다음 글을 쓰거나 생각을 넓히는 계기가 됩니다. “여러분이라면 무인도에서 무엇을 가장 먼저 하겠어요?”라고 물어 세 번째 댓글처럼 내 생각과 연결해 보게 해도 좋습니다.</aside>
+</section>
+
+<section id="m4" data-transition="push" style="background:#FBF6EC;color:#1E2A3F;font-family:'Noto Sans KR', Arial, sans-serif;padding:112px 128px 128px;display:flex;flex-direction:column;gap:44px">
+<div style="display:flex;flex-direction:row;align-items:center;gap:28px">
+<p style="font-family:'Jua', sans-serif;font-size:36px;color:#FBF6EC;background:#B8452B;padding:8px 28px;border-radius:40px">방법 4</p>
+<h2 style="font-family:'Jua', sans-serif;font-size:64px;font-weight:400;line-height:1.15">내 생각 덧붙이기</h2>
+<p style="font-size:30px;color:#4B5568">내 관점과 근거를 더해요</p>
+</div>
+<div style="display:flex;flex-direction:row;gap:48px;flex:1">
+<div style="width:620px;display:flex;flex-direction:column;gap:20px;background:#FFF1D6;padding:44px;border-radius:24px">
+<p style="font-size:26px;font-weight:700;color:#7A4E0E">친구의 글 · 주장하는 글</p>
+<p style="font-size:32px;line-height:1.6">“학교 숙제는 지금보다 줄어들어야 한다. 숙제를 하다 보면 가족과 보내거나 좋아하는 일을 할 시간이 부족하기 때문이다.”</p>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:20px">
+<p style="font-size:26px;font-weight:700;color:#23706A">이런 댓글을 달 수 있어요</p>
+<p style="font-size:30px;line-height:1.5;background:#FFFDF8;border:2px solid #E6DFD0;border-radius:20px;padding:24px 32px"><span style="color:#23706A"><b>같은 생각</b></span>  나도 숙제가 너무 많으면 다른 일을 할 시간이 부족하다고 생각해. 책 읽거나 운동할 시간도 필요해.</p>
+<p style="font-size:30px;line-height:1.5;background:#FFFDF8;border:2px solid #E6DFD0;border-radius:20px;padding:24px 32px"><span style="color:#B8452B"><b>다른 생각</b></span>  나는 숙제가 조금은 필요하다고 생각해. 배운 내용을 스스로 연습할 수 있기 때문이야.</p>
+<p style="font-size:30px;line-height:1.5;background:#FFFDF8;border:2px solid #E6DFD0;border-radius:20px;padding:24px 32px"><span style="color:#1E2A3F"><b>새로운 제안</b></span>  무조건 줄이기보다 꼭 필요한 숙제와 그렇지 않은 숙제를 구분하면 좋겠어.</p>
+</div>
+</div>
+<div style="display:flex;flex-direction:row;align-items:center;gap:20px;background:#E3EFEA;border-radius:20px;padding:24px 36px">
+<x-icon name="Lightbulb" style="color:#23706A;width:44px;height:44px"></x-icon>
+<p style="font-size:30px"><b>기억해요</b>  생각이 달라도 괜찮아요. 친구를 평가하지 말고, 내 생각과 그 이유를 나눠요.</p>
+</div>
+<aside>주장하는 글에는 동의, 반대, 새로운 제안 모두 가능합니다. 다른 생각을 쓸 때도 “나는 ~라고 생각해. 왜냐하면 ~” 구조로 이유를 함께 쓰는 것이 핵심입니다. 친구를 평가하는 말(“틀렸어”, “말도 안 돼”)과 비교해 보세요.</aside>
+</section>
+
+<section id="m5" data-transition="push" style="background:#FBF6EC;color:#1E2A3F;font-family:'Noto Sans KR', Arial, sans-serif;padding:112px 128px 128px;display:flex;flex-direction:column;gap:44px">
+<div style="display:flex;flex-direction:row;align-items:center;gap:28px">
+<p style="font-family:'Jua', sans-serif;font-size:36px;color:#FBF6EC;background:#B8452B;padding:8px 28px;border-radius:40px">방법 5</p>
+<h2 style="font-family:'Jua', sans-serif;font-size:64px;font-weight:400;line-height:1.15">상상 이어 가기</h2>
+<p style="font-size:30px;color:#4B5568">이야기를 넓혀 봐요</p>
+</div>
+<div style="display:flex;flex-direction:row;gap:48px;flex:1">
+<div style="width:620px;display:flex;flex-direction:column;gap:20px;background:#FFF1D6;padding:44px;border-radius:24px">
+<img src="img/98539973be1f642c1386e0482fdda6f7.jpg" alt="아침 햇살이 드는 방에서 아이에게 말을 거는 고양이" style="width:532px;height:200px;object-fit:cover;border-radius:16px">
+<p style="font-size:26px;font-weight:700;color:#7A4E0E">친구의 글 · 이야기 글</p>
+<p style="font-size:30px;line-height:1.55">“어느 날 아침, 내가 키우던 고양이가 사람의 말을 하기 시작했다. 고양이는 나에게 오늘 학교에 가지 말라고 말했다.”</p>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:20px">
+<p style="font-size:26px;font-weight:700;color:#23706A">이런 댓글을 달 수 있어요</p>
+<p style="font-size:30px;line-height:1.5;background:#FFFDF8;border:2px solid #E6DFD0;border-radius:20px;padding:24px 32px">고양이가 왜 학교에 가지 말라고 했는지 궁금해. 다음 이야기가 기대돼!</p>
+<p style="font-size:30px;line-height:1.5;background:#FFFDF8;border:2px solid #E6DFD0;border-radius:20px;padding:24px 32px">혹시 학교에 가면 안 되는 특별한 일이 생긴 걸까? 긴장감이 느껴져.</p>
+<p style="font-size:30px;line-height:1.5;background:#FFFDF8;border:2px solid #E6DFD0;border-radius:20px;padding:24px 32px">나라면 고양이에게 이유를 먼저 물어볼 것 같아. 너라면 어떻게 할 거야?</p>
+</div>
+</div>
+<div style="display:flex;flex-direction:row;align-items:center;gap:20px;background:#E3EFEA;border-radius:20px;padding:24px 36px">
+<x-icon name="Lightbulb" style="color:#23706A;width:44px;height:44px"></x-icon>
+<p style="font-size:30px"><b>기억해요</b>  인물의 행동이나 다음 사건을 상상하며 이야기를 이어 가 봐요.</p>
+</div>
+<aside>이야기 글에는 ‘재미있어’라는 평가보다 다음 장면을 상상하거나 인물의 입장이 되어 보는 댓글이 글쓴이에게 큰 힘이 됩니다. 학생들에게 고양이가 학교에 가지 말라고 한 이유를 한 가지씩 상상해 말해 보게 해도 즐겁습니다.</aside>
+</section>
+
+<section id="m6" data-transition="push" style="background:#FBF6EC;color:#1E2A3F;font-family:'Noto Sans KR', Arial, sans-serif;padding:112px 128px 128px;display:flex;flex-direction:column;gap:44px">
+<div style="display:flex;flex-direction:row;align-items:center;gap:28px">
+<p style="font-family:'Jua', sans-serif;font-size:36px;color:#FBF6EC;background:#B8452B;padding:8px 28px;border-radius:40px">방법 6</p>
+<h2 style="font-family:'Jua', sans-serif;font-size:64px;font-weight:400;line-height:1.15">다른 관점 발견하기</h2>
+<p style="font-size:30px;color:#4B5568">나와 다른 생각을 이해해요</p>
+</div>
+<div style="display:flex;flex-direction:row;gap:48px;flex:1">
+<div style="width:620px;display:flex;flex-direction:column;gap:20px;background:#FFF1D6;padding:44px;border-radius:24px">
+<p style="font-size:26px;font-weight:700;color:#7A4E0E">친구의 글 · 생각을 나누는 글</p>
+<p style="font-size:32px;line-height:1.6">“나는 비 오는 날이 좋다. 우산을 쓰고 걷는 사람들이 영화의 한 장면처럼 느껴지고, 빗소리를 들으면 마음이 편안해지기 때문이다.”</p>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:20px">
+<p style="font-size:26px;font-weight:700;color:#23706A">이런 댓글을 달 수 있어요</p>
+<p style="font-size:30px;line-height:1.5;background:#FFFDF8;border:2px solid #E6DFD0;border-radius:20px;padding:24px 32px">나는 비가 오면 신발이 젖어서 싫었는데, 너는 빗소리에서 편안함을 느끼는구나.</p>
+<p style="font-size:30px;line-height:1.5;background:#FFFDF8;border:2px solid #E6DFD0;border-radius:20px;padding:24px 32px">같은 비를 보고도 사람마다 다르게 느낄 수 있다는 점이 재미있어.</p>
+<p style="font-size:30px;line-height:1.5;background:#FFFDF8;border:2px solid #E6DFD0;border-radius:20px;padding:24px 32px">네 글을 읽으니 다음에 비가 올 때는 빗소리를 조금 더 자세히 들어 보고 싶어.</p>
+</div>
+</div>
+<div style="display:flex;flex-direction:row;align-items:center;gap:20px;background:#E3EFEA;border-radius:20px;padding:24px 36px">
+<x-icon name="Lightbulb" style="color:#23706A;width:44px;height:44px"></x-icon>
+<p style="font-size:30px"><b>기억해요</b>  생각을 하나로 맞추지 않아도 돼요. 차이를 발견하는 것도 배움이에요.</p>
+</div>
+<aside>세 번째 댓글처럼 친구의 글 덕분에 내 생각이나 행동이 바뀌었다고 말해 주는 것은 글쓴이에게 가장 기쁜 댓글 중 하나입니다.</aside>
+</section>
+
+<section id="m7" data-transition="push" style="background:#FBF6EC;color:#1E2A3F;font-family:'Noto Sans KR', Arial, sans-serif;padding:112px 128px 128px;display:flex;flex-direction:column;gap:44px">
+<div style="display:flex;flex-direction:row;align-items:center;gap:28px">
+<p style="font-family:'Jua', sans-serif;font-size:36px;color:#FBF6EC;background:#B8452B;padding:8px 28px;border-radius:40px">방법 7</p>
+<h2 style="font-family:'Jua', sans-serif;font-size:64px;font-weight:400;line-height:1.15">표현과 구성 발견하기</h2>
+<p style="font-size:30px;color:#4B5568">좋은 표현을 콕 집어요</p>
+</div>
+<div style="display:flex;flex-direction:row;gap:48px;flex:1">
+<div style="width:620px;display:flex;flex-direction:column;gap:20px;background:#FFF1D6;padding:44px;border-radius:24px">
+<p style="font-size:26px;font-weight:700;color:#7A4E0E">친구의 글 · 마음을 표현한 글</p>
+<p style="font-size:32px;line-height:1.6">“내 마음은 마치 뚜껑이 닫힌 냄비 같았다. 속에서는 화가 부글부글 끓었지만 겉으로는 아무렇지 않은 척했다.”</p>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:20px">
+<p style="font-size:26px;font-weight:700;color:#23706A">이런 댓글을 달 수 있어요</p>
+<p style="font-size:30px;line-height:1.5;background:#FFFDF8;border:2px solid #E6DFD0;border-radius:20px;padding:24px 32px">화가 난 마음을 냄비에 비유한 표현이 재미있어. 어떤 기분인지 더 잘 상상할 수 있었어.</p>
+<p style="font-size:30px;line-height:1.5;background:#FFFDF8;border:2px solid #E6DFD0;border-radius:20px;padding:24px 32px">마음속과 겉으로 보이는 모습이 다르다는 점이 인상 깊어.</p>
+<p style="font-size:30px;line-height:1.5;background:#FFFDF8;border:2px solid #E6DFD0;border-radius:20px;padding:24px 32px">감정을 직접 설명하는 대신 비유로 나타내서 글이 더 생생하게 느껴졌어.</p>
+</div>
+</div>
+<div style="display:flex;flex-direction:row;align-items:center;gap:20px;background:#E3EFEA;border-radius:20px;padding:24px 36px">
+<x-icon name="Lightbulb" style="color:#23706A;width:44px;height:44px"></x-icon>
+<p style="font-size:30px"><b>기억해요</b>  ‘잘 썼어’ 대신 어떤 표현이나 구성이 좋았는지 콕 집어 말해요.</p>
+</div>
+<aside>‘잘 썼어’를 구체적으로 바꾸는 가장 쉬운 방법은 마음에 든 문장이나 낱말을 직접 인용하는 것입니다. “어떤 문장이 가장 기억에 남나요?”라고 물어보세요.</aside>
+</section>
+
+<section id="m8" data-transition="push" style="background:#FBF6EC;color:#1E2A3F;font-family:'Noto Sans KR', Arial, sans-serif;padding:112px 128px 128px;display:flex;flex-direction:column;gap:44px">
+<div style="display:flex;flex-direction:row;align-items:center;gap:28px">
+<p style="font-family:'Jua', sans-serif;font-size:36px;color:#FBF6EC;background:#B8452B;padding:8px 28px;border-radius:40px">방법 8</p>
+<h2 style="font-family:'Jua', sans-serif;font-size:64px;font-weight:400;line-height:1.15">새로운 문제 발견하기</h2>
+<p style="font-size:30px;color:#4B5568">더 알아볼 점을 찾아요</p>
+</div>
+<div style="display:flex;flex-direction:row;gap:48px;flex:1">
+<div style="width:620px;display:flex;flex-direction:column;gap:20px;background:#FFF1D6;padding:44px;border-radius:24px">
+<p style="font-size:26px;font-weight:700;color:#7A4E0E">친구의 글 · 주장하는 글</p>
+<p style="font-size:32px;line-height:1.6">“학교에서 일회용 컵 사용을 줄이면 쓰레기를 줄이는 데 도움이 된다. 우리 반에서도 개인 컵을 사용하면 좋겠다.”</p>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:20px">
+<p style="font-size:26px;font-weight:700;color:#23706A">이런 댓글을 달 수 있어요</p>
+<p style="font-size:30px;line-height:1.5;background:#FFFDF8;border:2px solid #E6DFD0;border-radius:20px;padding:24px 32px"><span style="color:#23706A"><b>실천 방법</b></span>  좋은 생각이야. 다만 컵을 씻는 방법도 함께 생각해 보면 좋겠어.</p>
+<p style="font-size:30px;line-height:1.5;background:#FFFDF8;border:2px solid #E6DFD0;border-radius:20px;padding:24px 32px"><span style="color:#B8452B"><b>함께 생각할 문제</b></span>  우리 반에서 개인 컵 사용을 시작한다면 어떤 약속을 정해야 할까?</p>
+<p style="font-size:30px;line-height:1.5;background:#FFFDF8;border:2px solid #E6DFD0;border-radius:20px;padding:24px 32px"><span style="color:#1E2A3F"><b>더 조사할 점</b></span>  학교에서 일회용 컵을 실제로 얼마나 쓰는지 조사하면 주장을 더 잘 뒷받침할 수 있겠어.</p>
+</div>
+</div>
+<div style="display:flex;flex-direction:row;align-items:center;gap:20px;background:#E3EFEA;border-radius:20px;padding:24px 36px">
+<x-icon name="Lightbulb" style="color:#23706A;width:44px;height:44px"></x-icon>
+<p style="font-size:30px"><b>기억해요</b>  근거를 더하거나, 실천 방법을 제안하거나, 더 조사할 점을 찾아봐요.</p>
+</div>
+<aside>가장 수준 높은 댓글 유형입니다. 친구의 주장을 더 단단하게 만들어 주는 ‘함께 생각하는 댓글’이라는 점을 강조해 주세요. 주장하는 글을 쓴 친구가 다음 글을 고쳐 쓸 때 실제로 도움이 됩니다.</aside>
+</section>
+
+<section id="upgrade" data-transition="fade" style="background:#EEF4F1;color:#1E2A3F;font-family:'Noto Sans KR', Arial, sans-serif;padding:112px 128px 128px;display:flex;flex-direction:column;gap:44px">
+<div style="display:flex;flex-direction:row;align-items:center;gap:28px">
+<p style="font-family:'Jua', sans-serif;font-size:36px;color:#FBF6EC;background:#23706A;padding:8px 28px;border-radius:40px">활동 2</p>
+<h2 style="font-family:'Jua', sans-serif;font-size:64px;font-weight:400;line-height:1.15">짧은 댓글에 생각을 더하면?</h2>
+</div>
+<p style="position:absolute;left:128px;top:260px;width:340px;font-family:'Jua', sans-serif;font-size:44px;text-align:center;color:#4B5568;background:#FFFDF8;border:2px dashed #B9C4C0;border-radius:24px;padding:32px 24px">재미있어.</p>
+<x-shape kind="arrow-right" style="position:absolute;left:500px;top:298px;width:80px;height:40px;background:#B8452B"></x-shape>
+<p data-build-in="rise order 1" style="position:absolute;left:612px;top:242px;width:1180px;font-size:32px;line-height:1.5;background:#FFFDF8;border:2px solid #E6DFD0;border-radius:24px;padding:28px 36px">주인공이 갑자기 <b>투명 인간이 되는 장면</b>이 재미있어. 나라면 어떻게 행동할지 상상하게 됐어.</p>
+<p style="position:absolute;left:128px;top:440px;width:340px;font-family:'Jua', sans-serif;font-size:44px;text-align:center;color:#4B5568;background:#FFFDF8;border:2px dashed #B9C4C0;border-radius:24px;padding:32px 24px">나도 그래.</p>
+<x-shape kind="arrow-right" style="position:absolute;left:500px;top:478px;width:80px;height:40px;background:#B8452B"></x-shape>
+<p data-build-in="rise order 2" style="position:absolute;left:612px;top:422px;width:1180px;font-size:32px;line-height:1.5;background:#FFFDF8;border:2px solid #E6DFD0;border-radius:24px;padding:28px 36px">나도 <b>결과보다 노력하는 과정이 중요하다</b>고 생각해. 열심히 준비했던 경험이 있기 때문이야.</p>
+<p style="position:absolute;left:128px;top:620px;width:340px;font-family:'Jua', sans-serif;font-size:44px;text-align:center;color:#4B5568;background:#FFFDF8;border:2px dashed #B9C4C0;border-radius:24px;padding:32px 24px">잘 썼어.</p>
+<x-shape kind="arrow-right" style="position:absolute;left:500px;top:658px;width:80px;height:40px;background:#B8452B"></x-shape>
+<p data-build-in="rise order 3" style="position:absolute;left:612px;top:602px;width:1180px;font-size:32px;line-height:1.5;background:#FFFDF8;border:2px solid #E6DFD0;border-radius:24px;padding:28px 36px">처음에는 평범한 이야기인 줄 알았는데 <b>마지막에 반전</b>이 있어서 인상 깊었어.</p>
+<div style="position:absolute;left:128px;top:820px;width:1664px;display:flex;flex-direction:row;align-items:center;gap:20px;background:#FFF1D6;border-radius:20px;padding:24px 36px">
+<x-icon name="Star" style="color:#B8452B;width:44px;height:44px"></x-icon>
+<p style="font-size:30px">길게 쓰지 않아도 괜찮아요. <b>글의 구체적인 부분 + 내 생각</b>이면 충분해요!</p>
+</div>
+<aside>[활동 2, 6분] 처음에는 왼쪽의 짧은 댓글만 보입니다. “이 댓글에 어떤 생각을 더하면 좋을까?” 하고 학생들이 먼저 말해 보게 한 뒤, 클릭할 때마다 오른쪽의 예시 댓글이 하나씩 나타납니다.
+오른쪽 댓글에서 굵게 표시된 부분이 ‘친구 글의 구체적인 부분’이고, 그 뒤에 이어지는 문장이 ‘내 생각’입니다.
+댓글을 무조건 길게 쓰도록 지도하지 않습니다. 짧더라도 글의 구체적인 부분을 짚고 자신의 생각을 담으면 충분히 의미 있는 댓글입니다.</aside>
+</section>
+
+<section id="helper" data-transition="fade" style="background:#FBF6EC;color:#1E2A3F;font-family:'Noto Sans KR', Arial, sans-serif;padding:96px 128px 112px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:row;align-items:center;gap:28px">
+<h2 style="font-family:'Jua', sans-serif;font-size:64px;font-weight:400;line-height:1.15">막막할 때 꺼내 쓰는 댓글 표현</h2>
+<div style="flex:1"></div>
+<p style="font-size:26px;color:#4B5568;text-align:right">그대로 쓰지 않고<br>내 말로 바꿔도 좋아요</p>
+</div>
+<div style="display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;gap:24px;flex:1">
+<div style="display:flex;flex-direction:column;gap:14px;background:#FFFDF8;border:2px solid #E6DFD0;border-left:12px solid #B8452B;border-radius:20px;padding:28px 36px">
+<h3 style="font-family:'Jua', sans-serif;font-size:36px;font-weight:400;color:#B8452B">공감하고 연결하기</h3>
+<ul style="font-size:26px;line-height:1.6">
+<li>나도 ○○한 경험이 있어서 네 생각에 공감해.</li>
+<li>네 글을 읽으니 나의 ○○ 경험이 떠올랐어.</li>
+<li>나도 비슷하게 생각했는데, 특히 ○○ 부분이 공감됐어.</li>
+</ul>
+</div>
+<div style="display:flex;flex-direction:column;gap:14px;background:#FFFDF8;border:2px solid #E6DFD0;border-left:12px solid #23706A;border-radius:20px;padding:28px 36px">
+<h3 style="font-family:'Jua', sans-serif;font-size:36px;font-weight:400;color:#23706A">발견하고 감상하기</h3>
+<ul style="font-size:26px;line-height:1.6">
+<li>○○라는 사실을 새롭게 알게 되었어.</li>
+<li>○○라는 표현이 인상 깊었어. 왜냐하면 ○○이기 때문이야.</li>
+<li>네 글에서 가장 흥미로웠던 부분은 ○○이야.</li>
+</ul>
+</div>
+<div style="display:flex;flex-direction:column;gap:14px;background:#FFFDF8;border:2px solid #E6DFD0;border-left:12px solid #C98A1B;border-radius:20px;padding:28px 36px">
+<h3 style="font-family:'Jua', sans-serif;font-size:36px;font-weight:400;color:#8A5A0E">질문하고 상상하기</h3>
+<ul style="font-size:26px;line-height:1.6">
+<li>○○한 상황에서 어떤 생각이 들었는지 궁금해.</li>
+<li>만약 ○○했다면 이야기가 어떻게 달라졌을까?</li>
+<li>다음에는 ○○에 대해서도 써 보면 어떨까?</li>
+</ul>
+</div>
+<div style="display:flex;flex-direction:column;gap:14px;background:#FFFDF8;border:2px solid #E6DFD0;border-left:12px solid #1E2A3F;border-radius:20px;padding:28px 36px">
+<h3 style="font-family:'Jua', sans-serif;font-size:36px;font-weight:400;color:#1E2A3F">생각을 이어 가기</h3>
+<ul style="font-size:26px;line-height:1.6">
+<li>네 글을 읽고 ○○에 대해 새롭게 생각하게 되었어.</li>
+<li>나는 ○○라고 생각해. 그 이유는 ○○이기 때문이야.</li>
+<li>네 생각에 더해 ○○도 함께 고려하면 좋을 것 같아.</li>
+</ul>
+</div>
+</div>
+<aside>12가지 표현은 학습지나 교실 게시물로도 활용할 수 있습니다. 이 슬라이드를 띄워 둔 채 다음 고쳐 쓰기 활동을 하면 좋습니다.
+문장 도우미가 정해진 답을 만드는 틀이 되지 않도록 “참고만 하고 내 말로 자유롭게 써도 된다”고 꼭 안내해 주세요.</aside>
+</section>
+
+<section id="practice" data-transition="fade" style="background:#EEF4F1;color:#1E2A3F;font-family:'Noto Sans KR', Arial, sans-serif;padding:112px 128px 128px;display:flex;flex-direction:column;gap:44px">
+<div style="display:flex;flex-direction:row;align-items:center;gap:28px">
+<p style="font-family:'Jua', sans-serif;font-size:36px;color:#FBF6EC;background:#23706A;padding:8px 28px;border-radius:40px">활동 2</p>
+<h2 style="font-family:'Jua', sans-serif;font-size:64px;font-weight:400;line-height:1.15">이번엔 내가 바꿔 볼까요?</h2>
+</div>
+<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:32px;flex:1">
+<div style="display:flex;flex-direction:column;gap:20px;background:#FFFDF8;border-radius:24px;padding:36px">
+<p style="font-size:24px;font-weight:700;color:#7A4E0E">친구의 글</p>
+<p style="font-size:28px;line-height:1.5;background:#FFF1D6;border-radius:16px;padding:20px 24px">“학교 숙제는 지금보다 줄어들어야 한다.”</p>
+<p style="font-size:24px;font-weight:700;color:#4B5568">처음 쓴 댓글</p>
+<p style="font-family:'Jua', sans-serif;font-size:40px;color:#B8452B">“그건 아닌 것 같아.”</p>
+<div style="flex:1;display:flex;flex-direction:column;justify-content:center;border:3px dashed #9FB3AD;border-radius:16px;padding:24px">
+<p style="font-size:26px;color:#4B5568;text-align:center">생각을 더한 내 댓글</p>
+</div>
+</div>
+<div style="display:flex;flex-direction:column;gap:20px;background:#FFFDF8;border-radius:24px;padding:36px">
+<p style="font-size:24px;font-weight:700;color:#7A4E0E">친구의 글</p>
+<p style="font-size:28px;line-height:1.5;background:#FFF1D6;border-radius:16px;padding:20px 24px">“사이가 나빴던 주인공이 마지막에 친구를 도와주었다.”</p>
+<p style="font-size:24px;font-weight:700;color:#4B5568">처음 쓴 댓글</p>
+<p style="font-family:'Jua', sans-serif;font-size:40px;color:#B8452B">“궁금해.”</p>
+<div style="flex:1;display:flex;flex-direction:column;justify-content:center;border:3px dashed #9FB3AD;border-radius:16px;padding:24px">
+<p style="font-size:26px;color:#4B5568;text-align:center">생각을 더한 내 댓글</p>
+</div>
+</div>
+<div style="display:flex;flex-direction:column;gap:20px;background:#FFFDF8;border-radius:24px;padding:36px">
+<p style="font-size:24px;font-weight:700;color:#7A4E0E">친구의 글</p>
+<p style="font-size:28px;line-height:1.5;background:#FFF1D6;border-radius:16px;padding:20px 24px">“우리 반에서 개인 컵을 사용하면 좋겠다.”</p>
+<p style="font-size:24px;font-weight:700;color:#4B5568">처음 쓴 댓글</p>
+<p style="font-family:'Jua', sans-serif;font-size:40px;color:#B8452B">“좋은 생각이야.”</p>
+<div style="flex:1;display:flex;flex-direction:column;justify-content:center;border:3px dashed #9FB3AD;border-radius:16px;padding:24px">
+<p style="font-size:26px;color:#4B5568;text-align:center">생각을 더한 내 댓글</p>
+</div>
+</div>
+</div>
+<aside>세 가지 중 하나를 골라 공책이나 포스트잇에 고쳐 써 보게 합니다. 2~3명의 댓글을 함께 읽어 보세요.
+[예시 답안]
+① 나는 조금 다르게 생각해. 모든 숙제를 줄이기보다는 꼭 필요한 연습은 남겨 두면 좋겠어.
+② 주인공이 친구를 도와주기로 결정한 이유가 궁금해. 앞부분에서는 서로 사이가 좋지 않았기 때문이야.
+③ 개인 컵을 사용하자는 생각이 좋아. 우리 반에서 실천하면 일회용 쓰레기를 줄이는 데 도움이 될 것 같아.</aside>
+</section>
+
+<section id="situations" data-transition="fade" style="background:#FBF6EC;color:#1E2A3F;font-family:'Noto Sans KR', Arial, sans-serif;padding:96px 128px 112px;display:flex;flex-direction:column;gap:36px">
+<div style="display:flex;flex-direction:row;align-items:center;gap:28px">
+<h2 style="font-family:'Jua', sans-serif;font-size:64px;font-weight:400;line-height:1.15">생각이 다를 때는 이렇게</h2>
+<div style="flex:1"></div>
+<p style="font-size:26px;color:#4B5568;text-align:right">칭찬하는 법만큼<br>다른 생각을 말하는 법도 중요해요</p>
+</div>
+<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:32px;flex:1">
+<div style="display:flex;flex-direction:column;gap:14px;background:#FFFDF8;border:2px solid #E6DFD0;border-radius:24px;padding:32px">
+<h3 style="font-family:'Jua', sans-serif;font-size:36px;font-weight:400">A. 주장에 동의하지 않을 때</h3>
+<p style="font-size:26px;line-height:1.5;background:#FFF1D6;border-radius:14px;padding:16px 22px">“학교에서는 쉬는 시간을 지금보다 길게 해야 한다.”</p>
+<p style="font-size:24px;font-weight:700;color:#B8452B">이렇게 말하면 속상해요</p>
+<p style="font-size:26px;line-height:1.5;color:#4B5568;text-decoration:line-through">“그건 말도 안 돼.”</p>
+<p style="font-size:24px;font-weight:700;color:#23706A">이렇게 말해 봐요</p>
+<p style="font-size:26px;line-height:1.5">“나는 쉬는 시간이 길어지면 수업 시간이 부족해질 수도 있다고 생각해. 대신 쉬는 시간을 어떻게 활용할지 함께 정하면 좋겠어.”</p>
+</div>
+<div style="display:flex;flex-direction:column;gap:14px;background:#FFFDF8;border:2px solid #E6DFD0;border-radius:24px;padding:32px">
+<h3 style="font-family:'Jua', sans-serif;font-size:36px;font-weight:400">B. 나와 생각이 너무 다를 때</h3>
+<p style="font-size:26px;line-height:1.5;background:#FFF1D6;border-radius:14px;padding:16px 22px">“나는 혼자 여행하는 것이 가장 좋다.”</p>
+<p style="font-size:24px;font-weight:700;color:#B8452B">이렇게 말하면 속상해요</p>
+<p style="font-size:26px;line-height:1.5;color:#4B5568;text-decoration:line-through">“왜 혼자 가? 재미없겠다.”</p>
+<p style="font-size:24px;font-weight:700;color:#23706A">이렇게 말해 봐요</p>
+<p style="font-size:26px;line-height:1.5">“나는 친구들과 함께 여행하는 걸 좋아하는데, 혼자 여행하면 어떤 점이 가장 좋은지 궁금해.”</p>
+</div>
+<div style="display:flex;flex-direction:column;gap:14px;background:#FFFDF8;border:2px solid #E6DFD0;border-radius:24px;padding:32px">
+<h3 style="font-family:'Jua', sans-serif;font-size:36px;font-weight:400">C. 개인적인 경험을 썼을 때</h3>
+<p style="font-size:26px;line-height:1.5;background:#FFF1D6;border-radius:14px;padding:16px 22px">“요즘 새로운 환경에 적응하는 것이 조금 어렵다.”</p>
+<p style="font-size:24px;font-weight:700;color:#B8452B">이렇게 말하면 속상해요</p>
+<p style="font-size:26px;line-height:1.5;color:#4B5568;text-decoration:line-through">“무슨 일이 있었는데? 자세히 말해 봐.”</p>
+<p style="font-size:24px;font-weight:700;color:#23706A">이렇게 말해 봐요</p>
+<p style="font-size:26px;line-height:1.5">“새로운 환경에 적응하는 게 쉽지 않을 수 있겠어. 네가 편안하게 지낼 수 있기를 바라.”</p>
+</div>
+</div>
+<aside>세 상황 모두 ‘좋지 않은 예’를 먼저 읽고 “이 댓글을 받은 친구는 어떤 기분일까?”를 물은 뒤, 더 나은 예를 보여 주세요.
+상황 C에서는 친구가 공개하고 싶지 않은 사적인 내용을 억지로 묻지 않는 것도 댓글 예절이라는 점을 꼭 강조합니다.</aside>
+</section>
+
+<section id="pair" data-transition="fade" style="background:#FBF6EC;color:#1E2A3F;font-family:'Noto Sans KR', Arial, sans-serif;padding:112px 128px 128px;display:flex;flex-direction:column;gap:44px">
+<div style="display:flex;flex-direction:row;align-items:center;gap:28px">
+<p style="font-family:'Jua', sans-serif;font-size:36px;color:#FBF6EC;background:#23706A;padding:8px 28px;border-radius:40px">활동 3</p>
+<h2 style="font-family:'Jua', sans-serif;font-size:64px;font-weight:400;line-height:1.15">짝의 글에 댓글을 달아 봐요</h2>
+<div style="flex:1"></div>
+<p style="font-family:'Jua', sans-serif;font-size:36px;color:#B8452B">5분</p>
+</div>
+<div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:24px">
+<div style="display:flex;flex-direction:column;gap:14px;background:#FFFDF8;border:2px solid #E6DFD0;border-radius:24px;padding:32px">
+<p style="font-family:'Jua', sans-serif;font-size:56px;color:#B8452B;line-height:1">1</p>
+<h3 style="font-family:'Jua', sans-serif;font-size:40px;font-weight:400">꼼꼼히 읽기</h3>
+<p style="font-size:26px;line-height:1.5;color:#4B5568">마음에 남는 문장에 밑줄을 그어요</p>
+</div>
+<div style="display:flex;flex-direction:column;gap:14px;background:#FFFDF8;border:2px solid #E6DFD0;border-radius:24px;padding:32px">
+<p style="font-family:'Jua', sans-serif;font-size:56px;color:#B8452B;line-height:1">2</p>
+<h3 style="font-family:'Jua', sans-serif;font-size:40px;font-weight:400">방법 고르기</h3>
+<p style="font-size:26px;line-height:1.5;color:#4B5568">8가지 방법 중 어울리는 것을 골라요</p>
+</div>
+<div style="display:flex;flex-direction:column;gap:14px;background:#FFFDF8;border:2px solid #E6DFD0;border-radius:24px;padding:32px">
+<p style="font-family:'Jua', sans-serif;font-size:56px;color:#B8452B;line-height:1">3</p>
+<h3 style="font-family:'Jua', sans-serif;font-size:40px;font-weight:400">댓글 쓰기</h3>
+<p style="font-size:26px;line-height:1.5;color:#4B5568">구체적인 부분과 내 생각을 담아요</p>
+</div>
+<div style="display:flex;flex-direction:column;gap:14px;background:#FFFDF8;border:2px solid #E6DFD0;border-radius:24px;padding:32px">
+<p style="font-family:'Jua', sans-serif;font-size:56px;color:#B8452B;line-height:1">4</p>
+<h3 style="font-family:'Jua', sans-serif;font-size:40px;font-weight:400">서로 나누기</h3>
+<p style="font-size:26px;line-height:1.5;color:#4B5568">받은 댓글을 읽고 기분을 이야기해요</p>
+</div>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:22px;background:#E3EFEA;border-radius:24px;padding:40px 48px">
+<h3 style="font-family:'Jua', sans-serif;font-size:40px;font-weight:400;color:#23706A">다 쓰고 나서 확인해요</h3>
+<div style="display:flex;flex-direction:row;align-items:center;gap:20px">
+<x-icon name="CheckCircle" style="color:#23706A;width:44px;height:44px"></x-icon>
+<p style="font-size:32px">친구 글의 <b>구체적인 부분</b>을 짚었나요?</p>
+</div>
+<div style="display:flex;flex-direction:row;align-items:center;gap:20px">
+<x-icon name="CheckCircle" style="color:#23706A;width:44px;height:44px"></x-icon>
+<p style="font-size:32px"><b>내 생각</b>이나 <b>질문</b>이 담겨 있나요?</p>
+</div>
+<div style="display:flex;flex-direction:row;align-items:center;gap:20px">
+<x-icon name="CheckCircle" style="color:#23706A;width:44px;height:44px"></x-icon>
+<p style="font-size:32px">친구가 읽었을 때 <b>기분 좋게</b> 받아들일 수 있나요?</p>
+</div>
+</div>
+<aside>[활동 3, 5분] 짝과 글을 바꿔 읽고 댓글을 한 개씩 씁니다(3분). 서로 받은 댓글을 읽고 “어떤 부분이 좋았는지” 한 문장으로 말해 줍니다(2분).
+앞의 ‘댓글 표현’ 슬라이드를 다시 띄워 두면 막막해하는 학생에게 도움이 됩니다.</aside>
+</section>
+
+<section id="promise" data-transition="fade" style="background:#EEF4F1;color:#1E2A3F;font-family:'Noto Sans KR', Arial, sans-serif;padding:112px 128px 128px;display:flex;flex-direction:column;gap:48px">
+<div style="display:flex;flex-direction:row;align-items:center;gap:28px">
+<p style="font-family:'Jua', sans-serif;font-size:36px;color:#FBF6EC;background:#23706A;padding:8px 28px;border-radius:40px">정리</p>
+<h2 style="font-family:'Jua', sans-serif;font-size:64px;font-weight:400;line-height:1.15">우리 반 댓글 약속</h2>
+</div>
+<p style="font-size:44px;line-height:1.45;font-weight:700">친구가 내 글을 읽고 <span style="color:#B8452B">어떤 댓글</span>을 달아 주면<br>가장 의미 있을까요?</p>
+<div style="display:flex;flex-direction:column;gap:24px;flex:1">
+<div style="flex:1;display:flex;flex-direction:row;align-items:center;gap:28px;background:#FFFDF8;border-radius:20px;padding:20px 36px">
+<p style="font-family:'Jua', sans-serif;font-size:52px;color:#B8452B">①</p>
+<div style="flex:1;height:2px;background:#C9D6D1"></div>
+</div>
+<div style="flex:1;display:flex;flex-direction:row;align-items:center;gap:28px;background:#FFFDF8;border-radius:20px;padding:20px 36px">
+<p style="font-family:'Jua', sans-serif;font-size:52px;color:#B8452B">②</p>
+<div style="flex:1;height:2px;background:#C9D6D1"></div>
+</div>
+<div style="flex:1;display:flex;flex-direction:row;align-items:center;gap:28px;background:#FFFDF8;border-radius:20px;padding:20px 36px">
+<p style="font-family:'Jua', sans-serif;font-size:52px;color:#B8452B">③</p>
+<div style="flex:1;height:2px;background:#C9D6D1"></div>
+</div>
+</div>
+<aside>[정리 2분] 학생들의 답을 모아 학급 댓글 약속 세 가지를 정합니다. 슬라이드의 빈칸에 직접 입력하거나 칠판에 써도 좋습니다.
+교사가 정한 규칙을 따르는 데서 그치지 않고, 서로 어떤 방식으로 글을 읽고 반응할지 함께 정하는 경험이 되도록 해 주세요.
+예시: ① 친구 글의 구체적인 부분을 짚어요. ② 생각이 달라도 이유를 들어 부드럽게 말해요. ③ 친구가 말하고 싶지 않은 것은 묻지 않아요.</aside>
+</section>
+
+<section id="closing" data-transition="fade" style="background:#1E2A3F;color:#FBF6EC;font-family:'Noto Sans KR', Arial, sans-serif;padding:128px;display:flex;flex-direction:column;justify-content:center;gap:48px">
+<img src="img/6e380b937b04d6ce4876cd97f769ef61.jpg" alt="해 질 녘 교실 창가에서 쪽지를 건네며 웃는 두 친구" style="position:absolute;left:0px;top:0px;width:1920px;height:1080px;object-fit:cover">
+<div style="position:absolute;left:0px;top:0px;width:1920px;height:1080px;background:linear-gradient(90deg, rgba(20,28,45,0.94) 0%, rgba(20,28,45,0.82) 42%, rgba(20,28,45,0) 66%)"></div>
+<x-icon name="Chat" style="position:absolute;left:128px;top:180px;width:80px;height:80px;color:#F2B33D"></x-icon>
+<p style="position:absolute;left:128px;top:290px;width:1000px;font-family:'Jua', sans-serif;font-size:68px;line-height:1.35">댓글은 친구의 글을<br>평가하는 말이 아니라,</p>
+<p data-build-in="rise order 1" style="position:absolute;left:128px;top:500px;width:1000px;font-family:'Jua', sans-serif;font-size:68px;line-height:1.35;color:#F2B33D">친구의 글을 읽은 내가 건네는<br>또 하나의 글이에요.</p>
+<p data-build-in="fade order 2" style="position:absolute;left:128px;top:760px;width:1000px;font-size:32px;line-height:1.5;color:#D5DCE6">오늘 우마시 글나눔에서,<br>친구에게 내 생각을 건네 보세요.</p>
+<aside>“댓글은 친구의 글을 평가하는 말이 아니라…” 다음에 무엇이 올지 학생들에게 먼저 물어본 뒤 클릭해 나머지 문장을 보여 주세요. 함께 소리 내어 읽고, 이후 우마시 글나눔 활동에서 댓글을 쓸 때마다 이 문장을 떠올리도록 안내합니다.
+(그림: Google Gemini로 생성)</aside>
+</section>
+
+</div></div>
+<div id="bar"><a href="../index.html">← 작품 서랍</a><button id="prev" type="button">이전</button><span id="n"></span><button id="next" type="button">다음</button><button id="fs" type="button">전체 화면</button></div>
+<script>
+const S=[...document.querySelectorAll('#stage > section')],stage=document.getElementById('stage');let i=0;
+const ICON={Star:'★',CheckCircle:'✔',Search:'🔍',Book:'📖',Lightbulb:'💡',Chat:'💬',Users:'👥',Globe:'🌐',Home:'🏠',Trust:'🤝',Key:'🔑',Chart:'📊',Tool:'🛠️',Lightning:'⚡',ThumbsUp:'👍'};
+document.querySelectorAll('x-icon').forEach(e=>{e.textContent=ICON[e.getAttribute('name')]||'●';const h=parseFloat(e.style.height)||48;e.style.fontSize=(h*0.8)+'px'});
+document.querySelectorAll('x-connector').forEach(e=>{if(!e.style.borderTopWidth)e.style.borderTopWidth=(e.style.borderWidth||'4px')});
+function show(k){i=Math.max(0,Math.min(S.length-1,k));S.forEach((s,j)=>s.classList.toggle('on',j===i));document.getElementById('n').textContent=(i+1)+' / '+S.length;try{history.replaceState(null,'','#'+(i+1))}catch(_){}}
+function fit(){const w=innerWidth,h=innerHeight-56;stage.style.transform='scale('+Math.min(w/1920,h/1080)+')'}
+addEventListener('resize',fit);fit();
+addEventListener('keydown',e=>{if(['ArrowRight','PageDown',' ','Enter'].includes(e.key)){e.preventDefault();show(i+1)}if(['ArrowLeft','PageUp','Backspace'].includes(e.key)){e.preventDefault();show(i-1)}if(e.key==='Home')show(0);if(e.key==='End')show(S.length-1)});
+document.getElementById('wrap').addEventListener('click',e=>{show(e.clientX>innerWidth/2?i+1:i-1)});
+document.getElementById('prev').onclick=()=>show(i-1);document.getElementById('next').onclick=()=>show(i+1);
+document.getElementById('fs').onclick=()=>{const d=document.documentElement;(document.fullscreenElement?document.exitFullscreen():d.requestFullscreen&&d.requestFullscreen()).catch&&0};
+let tx=null;addEventListener('touchstart',e=>{tx=e.touches[0].clientX},{passive:true});addEventListener('touchend',e=>{if(tx===null)return;const d=e.changedTouches[0].clientX-tx;if(Math.abs(d)>40)show(d<0?i+1:i-1);tx=null});
+show((parseInt(location.hash.slice(1))||1)-1);
+</script></body></html>

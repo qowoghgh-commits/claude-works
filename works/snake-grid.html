@@ -1,0 +1,884 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>모눈 뱀꼬리잡기</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Gowun+Dodum&family=IBM+Plex+Mono:wght@500;700&display=swap">
+<style>
+/* Layout: tablet arcade. Landscape = huge square board on the left filling the height, control column on the right (HUD, effects, D-pad, live ranking). Portrait = board full width, column stacks below. Single committed candy-night look. */
+:root{
+  --bg:#130d33; --bg2:#1b1450; --panel:#221a5c; --panel2:#2a2170; --line:#3b3190;
+  --fg:#f6f0ff; --muted:#a9a0dc;
+  --pink:#ff4fa3; --cyan:#3be8ff; --lime:#b6ff3b; --amber:#ffc23b; --violet:#9b6bff; --red:#ff5a5f;
+  --gold:#ffd54a; --silver:#d9e2ff; --bronze:#ff9f5a;
+  --display:"Black Han Sans","Apple SD Gothic Neo","Malgun Gothic",sans-serif;
+  --body:"Gowun Dodum","Apple SD Gothic Neo","Malgun Gothic",sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,Menlo,monospace;
+  --side:364px; --gap:16px;
+  color-scheme:dark;
+}
+html,body{height:100%}
+body{background:radial-gradient(120% 80% at 30% 0%,var(--bg2),var(--bg) 70%) fixed,var(--bg);color:var(--fg);
+  font-family:var(--body);font-size:16px;padding:0 16px;touch-action:manipulation;-webkit-tap-highlight-color:transparent}
+.app{display:grid;gap:var(--gap);padding-block:16px;justify-content:center;align-items:start;min-height:100%;box-sizing:border-box;
+  --bs:min(calc(100vw - 32px), calc(100dvh - 300px), 900px);
+  grid-template-columns:var(--bs)}
+@media (min-aspect-ratio:1/1) and (min-width:700px){
+  html,body{overflow:hidden}
+  .app{height:100%;--bs:min(calc(100dvh - 32px), calc(100vw - 32px - var(--side) - var(--gap)));
+    grid-template-columns:var(--bs) var(--side);align-items:stretch}
+  .side{max-height:var(--bs);overflow-y:auto;overscroll-behavior:contain}
+}
+@media (max-aspect-ratio:1/1){ .app{--bs:min(calc(100vw - 32px), calc(100dvh - 260px), 980px)} .side{width:100%} }
+@media (max-width:480px){ .app{--bs:calc(100vw - 32px)} }
+
+.board{position:relative;width:var(--bs);height:var(--bs);max-width:100%;border-radius:18px;overflow:hidden;user-select:none;-webkit-user-select:none;
+  box-shadow:0 0 0 2px var(--line),0 0 60px -10px color-mix(in srgb,var(--violet) 70%,transparent)}
+canvas{display:block;width:100%;height:100%}
+.overlay{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;
+  background:color-mix(in srgb,var(--bg) 80%,transparent);backdrop-filter:blur(3px);text-align:center;padding:24px;overflow-y:auto}
+.overlay > *{flex:none}
+[hidden]{display:none!important}
+.ctrl-btns .secondary{white-space:nowrap}
+.overlay h2{font-family:var(--display);font-weight:400;font-size:clamp(2rem,6vmin,3.4rem);margin:0;line-height:1.05;text-wrap:balance}
+.overlay p{margin:0;color:var(--muted);max-width:38ch;line-height:1.6}
+.overlay .big{font-family:var(--mono);font-weight:700;font-size:clamp(2rem,6vmin,3rem);color:var(--fg);line-height:1}
+.title-rainbow span:nth-child(5n+1){color:var(--pink)}.title-rainbow span:nth-child(5n+2){color:var(--amber)}
+.title-rainbow span:nth-child(5n+3){color:var(--lime)}.title-rainbow span:nth-child(5n+4){color:var(--cyan)}.title-rainbow span:nth-child(5n+5){color:var(--violet)}
+
+.namebox{display:flex;flex-direction:column;gap:6px;width:min(100%,360px);text-align:left}
+.namebox label{font-size:.85rem;color:var(--muted);letter-spacing:.06em}
+.namebox input{font:inherit;font-family:var(--display);font-size:1.5rem;padding:12px 16px;border-radius:12px;border:2px solid var(--line);
+  background:var(--bg);color:var(--fg);outline:none;width:100%;box-sizing:border-box;user-select:text;-webkit-user-select:text}
+.namebox input:focus{border-color:var(--cyan);box-shadow:0 0 0 4px color-mix(in srgb,var(--cyan) 25%,transparent)}
+.namebox .hint{font-size:.8rem;color:var(--muted);min-height:1.2em}
+.namebox .hint.err{color:var(--pink)}
+.row{display:flex;gap:10px;flex-wrap:wrap;justify-content:center}
+button{font:inherit;cursor:pointer;border:0;border-radius:12px;touch-action:manipulation}
+button:focus-visible{outline:3px solid var(--cyan);outline-offset:2px}
+button:disabled{opacity:.45;cursor:not-allowed}
+.primary{font-family:var(--display);font-size:1.35rem;padding:14px 34px;color:#1a0f3d;min-height:56px;
+  background:linear-gradient(90deg,var(--pink),var(--amber));box-shadow:0 8px 24px -10px var(--pink)}
+.secondary{font-family:var(--display);font-size:1.1rem;padding:12px 22px;min-height:56px;color:var(--fg);background:var(--panel);border:1px solid var(--line)}
+.seg{display:flex;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:4px;gap:4px}
+.seg button{padding:10px 18px;min-height:48px;color:var(--muted);background:transparent;font-family:var(--display);font-size:1.1rem}
+.seg button[aria-pressed="true"]{color:#1a0f3d}
+.seg [data-diff="easy"][aria-pressed="true"]{background:var(--lime)}
+.seg [data-diff="normal"][aria-pressed="true"]{background:var(--amber)}
+.seg [data-diff="hard"][aria-pressed="true"]{background:var(--red)}
+.diff-note{font-size:.88rem}
+
+.mini{width:min(100%,380px);display:flex;flex-direction:column;gap:4px;text-align:left;margin:0;padding:0;list-style:none}
+.mini-h{font-size:.8rem;color:var(--muted);letter-spacing:.08em;display:flex;justify-content:space-between;width:min(100%,380px)}
+
+/* side column */
+.side{display:flex;flex-direction:column;gap:12px;min-width:0}
+.top{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.top h1{font-family:var(--display);font-weight:400;font-size:1.7rem;margin:0;line-height:1}
+.who{display:flex;align-items:center;gap:6px;background:var(--panel);border:1px solid var(--line);border-radius:999px;padding:4px 12px;font-size:.85rem;max-width:55%;min-width:0}
+.who b{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.hud{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.stat{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:8px 10px;display:flex;flex-direction:column;gap:2px;min-width:0}
+.stat small{font-size:.68rem;color:var(--muted);letter-spacing:.08em;white-space:nowrap}
+.stat b{font-family:var(--mono);font-weight:700;font-size:1.2rem;font-variant-numeric:tabular-nums;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#stage{color:var(--amber)}#score{color:var(--cyan)}#lives{color:var(--pink)}#diffS{color:var(--lime);font-family:var(--display);font-weight:400}
+.progress{display:flex;align-items:center;gap:10px;font-size:.8rem;color:var(--muted)}
+.track{flex:1;height:10px;border-radius:999px;background:var(--panel);border:1px solid var(--line);overflow:hidden}
+.fill{height:100%;width:0;border-radius:999px;transition:width .25s;
+  background:repeating-linear-gradient(-45deg,var(--pink) 0 8px,var(--amber) 8px 16px);background-size:22px 22px;animation:roll 1s linear infinite}
+@keyframes roll{to{background-position:22px 0}}
+.progress b{font-family:var(--mono);color:var(--fg);font-variant-numeric:tabular-nums}
+.fx{display:flex;gap:6px;flex-wrap:wrap;min-height:30px}
+.chip{display:flex;align-items:center;gap:6px;background:var(--panel);border:1px solid var(--c);border-radius:999px;padding:3px 10px 3px 6px;font-size:.82rem;position:relative;overflow:hidden}
+.chip i{font-style:normal}
+.chip .t{position:absolute;left:0;bottom:0;height:3px;background:var(--c)}
+.fx .none{color:var(--muted);font-size:.8rem;align-self:center}
+.ctrl{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.pad{display:grid;grid-template-columns:repeat(3,72px);grid-template-rows:repeat(2,64px);gap:8px;justify-content:center;flex:1}
+.pad button{font-size:1.5rem;background:var(--panel);color:var(--fg);border:1px solid var(--line)}
+.pad button:active,.pad button.on{background:var(--pink);color:#1a0f3d}
+.pad .up{grid-column:2}.pad .left{grid-column:1;grid-row:2}.pad .down{grid-column:2;grid-row:2}.pad .right{grid-column:3;grid-row:2}
+.ctrl-btns{display:flex;flex-direction:column;gap:8px}
+.ctrl-btns .secondary{min-height:48px;padding:8px 16px;font-size:1rem}
+.keys{font-size:.8rem;color:var(--muted)}
+kbd{font-family:var(--mono);font-size:.75rem;border:1px solid var(--line);border-radius:5px;padding:1px 6px;background:var(--panel);color:var(--fg)}
+@media (hover:hover) and (pointer:fine){.pad{display:none}.ctrl-btns{flex-direction:row}}
+@media not ((hover:hover) and (pointer:fine)){.keys{display:none}}
+
+.card{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:12px;display:flex;flex-direction:column;gap:10px;min-width:0}
+.card-h{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.card-h h2{font-family:var(--display);font-weight:400;font-size:1.25rem;margin:0}
+.live{display:flex;align-items:center;gap:6px;font-size:.75rem;color:var(--muted)}
+.live i{width:8px;height:8px;border-radius:50%;background:var(--muted)}
+.live.on i{background:var(--lime);box-shadow:0 0 0 0 var(--lime);animation:ping 1.6s infinite}
+.live.off i{background:var(--amber)}
+@keyframes ping{0%{box-shadow:0 0 0 0 color-mix(in srgb,var(--lime) 70%,transparent)}100%{box-shadow:0 0 0 8px transparent}}
+.tabs{display:grid;grid-template-columns:repeat(3,1fr);gap:4px;background:var(--bg);border-radius:10px;padding:3px}
+.tabs button{padding:8px 4px;min-height:40px;background:transparent;color:var(--muted);font-family:var(--display);font-size:.95rem;border-radius:8px}
+.tabs button[aria-selected="true"]{background:var(--panel2);color:var(--fg)}
+.rank{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:4px}
+.rk{display:grid;grid-template-columns:34px 1fr auto;align-items:center;gap:8px;padding:7px 10px;border-radius:10px;background:color-mix(in srgb,var(--bg) 55%,transparent);min-width:0}
+.rk .n{font-family:var(--mono);font-weight:700;text-align:center;font-variant-numeric:tabular-nums;color:var(--muted)}
+.rk .nm{min-width:0;display:flex;flex-direction:column}
+.rk .nm b{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-size:.98rem}
+.rk .nm span{font-size:.72rem;color:var(--muted)}
+.rk .sc{font-family:var(--mono);font-weight:700;font-variant-numeric:tabular-nums;color:var(--cyan)}
+.rk.r1 .n{color:var(--gold)}.rk.r2 .n{color:var(--silver)}.rk.r3 .n{color:var(--bronze)}
+.rk.r1{background:color-mix(in srgb,var(--gold) 14%,transparent)}
+.rk.me{outline:2px solid var(--pink);background:color-mix(in srgb,var(--pink) 18%,transparent)}
+.rk.fresh{animation:flash 1.2s ease-out}
+@keyframes flash{from{background:color-mix(in srgb,var(--lime) 45%,transparent)}}
+.empty{color:var(--muted);font-size:.88rem;padding:10px;text-align:center;line-height:1.5}
+.note{font-size:.75rem;color:var(--muted);line-height:1.5}
+details{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:10px 12px}
+summary{cursor:pointer;font-family:var(--display);font-size:1.05rem;min-height:32px;display:flex;align-items:center}
+.legend{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:6px;margin-top:8px}
+.it{display:flex;gap:8px;align-items:center;min-width:0;padding:4px}
+.it .ic{width:30px;height:30px;flex:none;border-radius:50%;display:grid;place-items:center;font-size:1rem;
+  background:color-mix(in srgb,var(--c) 22%,transparent);box-shadow:inset 0 0 0 2px var(--c)}
+.it div{min-width:0}.it b{display:block;font-size:.85rem}.it span{font-size:.72rem;color:var(--muted)}
+@media (max-width:420px){.hud{grid-template-columns:repeat(2,1fr)}}
+@media (prefers-reduced-motion:reduce){.fill,.live.on i,.rk.fresh{animation:none}}
+</style>
+
+<div class="app">
+  <div class="board" id="board">
+    <canvas id="cv"></canvas>
+    <div class="overlay" id="ov"></div>
+  </div>
+
+  <aside class="side">
+    <div class="top">
+      <h1 class="title-rainbow"><span>뱀</span><span>꼬</span><span>리</span><span>잡</span><span>기</span></h1>
+      <div class="who" id="who" hidden><span>🎮</span><b id="whoName"></b></div>
+    </div>
+
+    <div class="hud">
+      <div class="stat"><small>스테이지</small><b id="stage">1</b></div>
+      <div class="stat"><small>점수</small><b id="score">0</b></div>
+      <div class="stat"><small>목숨</small><b id="lives">♥♥♥</b></div>
+      <div class="stat"><small>난이도</small><b id="diffS">보통</b></div>
+    </div>
+    <div class="progress"><span>다음 스테이지</span><div class="track"><div class="fill" id="fill"></div></div><b id="prog">0 / 7</b></div>
+    <div class="fx" id="fx"><span class="none">아이템을 먹으면 효과가 여기에 표시돼요</span></div>
+
+    <div class="ctrl">
+      <div class="pad" aria-label="방향 버튼">
+        <button class="up" data-d="up" aria-label="위">▲</button>
+        <button class="left" data-d="left" aria-label="왼쪽">◀</button>
+        <button class="down" data-d="down" aria-label="아래">▼</button>
+        <button class="right" data-d="right" aria-label="오른쪽">▶</button>
+      </div>
+      <div class="ctrl-btns">
+        <button class="secondary" id="pauseBtn">일시정지</button>
+        <button class="secondary" id="homeBtn">처음으로</button>
+      </div>
+    </div>
+    <div class="keys"><kbd>←↑↓→</kbd>/<kbd>WASD</kbd> 이동 · <kbd>Space</kbd> 일시정지 · 화면을 밀어서(스와이프) 조작해도 돼요</div>
+
+    <section class="card" aria-labelledby="rankTitle">
+      <div class="card-h">
+        <h2 id="rankTitle">🏆 랭킹</h2>
+        <span class="live" id="live"><i></i><span id="liveText">연결 중…</span></span>
+      </div>
+      <div class="tabs" role="tablist" id="tabs">
+        <button role="tab" data-tab="easy" aria-selected="false">쉬움</button>
+        <button role="tab" data-tab="normal" aria-selected="true">보통</button>
+        <button role="tab" data-tab="hard" aria-selected="false">어려움</button>
+      </div>
+      <ol class="rank" id="rank"></ol>
+      <p class="note" id="rankNote">이름별 최고 기록 순위예요. 다른 태블릿에서 게임이 끝나면 바로 반영돼요.</p>
+    </section>
+
+    <details>
+      <summary>아이템 도감</summary>
+      <div class="legend" id="legend"></div>
+    </details>
+  </aside>
+</div>
+
+<script>
+(() => {
+'use strict';
+const N = 24;
+const $ = id => document.getElementById(id);
+const cv = $('cv'), ctx = cv.getContext('2d');
+const DV = {up:[0,-1],down:[0,1],left:[-1,0],right:[1,0]};
+const DL = ['up','down','left','right'];
+const REV = {up:'down',down:'up',left:'right',right:'left'};
+const rand = n => Math.floor(Math.random()*n);
+const esc = s => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const EMOJI_FONT = '"Apple Color Emoji","Segoe UI Emoji","Noto Color Emoji",sans-serif';
+const store = {
+  get(k, d){ try{ const v = localStorage.getItem(k); return v==null ? d : JSON.parse(v); }catch(e){ return d; } },
+  set(k, v){ try{ localStorage.setItem(k, JSON.stringify(v)); }catch(e){} }
+};
+
+const DIFFS = {
+  easy:  {name:'쉬움', base:165, lives:5, aiRandom:.2,  aiSkip:.3,  hunt:0,   avoidHead:false, ai:s=>Math.min(Math.ceil(s/2),3), note:'느린 속도, 목숨 5개, 순한 AI 뱀'},
+  normal:{name:'보통', base:135, lives:3, aiRandom:.06, aiSkip:.12, hunt:.15, avoidHead:true,  ai:s=>Math.min(s,4),             note:'목숨 3개, 사과를 노리는 AI 뱀'},
+  hard:  {name:'어려움',base:108, lives:2, aiRandom:.02, aiSkip:0,   hunt:.45, avoidHead:true,  ai:s=>Math.min(s+1,5),           note:'빠른 속도, 목숨 2개, 길을 막는 AI 뱀'},
+};
+const ITEMS = {
+  shield:{e:'🛡️',name:'방패',desc:'충돌 1번 막아줌',c:'#3be8ff',w:3},
+  ghost: {e:'👻',name:'유령',desc:'6초간 벽·몸 통과',c:'#d6c8ff',dur:6000,w:2},
+  magnet:{e:'🧲',name:'자석',desc:'8초간 먹이 끌어오기',c:'#ff5a5f',dur:8000,w:3},
+  double:{e:'⭐',name:'점수 2배',desc:'10초간 점수 ×2',c:'#ffc23b',dur:10000,w:3},
+  freeze:{e:'❄️',name:'얼음',desc:'5초간 AI 뱀 정지',c:'#9be7ff',dur:5000,w:2},
+  slow:  {e:'🐢',name:'슬로우',desc:'7초간 시간 느리게',c:'#7dff9b',dur:7000,w:2},
+  bomb:  {e:'💣',name:'폭탄',desc:'AI 뱀 전부 폭파',c:'#ff8a3b',w:1.2},
+  gem:   {e:'💎',name:'보석',desc:'+50점, 진행도 +2',c:'#4fc3ff',w:2},
+  poison:{e:'🍄',name:'독버섯',desc:'몸 3칸 줄어듦, 피하세요',c:'#b04bff',w:2,minStage:2},
+};
+const AI_HUES = [190, 95, 270, 45, 330];
+
+// ---------- state ----------
+let diff = store.get('snake3-diff','normal'); if(!DIFFS[diff]) diff='normal';
+let D = DIFFS[diff];
+let playerName = store.get('snake3-name','');
+let stage, score, lives, applesEaten, target;
+let walls, player, ais, foods, items, effects, invuln;
+let particles = [], floats = [], shake = 0;
+let state = 'menu'; // menu | play | pause | stage | over
+let gameTime = 0, nextItemAt = 0, acc = 0, last = performance.now();
+let rankTab = diff;
+let lastResult = null; // {id, name, score, stage, diff}
+
+// ---------- ranking store ----------
+let db = null, entries = [], online = false, writeBlocked = false;
+const localEntries = () => store.get('snake3-local', []);
+function clean(raw, id){
+  const d = raw || {};
+  const name = String(d.name ?? '').trim().slice(0,12);
+  const sc = Math.floor(Number(d.score));
+  if(!name || !Number.isFinite(sc) || sc<0 || sc>10000000 || !DIFFS[d.diff]) return null;
+  return {id, name, score:sc, stage:Math.max(1,Math.min(999,Math.floor(Number(d.stage))||1)), diff:d.diff, at:Number(d.at)||0};
+}
+function setLive(mode){
+  const el=$('live'); el.className='live '+(mode==='on'?'on':mode==='off'?'off':'');
+  $('liveText').textContent = mode==='on' ? '실시간' : mode==='off' ? '이 기기에만 저장' : '연결 중…';
+  $('rankNote').textContent = mode==='off'
+    ? (writeBlocked ? '이 계정은 공용 랭킹에 기록할 권한이 없어서 이 기기에만 저장하고 있어요.' : '공용 랭킹에 연결되지 않아 이 기기의 기록만 보여요. claude.ai에 로그인한 상태로 열면 모든 태블릿 기록이 합쳐져요.')
+    : '이름별 최고 기록 순위예요. 다른 태블릿에서 게임이 끝나면 바로 반영돼요.';
+}
+const freshIds = new Set();
+function useLocal(){ online=false; entries = localEntries().map(e=>clean(e,e.id)).filter(Boolean); setLive('off'); refreshRanks(); }
+(async () => {
+  setLive('wait'); entries = localEntries().map(e=>clean(e,e.id)).filter(Boolean); refreshRanks();
+  try{ db = window.claude && window.claude.use ? await window.claude.use('db') : null; }catch(e){ db = null; }
+  if(!db) return useLocal();
+  try{
+    let first = true;
+    db.collection('scores').orderBy('score','desc').limit(1000).onSnapshot(snap => {
+      online = true; setLive('on');
+      if(!first) for(const ch of snap.docChanges()) if(ch.type==='added') freshIds.add(ch.doc.id);
+      first = false;
+      entries = snap.docs.map(d=>clean(d.data(), d.id)).filter(Boolean);
+      refreshRanks();
+      setTimeout(()=>freshIds.clear(), 1500);
+    }, err => { db = null; useLocal(); });
+  }catch(e){ db = null; useLocal(); }
+})();
+
+async function saveResult(rec){
+  const body = {name:rec.name, score:rec.score, stage:rec.stage, diff:rec.diff, at:Date.now()};
+  if(db && online && !writeBlocked){
+    try{ const ref = db.collection('scores').doc(); rec.id = ref.id; await ref.set(body); return; }
+    catch(e){
+      if(e && (e.code==='unavailable')){ try{ await new Promise(r=>setTimeout(r,600+Math.random()*600)); await db.collection('scores').doc(rec.id).set(body); return; }catch(e2){} }
+      if(e && e.code==='invalid_argument') writeBlocked = true;
+    }
+  }
+  const list = localEntries(); rec.id = rec.id || 'local-'+Date.now()+'-'+rand(1e6);
+  list.push({...body, id:rec.id}); list.sort((a,b)=>b.score-a.score); store.set('snake3-local', list.slice(0,300));
+  if(!online || writeBlocked){ useLocal(); }
+}
+function board(d){
+  const best = new Map();
+  for(const e of entries){ if(e.diff!==d) continue; const k=e.name.toLowerCase(); const cur=best.get(k);
+    if(!cur || e.score>cur.score || (e.score===cur.score && e.at<cur.at)) best.set(k,e); }
+  return [...best.values()].sort((a,b)=>b.score-a.score || a.at-b.at);
+}
+function rowHTML(e, i, opts={}){
+  const me = playerName && e.name.toLowerCase()===playerName.toLowerCase();
+  const medal = i===0?'🥇':i===1?'🥈':i===2?'🥉':String(i+1);
+  return `<li class="rk r${i+1}${me?' me':''}${freshIds.has(e.id)||opts.fresh?' fresh':''}"><span class="n">${medal}</span><span class="nm"><b>${esc(e.name)}</b><span>스테이지 ${e.stage}</span></span><span class="sc">${e.score.toLocaleString()}</span></li>`;
+}
+function renderRankCard(){
+  document.querySelectorAll('#tabs button').forEach(b=>b.setAttribute('aria-selected', b.dataset.tab===rankTab));
+  const list = board(rankTab).slice(0,30);
+  $('rank').innerHTML = list.length ? list.map((e,i)=>rowHTML(e,i)).join('')
+    : `<li class="empty">아직 ${DIFFS[rankTab].name} 난이도 기록이 없어요.<br>첫 번째 1위에 도전해 보세요!</li>`;
+}
+function refreshRanks(){
+  renderRankCard();
+  if(state==='menu') renderHomeTop();
+  if(state==='over') renderOverRank();
+}
+document.querySelectorAll('#tabs button').forEach(b=>b.onclick=()=>{ rankTab=b.dataset.tab; renderRankCard(); });
+
+// ---------- board helpers ----------
+const inB = (x,y) => x>=0 && y>=0 && x<N && y<N;
+const allSnakes = () => [...(player?[player]:[]), ...ais.filter(a=>a.alive)];
+function occupied(x,y){
+  if(walls[y*N+x]) return true;
+  for(const s of allSnakes()) for(const p of s.body) if(p.x===x && p.y===y) return true;
+  return false;
+}
+function cellFree(x,y){
+  if(!inB(x,y) || occupied(x,y)) return false;
+  if(foods.some(f=>f.x===x&&f.y===y) || items.some(i=>i.x===x&&i.y===y)) return false;
+  return true;
+}
+function randomFree(margin=0){
+  for(let k=0;k<400;k++){ const x=margin+rand(N-2*margin), y=margin+rand(N-2*margin); if(cellFree(x,y)) return {x,y}; }
+  return null;
+}
+function findSpawn(len, prefer){
+  for(let k=0;k<300;k++){
+    const d = prefer ? prefer.d : DL[rand(4)];
+    const x = prefer && k<40 ? prefer.x + rand(5)-2 : 2+rand(N-4);
+    const y = prefer && k<40 ? prefer.y + rand(5)-2 : 2+rand(N-4);
+    const [dx,dy] = DV[d]; let ok = true; const body=[];
+    for(let i=-3;i<len;i++){ const cx=x-dx*i, cy=y-dy*i; if(!cellFree(cx,cy)){ok=false;break;} if(i>=0) body.push({x:cx,y:cy}); }
+    if(!ok) continue;
+    if(player && player.body.length && !prefer){ const h=player.body[0]; if(Math.abs(h.x-x)+Math.abs(h.y-y)<7) continue; }
+    return {body, d};
+  }
+  return null;
+}
+
+// ---------- setup ----------
+function genWalls(s){
+  walls = new Uint8Array(N*N);
+  if(s<2) return;
+  const count = Math.min(s-1, 7);
+  const safe = (x,y) => !(x>=2 && x<=13 && y>=10 && y<=14);
+  for(let k=0;k<count;k++){
+    const len = 3+rand(4), horiz = rand(2)===0;
+    const x0 = 2+rand(N-4-(horiz?len:0)), y0 = 2+rand(N-4-(horiz?0:len));
+    const cells=[];
+    for(let i=0;i<len;i++){ const x=horiz?x0+i:x0, y=horiz?y0:y0+i; cells.push([x,y],[N-1-x,N-1-y]); }
+    if(cells.every(([x,y])=>safe(x,y))) cells.forEach(([x,y])=>walls[y*N+x]=1);
+  }
+}
+function makePlayer(){
+  const sp = findSpawn(4, {x:7,y:12,d:'right'}) || findSpawn(3);
+  return {body:sp.body, dir:sp.d, queue:[], grow:0, alive:true};
+}
+function spawnAI(slot){
+  const sp = findSpawn(3);
+  if(!sp) return null;
+  return {body:sp.body, dir:sp.d, grow:0, alive:true, hue:AI_HUES[slot%AI_HUES.length], slot, respawnAt:0};
+}
+function topUpFood(){
+  const want = diff==='hard' ? 4 : 3;
+  let apples = foods.filter(f=>f.t==='apple').length;
+  while(apples<want){ const p=randomFree(1); if(!p) break; foods.push({...p,t:'apple'}); apples++; }
+}
+function setupStage(){
+  target = 5 + stage*2; applesEaten = 0;
+  foods = []; items = []; ais = []; player = null;
+  genWalls(stage);
+  player = makePlayer();
+  const n = D.ai(stage);
+  for(let i=0;i<n;i++){ const a=spawnAI(i); if(a) ais.push(a); }
+  topUpFood();
+  effects = {shield:0, ghost:0, magnet:0, double:0, freeze:0, slow:0};
+  invuln = 1500;
+  nextItemAt = gameTime + 3500;
+  particles=[]; floats=[];
+  hud();
+}
+function newGame(){
+  D = DIFFS[diff]; stage = 1; score = 0; lives = D.lives; gameTime = 0;
+  setupStage();
+}
+
+// ---------- AI ----------
+function blockedFor(ai){
+  const g = new Uint8Array(N*N);
+  for(let i=0;i<N*N;i++) g[i]=walls[i];
+  for(const s of allSnakes()){
+    const b = s.body, end = (s===ai && s.grow===0) ? b.length-1 : b.length;
+    for(let i=0;i<end;i++) g[b[i].y*N+b[i].x]=1;
+  }
+  if(D.avoidHead && !phase()){
+    const h=player.body[0];
+    for(const d of DL){ const x=h.x+DV[d][0], y=h.y+DV[d][1]; if(inB(x,y)) g[y*N+x]=1; }
+  }
+  return g;
+}
+function flood(g, start, limit){
+  const seen = new Uint8Array(N*N); const q=[start]; seen[start]=1; let n=0;
+  while(q.length && n<limit){ const c=q.pop(); n++; const cx=c%N, cy=(c/N)|0;
+    for(const d of DL){ const x=cx+DV[d][0], y=cy+DV[d][1]; if(!inB(x,y)) continue; const i=y*N+x; if(g[i]||seen[i]) continue; seen[i]=1; q.push(i); } }
+  return n;
+}
+function aiDecide(ai){
+  const g = blockedFor(ai), h = ai.body[0];
+  const opts = [];
+  for(const d of DL){ if(d===REV[ai.dir]) continue; const x=h.x+DV[d][0], y=h.y+DV[d][1]; if(!inB(x,y)) continue; const i=y*N+x; if(!g[i]) opts.push({d,i}); }
+  if(!opts.length) return ai.dir;
+  if(Math.random()<D.aiRandom) return opts[rand(opts.length)].d;
+  const targets = new Set(foods.map(f=>f.y*N+f.x));
+  if(D.hunt && Math.random()<D.hunt){
+    const ph=player.body[0], [dx,dy]=DV[player.dir], tx=ph.x+dx*3, ty=ph.y+dy*3;
+    if(inB(tx,ty) && !g[ty*N+tx] && Math.abs(ph.x-h.x)+Math.abs(ph.y-h.y)<10){ targets.clear(); targets.add(ty*N+tx); }
+  }
+  const start = h.y*N+h.x, prev = new Int16Array(N*N).fill(-1); prev[start]=start;
+  const q=[start]; let qi=0, found=-1;
+  while(qi<q.length){ const c=q[qi++]; if(c!==start && targets.has(c)){found=c;break;}
+    const cx=c%N, cy=(c/N)|0;
+    for(const d of DL){ const x=cx+DV[d][0], y=cy+DV[d][1]; if(!inB(x,y)) continue; const i=y*N+x; if(g[i]||prev[i]!==-1) continue; prev[i]=c; q.push(i); } }
+  const need = ai.body.length + 4;
+  if(found>=0){ let s=found; while(prev[s]!==start) s=prev[s]; const o=opts.find(o=>o.i===s); if(o && flood(g,o.i,need)>=need) return o.d; }
+  let bestO=opts[0], bestN=-1;
+  for(const o of opts){ const n=flood(g,o.i,250); if(n>bestN){bestN=n;bestO=o;} }
+  return bestO.d;
+}
+
+// ---------- gameplay ----------
+const phase = () => effects.ghost>0 || invuln>0;
+const mult = () => effects.double>0 ? 2 : 1;
+function bodyHit(x,y,self,selfGrowing){
+  if(walls[y*N+x]) return 'wall';
+  for(const s of allSnakes()){
+    const b=s.body, end = (s===self && !selfGrowing) ? b.length-1 : b.length;
+    for(let i=0;i<end;i++) if(b[i].x===x&&b[i].y===y) return s;
+  }
+  return null;
+}
+function addScore(n, x, y, color){ const v=n*mult(); score+=v; floatText(x,y,'+'+v,color); }
+
+function tick(){
+  if(player.queue.length) player.dir = player.queue.shift();
+  const h = player.body[0], [dx,dy] = DV[player.dir];
+  let nx=h.x+dx, ny=h.y+dy;
+  if(!inB(nx,ny)){
+    if(phase() || effects.shield){ if(!phase()) useShield(); nx=(nx+N)%N; ny=(ny+N)%N; }
+    else return die();
+  }
+  const hit = bodyHit(nx,ny,player,player.grow>0);
+  if(hit && !phase()){
+    if(effects.shield) useShield(); else return die();
+  }
+  player.body.unshift({x:nx,y:ny});
+  if(player.grow>0) player.grow--; else player.body.pop();
+  eatPlayer(nx,ny);
+  if(state!=='play') return;
+
+  if(effects.freeze<=0){
+    for(const ai of ais){
+      if(!ai.alive) continue;
+      if(Math.random()<D.aiSkip) continue;
+      ai.dir = aiDecide(ai);
+      const ah=ai.body[0], [ax,ay]=DV[ai.dir], x=ah.x+ax, y=ah.y+ay;
+      if(!inB(x,y)){ killAI(ai,false); continue; }
+      const t = bodyHit(x,y,ai,ai.grow>0);
+      if(t===player && phase()){ /* passes through */ }
+      else if(t){ killAI(ai, t===player); continue; }
+      ai.body.unshift({x,y});
+      if(ai.grow>0) ai.grow--; else ai.body.pop();
+      const fi = foods.findIndex(f=>f.x===x&&f.y===y);
+      if(fi>=0){ const f=foods[fi]; foods.splice(fi,1); ai.grow += 1; burst(x,y,f.t==='apple'?'#ff5a5f':`hsl(${f.h} 90% 60%)`,6); }
+      const ii = items.findIndex(i=>i.x===x&&i.y===y);
+      if(ii>=0) items.splice(ii,1);
+    }
+  }
+  for(const ai of ais){ if(!ai.alive && gameTime>=ai.respawnAt){ const n=spawnAI(ai.slot); if(n){ Object.assign(ai,n); burst(n.body[0].x,n.body[0].y,`hsl(${ai.hue} 90% 60%)`,10); } } }
+
+  if(effects.magnet>0){
+    const ph=player.body[0];
+    for(const f of foods){
+      const ddx=ph.x-f.x, ddy=ph.y-f.y; if(Math.abs(ddx)+Math.abs(ddy)>7 || (ddx===0&&ddy===0)) continue;
+      const mx = Math.abs(ddx)>=Math.abs(ddy) ? f.x+Math.sign(ddx) : f.x, my = Math.abs(ddx)>=Math.abs(ddy) ? f.y : f.y+Math.sign(ddy);
+      if(mx===ph.x&&my===ph.y){ f.x=mx; f.y=my; continue; }
+      if(cellFree(mx,my)){ f.x=mx; f.y=my; }
+    }
+    eatPlayer(ph.x,ph.y);
+  }
+  topUpFood();
+  hud();
+}
+
+function eatPlayer(x,y){
+  for(let k=foods.length-1;k>=0;k--){
+    const f=foods[k]; if(f.x!==x||f.y!==y) continue;
+    foods.splice(k,1);
+    if(f.t==='apple'){ player.grow+=1; applesEaten++; addScore(10+(stage-1)*2,x,y,'#ffd1dc'); burst(x,y,'#ff5a5f',12); }
+    else { player.grow+=1; addScore(3,x,y,`hsl(${f.h} 90% 75%)`); burst(x,y,`hsl(${f.h} 90% 60%)`,5); }
+    buzz(12);
+  }
+  const ii = items.findIndex(i=>i.x===x&&i.y===y);
+  if(ii>=0){ const it=items[ii]; items.splice(ii,1); applyItem(it.k,x,y); }
+  if(applesEaten>=target && state==='play') stageClear();
+}
+
+function applyItem(k,x,y){
+  const I=ITEMS[k];
+  burst(x,y,I.c,18); buzz(25);
+  switch(k){
+    case 'shield': effects.shield=1; floatText(x,y,'방패!',I.c); break;
+    case 'bomb': {
+      let n=0; for(const ai of ais) if(ai.alive){ killAI(ai,true,true); n++; }
+      shake=14; floatText(x,y,n?`펑! ×${n}`:'펑!',I.c); break;
+    }
+    case 'gem': applesEaten+=2; player.grow+=2; addScore(50,x,y,I.c); break;
+    case 'poison': {
+      const cut=Math.min(3, player.body.length-3);
+      for(let i=0;i<cut;i++){ const p=player.body.pop(); burst(p.x,p.y,I.c,4); }
+      floatText(x,y,'으윽, -'+cut+'칸',I.c); shake=6; break;
+    }
+    default: effects[k]=I.dur; floatText(x,y,I.name+'!',I.c);
+  }
+}
+function useShield(){ effects.shield=0; invuln=1500; shake=8; const h=player.body[0]; floatText(h.x,h.y,'방패가 막았다!','#3be8ff'); burst(h.x,h.y,'#3be8ff',16); }
+
+function killAI(ai, byPlayer, bomb){
+  ai.alive=false; ai.respawnAt = gameTime + (bomb?6000:4000);
+  ai.body.forEach((p,i)=>{ burst(p.x,p.y,`hsl(${ai.hue} 95% 60%)`, i===0?14:4);
+    if(i>0 && Math.random()<.6 && !walls[p.y*N+p.x] && foods.length<60) foods.push({x:p.x,y:p.y,t:'pellet',h:ai.hue}); });
+  const h=ai.body[0];
+  if(byPlayer){ score += 30*mult(); floatText(h.x,h.y,(bomb?'':'격파! ')+'+'+30*mult(),`hsl(${ai.hue} 95% 70%)`); }
+  shake=Math.max(shake,5);
+}
+
+function die(){
+  const b=player.body;
+  b.forEach((p,i)=>burst(p.x,p.y,`hsl(${(i*14+gameTime*.12)%360} 95% 62%)`, i===0?20:5));
+  shake=16; buzz([40,60,40]);
+  lives--;
+  if(lives<=0){ hud(); return gameOver(); }
+  player = makePlayer();
+  invuln = 2500; effects.shield=0;
+  floatText(player.body[0].x, player.body[0].y, '목숨 -1', '#ff4fa3');
+  hud();
+}
+
+function spawnItem(){
+  if(items.length>=2) return;
+  const pool = Object.entries(ITEMS).filter(([,v])=>!v.minStage || stage>=v.minStage);
+  const tot = pool.reduce((s,[,v])=>s+v.w,0); let r=Math.random()*tot, k=pool[0][0];
+  for(const [kk,v] of pool){ r-=v.w; if(r<=0){k=kk;break;} }
+  const p=randomFree(1); if(!p) return;
+  items.push({...p,k,expires:gameTime+9000,born:gameTime});
+}
+
+// ---------- flow / screens ----------
+function stageClear(){
+  state='stage';
+  const bonus = 100*stage; score+=bonus;
+  stage++;
+  let extra = '';
+  if((stage-1)%3===0 && lives<9){ lives++; extra = '<p>보너스 목숨 +1 ♥</p>'; }
+  hud();
+  const n = D.ai(stage), wallN = Math.min(stage-1,7);
+  showOverlay(`<h2 style="color:var(--amber)">스테이지 ${stage-1} 클리어!</h2>
+    <p class="big">+${bonus}</p>${extra}
+    <p>다음 스테이지 ${stage}: AI 뱀 ${n}마리 · 벽 ${wallN}쌍 · 사과 ${5+stage*2}개 목표 · 속도 올라감</p>
+    <button class="primary" id="go">스테이지 ${stage} 시작</button>`);
+  $('go').onclick = () => { setupStage(); resume(); };
+}
+
+function gameOver(){
+  state='over';
+  const rec = {id:null, name:playerName, score, stage, diff};
+  lastResult = rec;
+  const prevBest = board(diff).find(e=>e.name.toLowerCase()===playerName.toLowerCase());
+  rec.prevBest = prevBest ? prevBest.score : -1;
+  showOverlay(`<h2 id="ovTitle" style="color:var(--pink)">게임 오버</h2>
+    <p class="big">${score.toLocaleString()}점</p>
+    <p id="rankLine">${esc(playerName)} · ${D.name} · 스테이지 ${stage}</p>
+    <div class="mini-h"><span>내 주변 순위</span><span id="overLive"></span></div>
+    <ol class="mini" id="overRank"><li class="empty">순위 계산 중…</li></ol>
+    <div class="row"><button class="primary" id="go">다시 하기</button><button class="secondary" id="toHome">처음으로</button></div>`);
+  $('go').onclick = () => { newGame(); resume(); };
+  $('toHome').onclick = menu;
+  rankTab = diff; renderRankCard();
+  if(score>0) saveResult(rec).then(()=>refreshRanks()); else renderOverRank();
+}
+function renderOverRank(){
+  const r = lastResult; if(!r || !$('overRank')) return;
+  const list = board(r.diff);
+  let idx = list.findIndex(e=>e.name.toLowerCase()===r.name.toLowerCase());
+  const total = list.length;
+  const myBest = idx>=0 ? list[idx].score : 0;
+  const isPB = r.score>0 && r.score>r.prevBest;
+  $('ovTitle').textContent = isPB && idx===0 ? '🏆 1위 달성!' : isPB ? '개인 최고 기록!' : '게임 오버';
+  $('ovTitle').style.color = isPB ? 'var(--amber)' : 'var(--pink)';
+  if(idx<0){
+    $('rankLine').innerHTML = r.score>0 ? `${esc(r.name)} · ${D.name} · 기록 저장 중…` : `${esc(r.name)} · 0점은 랭킹에 올라가지 않아요`;
+    $('overRank').innerHTML = list.slice(0,3).map((e,i)=>rowHTML(e,i)).join('') || '<li class="empty">아직 기록이 없어요</li>';
+    return;
+  }
+  $('rankLine').innerHTML = `<b style="color:var(--fg);font-size:1.25rem">${DIFFS[r.diff].name} ${total}명 중 <span style="color:var(--amber)">${idx+1}위</span></b>`
+    + (isPB ? '' : `<br>내 최고 기록 ${myBest.toLocaleString()}점 기준`);
+  const from = Math.max(0, Math.min(idx-2, total-5)), to = Math.min(total, from+5);
+  $('overRank').innerHTML = list.slice(from,to).map((e,i)=>rowHTML(e,from+i,{fresh:from+i===idx && isPB})).join('');
+  $('overLive').textContent = online ? '● 실시간' : '이 기기 기록';
+}
+
+function menu(){
+  state='menu';
+  newGame(); hud();
+  showOverlay(`<h2 class="title-rainbow"><span>뱀</span><span>꼬</span><span>리</span><span>잡</span><span>기</span></h2>
+    <div class="namebox">
+      <label for="nameInput">플레이어 이름</label>
+      <input id="nameInput" maxlength="10" autocomplete="off" enterkeyhint="go" placeholder="이름을 입력하세요" value="${esc(playerName)}">
+      <span class="hint" id="nameHint">랭킹에 이 이름으로 기록돼요 (10자 이내)</span>
+    </div>
+    <div class="seg" role="group" aria-label="난이도">${Object.entries(DIFFS).map(([k,v])=>`<button data-diff="${k}" aria-pressed="${k===diff}">${v.name}</button>`).join('')}</div>
+    <p class="diff-note" id="note">${D.note}</p>
+    <button class="primary" id="go">게임 시작</button>
+    <div class="mini-h"><span id="homeTopH">🏆 ${D.name} TOP 5</span><span id="homeLive"></span></div>
+    <ol class="mini" id="homeTop"></ol>`);
+  const inp = $('nameInput');
+  const valid = () => { const v=inp.value.trim(); $('go').disabled = !v; return v; };
+  inp.addEventListener('input', () => { valid(); $('nameHint').className='hint'; $('nameHint').textContent='랭킹에 이 이름으로 기록돼요 (10자 이내)'; });
+  inp.addEventListener('keydown', e => { if(e.key==='Enter' && !e.isComposing){ e.preventDefault(); $('go').click(); } });
+  valid();
+  $('ov').querySelectorAll('[data-diff]').forEach(b=>b.onclick=()=>{
+    diff=b.dataset.diff; D=DIFFS[diff]; store.set('snake3-diff',diff);
+    $('ov').querySelectorAll('[data-diff]').forEach(x=>x.setAttribute('aria-pressed', x===b));
+    $('note').textContent=D.note; rankTab=diff; newGame(); hud(); renderRankCard(); renderHomeTop();
+  });
+  $('go').onclick = () => {
+    const v = valid();
+    if(!v){ $('nameHint').className='hint err'; $('nameHint').textContent='이름을 먼저 입력해 주세요'; inp.focus(); return; }
+    playerName = v.slice(0,10); store.set('snake3-name', playerName);
+    $('who').hidden=false; $('whoName').textContent=playerName;
+    inp.blur(); newGame(); resume(); renderRankCard();
+  };
+  rankTab = diff; renderRankCard(); renderHomeTop();
+  if(!playerName) setTimeout(()=>inp.focus({preventScroll:true}), 50);
+}
+function renderHomeTop(){
+  const el=$('homeTop'); if(!el) return;
+  $('homeTopH').textContent = `🏆 ${D.name} TOP 5`;
+  $('homeLive').textContent = online ? '● 실시간' : '';
+  const list = board(diff).slice(0,5);
+  el.innerHTML = list.length ? list.map((e,i)=>rowHTML(e,i)).join('') : '<li class="empty">아직 기록이 없어요. 첫 1위가 되어 보세요!</li>';
+}
+function showOverlay(html){
+  const o=$('ov'); o.innerHTML=html; o.hidden=false; o.scrollTop=0;
+  const b=o.querySelector('.primary'); if(b && state!=='menu') b.focus({preventScroll:true});
+  $('pauseBtn').textContent = state==='pause'?'계속하기':'일시정지';
+}
+let countEnd = 0, goFlash = 0;
+function resume(){ state='count'; countEnd=performance.now()+3000; $('ov').hidden=true; acc=0; $('pauseBtn').textContent='일시정지'; buzz(15); }
+function togglePause(){
+  if(state==='play' || state==='count'){ state='pause'; showOverlay(`<h2>일시정지</h2><p>숨 고르고 다시 출발하세요.</p><div class="row"><button class="primary" id="go">계속하기</button><button class="secondary" id="toHome">그만하기</button></div>`); $('go').onclick=resume; $('toHome').onclick=menu; }
+  else if(state==='pause') resume();
+}
+$('pauseBtn').onclick = togglePause;
+$('homeBtn').onclick = () => { if(state==='play'||state==='count') togglePause(); else if(state!=='menu') menu(); };
+
+// ---------- input ----------
+function turn(d){
+  if(state!=='play' && state!=='count') return;
+  const lastD = player.queue.length ? player.queue[player.queue.length-1] : player.dir;
+  if(d===lastD || d===REV[lastD]) return;
+  if(player.queue.length<3) player.queue.push(d);
+}
+const KEYS = {ArrowUp:'up',ArrowDown:'down',ArrowLeft:'left',ArrowRight:'right',w:'up',s:'down',a:'left',d:'right',W:'up',S:'down',A:'left',D:'right','ㅈ':'up','ㄴ':'down','ㅁ':'left','ㅇ':'right'};
+addEventListener('keydown', e=>{
+  if(e.target && e.target.tagName==='INPUT') return;
+  if(KEYS[e.key]){ e.preventDefault(); turn(KEYS[e.key]); }
+  else if(e.key===' '){ e.preventDefault(); if(state==='play'||state==='count'||state==='pause') togglePause(); else if(state!=='menu') $('go')?.click(); }
+  else if(e.key==='Escape' && (state==='play'||state==='count')) togglePause();
+});
+document.querySelectorAll('.pad button').forEach(b=>{
+  b.addEventListener('pointerdown',e=>{ e.preventDefault(); b.classList.add('on'); turn(b.dataset.d); });
+  ['pointerup','pointerleave','pointercancel'].forEach(t=>b.addEventListener(t,()=>b.classList.remove('on')));
+});
+// swipe: direction fires as soon as the finger travels far enough, so long drags can chain turns
+let sx=null, sy=null; const boardEl=$('board');
+boardEl.addEventListener('touchstart',e=>{ if(state!=='play'&&state!=='count') return; const t=e.touches[0]; sx=t.clientX; sy=t.clientY; },{passive:true});
+boardEl.addEventListener('touchmove',e=>{
+  if((state!=='play'&&state!=='count') || sx===null) return; e.preventDefault();
+  const t=e.touches[0], dx=t.clientX-sx, dy=t.clientY-sy;
+  if(Math.max(Math.abs(dx),Math.abs(dy))<26) return;
+  turn(Math.abs(dx)>Math.abs(dy)?(dx>0?'right':'left'):(dy>0?'down':'up'));
+  sx=t.clientX; sy=t.clientY;
+},{passive:false});
+boardEl.addEventListener('touchend',()=>{ sx=null; });
+document.addEventListener('visibilitychange',()=>{ if(document.hidden && (state==='play'||state==='count')) togglePause(); });
+
+// ---------- fx ----------
+function burst(x,y,color,n){
+  if(particles.length>500) return;
+  for(let i=0;i<n;i++){ const a=Math.random()*Math.PI*2, s=.003+Math.random()*.009;
+    particles.push({x:x+.5,y:y+.5,vx:Math.cos(a)*s,vy:Math.sin(a)*s,life:450+Math.random()*450,max:900,color,r:.08+Math.random()*.12}); }
+}
+function floatText(x,y,text,color){ floats.push({x:x+.5,y:y+.2,text,color,life:1000}); }
+function buzz(p){ try{ navigator.vibrate && navigator.vibrate(p); }catch(e){} }
+
+// ---------- HUD ----------
+function hud(){
+  $('stage').textContent=stage; $('score').textContent=score.toLocaleString();
+  $('lives').textContent = lives>5 ? '♥×'+lives : '♥'.repeat(Math.max(lives,0)) || '-';
+  $('diffS').textContent = D.name;
+  $('prog').textContent = `${Math.min(applesEaten,target)} / ${target}`;
+  $('fill').style.width = Math.min(100, applesEaten/target*100)+'%';
+}
+let fxSig='';
+function renderFx(){
+  const list=[];
+  if(invuln>0 && state==='play') list.push(['✨','무적','#fff',invuln/2500]);
+  if(effects.shield) list.push([ITEMS.shield.e,'방패',ITEMS.shield.c,null]);
+  for(const k of ['ghost','magnet','double','freeze','slow']) if(effects[k]>0) list.push([ITEMS[k].e,ITEMS[k].name,ITEMS[k].c,effects[k]/ITEMS[k].dur]);
+  const sig = list.map(l=>l[1]+(l[3]==null?'':Math.ceil(l[3]*20))).join('|');
+  if(sig===fxSig) return; fxSig=sig;
+  $('fx').innerHTML = list.length ? list.map(([e,n,c,r])=>`<span class="chip" style="--c:${c}"><i>${e}</i>${n}${r==null?'':`<span class="t" style="width:${Math.max(0,r*100)}%"></span>`}</span>`).join('')
+    : '<span class="none">아이템을 먹으면 효과가 여기에 표시돼요</span>';
+}
+$('legend').innerHTML = Object.values(ITEMS).map(v=>`<div class="it" style="--c:${v.c}"><span class="ic">${v.e}</span><div><b>${v.name}</b><span>${v.desc}${v.minStage?` · 스테이지 ${v.minStage}부터`:''}</span></div></div>`).join('')
+  + `<div class="it" style="--c:#ff5a5f"><span class="ic">🍎</span><div><b>사과</b><span>몸 +1칸, 진행도 +1</span></div></div>`
+  + `<div class="it" style="--c:#b6ff3b"><span class="ic">✦</span><div><b>조각</b><span>쓰러진 AI 뱀이 남김, +3점</span></div></div>`;
+
+// ---------- render ----------
+let bgGrad, wallPat, W=0, c=0;
+function resize(){
+  const r=cv.getBoundingClientRect(); if(!r.width) return;
+  const d=Math.min(devicePixelRatio||1,2);
+  cv.width=Math.round(r.width*d); cv.height=Math.round(r.width*d);
+  W=cv.width; c=W/N;
+  bgGrad=ctx.createLinearGradient(0,0,W,W); bgGrad.addColorStop(0,'#1d1258'); bgGrad.addColorStop(.55,'#141a4f'); bgGrad.addColorStop(1,'#0e2d52');
+  const pc=document.createElement('canvas'); pc.width=pc.height=Math.max(8,Math.round(c/2)); const p=pc.getContext('2d');
+  p.fillStyle='#ff4fa3'; p.fillRect(0,0,pc.width,pc.height); p.strokeStyle='#ffc23b'; p.lineWidth=pc.width/3;
+  p.beginPath(); p.moveTo(-1,pc.height+1); p.lineTo(pc.width+1,-1); p.stroke();
+  wallPat=ctx.createPattern(pc,'repeat');
+}
+function rr(x,y,w,h,r){ ctx.beginPath(); ctx.roundRect ? ctx.roundRect(x,y,w,h,r) : ctx.rect(x,y,w,h); }
+
+function drawSnake(s, colorAt, alpha, isPlayer){
+  const b=s.body; if(!b.length) return;
+  ctx.globalAlpha=alpha; ctx.lineCap='round';
+  for(let i=b.length-1;i>0;i--){ const a=b[i-1], q=b[i];
+    if(Math.abs(a.x-q.x)+Math.abs(a.y-q.y)!==1) continue;
+    ctx.strokeStyle=colorAt(i,true); ctx.lineWidth=c*(.5-.18*i/b.length);
+    ctx.beginPath(); ctx.moveTo((a.x+.5)*c,(a.y+.5)*c); ctx.lineTo((q.x+.5)*c,(q.y+.5)*c); ctx.stroke(); }
+  for(let i=b.length-1;i>=1;i--){ const p=b[i], r=c*(.43-.17*i/b.length);
+    ctx.fillStyle=colorAt(i,false); ctx.beginPath(); ctx.arc((p.x+.5)*c,(p.y+.5)*c,r,0,7); ctx.fill();
+    ctx.fillStyle='rgba(255,255,255,.28)'; ctx.beginPath(); ctx.arc((p.x+.38)*c,(p.y+.38)*c,r*.35,0,7); ctx.fill(); }
+  const h=b[0], hx=(h.x+.5)*c, hy=(h.y+.5)*c, [dx,dy]=DV[s.dir];
+  ctx.shadowColor=colorAt(0,false); ctx.shadowBlur=c*.8;
+  ctx.fillStyle=colorAt(0,false); ctx.beginPath(); ctx.arc(hx,hy,c*.5,0,7); ctx.fill();
+  ctx.shadowBlur=0;
+  const px=-dy, py=dx;
+  for(const k of [1,-1]){ const ex=hx+dx*c*.12+px*c*.2*k, ey=hy+dy*c*.12+py*c*.2*k;
+    ctx.fillStyle='#fff'; ctx.beginPath(); ctx.arc(ex,ey,c*.14,0,7); ctx.fill();
+    ctx.fillStyle='#160b33'; ctx.beginPath(); ctx.arc(ex+dx*c*.05,ey+dy*c*.05,c*.07,0,7); ctx.fill(); }
+  if(!isPlayer){ ctx.strokeStyle='#160b33'; ctx.lineWidth=c*.06;
+    for(const k of [1,-1]){ const ex=hx+dx*c*.12+px*c*.2*k, ey=hy+dy*c*.12+py*c*.2*k;
+      ctx.beginPath(); ctx.moveTo(ex-dx*c*.14+px*c*.12*k, ey-dy*c*.14+py*c*.12*k); ctx.lineTo(ex-dx*c*.06-px*c*.06*k, ey-dy*c*.06-py*c*.06*k); ctx.stroke(); } }
+  else if(effects.shield){ ctx.strokeStyle='#3be8ff'; ctx.lineWidth=c*.08; ctx.beginPath(); ctx.arc(hx,hy,c*.72,0,7); ctx.stroke(); }
+  ctx.globalAlpha=1;
+}
+
+function draw(now){
+  if(!W) return;
+  ctx.save();
+  if(shake>0){ ctx.translate((Math.random()-.5)*shake*W/500,(Math.random()-.5)*shake*W/500); }
+  ctx.fillStyle=bgGrad; ctx.fillRect(-20,-20,W+40,W+40);
+  ctx.fillStyle='rgba(169,160,220,.22)'; const ds=Math.max(1,c*.08);
+  for(let y=1;y<N;y++) for(let x=1;x<N;x++) ctx.fillRect(x*c-ds/2,y*c-ds/2,ds,ds);
+  ctx.fillStyle=wallPat;
+  for(let i=0;i<N*N;i++) if(walls[i]){ rr((i%N)*c+c*.06,((i/N)|0)*c+c*.06,c*.88,c*.88,c*.2); ctx.fill(); }
+  for(const f of foods){
+    const fx=(f.x+.5)*c, fy=(f.y+.55)*c;
+    if(f.t==='apple'){
+      const bob=Math.sin(now/300+f.x)*c*.04;
+      ctx.shadowColor='#ff5a5f'; ctx.shadowBlur=c*.6;
+      ctx.fillStyle='#ff4757'; ctx.beginPath(); ctx.arc(fx,fy+bob,c*.36,0,7); ctx.fill(); ctx.shadowBlur=0;
+      ctx.fillStyle='rgba(255,255,255,.55)'; ctx.beginPath(); ctx.arc(fx-c*.12,fy-c*.1+bob,c*.09,0,7); ctx.fill();
+      ctx.fillStyle='#7dff9b'; ctx.beginPath(); ctx.ellipse(fx+c*.12,fy-c*.36+bob,c*.14,c*.07,-.6,0,7); ctx.fill();
+    } else {
+      ctx.fillStyle=`hsl(${f.h} 95% 65%)`; ctx.beginPath(); ctx.arc(fx,fy-c*.05,c*.17,0,7); ctx.fill();
+    }
+  }
+  ctx.textAlign='center'; ctx.textBaseline='middle';
+  for(const it of items){
+    const left=it.expires-gameTime; if(left<2500 && Math.floor(now/140)%2) continue;
+    const I=ITEMS[it.k], ix=(it.x+.5)*c, iy=(it.y+.5)*c, pulse=1+Math.sin(now/220)*.08;
+    ctx.fillStyle=I.c+'40'; ctx.strokeStyle=I.c; ctx.lineWidth=c*.08;
+    ctx.shadowColor=I.c; ctx.shadowBlur=c*.7;
+    ctx.beginPath(); ctx.arc(ix,iy,c*.5*pulse,0,7); ctx.fill(); ctx.stroke(); ctx.shadowBlur=0;
+    ctx.font=`${c*.62}px ${EMOJI_FONT}`; ctx.fillText(I.e,ix,iy+c*.04);
+  }
+  const frozen = effects.freeze>0;
+  for(const ai of ais){ if(!ai.alive) continue;
+    drawSnake(ai,(i,dark)=> frozen ? `hsl(195 70% ${dark?55:78}%)` : `hsl(${ai.hue+i*2} 90% ${dark?42:Math.max(45,60-i)}%)`,1,false); }
+  const blink = invuln>0 && Math.floor(now/90)%2;
+  drawSnake(player,(i,dark)=>`hsl(${(now*.12+i*16)%360} 95% ${dark?50:62}%)`, effects.ghost>0?.5:(blink?.35:1), true);
+  for(const p of particles){ ctx.globalAlpha=Math.max(0,p.life/p.max); ctx.fillStyle=p.color; ctx.beginPath(); ctx.arc(p.x*c,p.y*c,p.r*c,0,7); ctx.fill(); }
+  ctx.globalAlpha=1;
+  ctx.font=`${c*.7}px "Black Han Sans",sans-serif`;
+  for(const f of floats){ ctx.globalAlpha=Math.min(1,f.life/400); ctx.lineWidth=c*.14; ctx.strokeStyle='#130d33'; ctx.strokeText(f.text,f.x*c,f.y*c); ctx.fillStyle=f.color; ctx.fillText(f.text,f.x*c,f.y*c); }
+  ctx.globalAlpha=1;
+  if(frozen){ ctx.fillStyle='rgba(155,231,255,.07)'; ctx.fillRect(0,0,W,W); }
+  if(effects.slow>0){ ctx.strokeStyle='rgba(125,255,155,.5)'; ctx.lineWidth=c*.2; ctx.strokeRect(0,0,W,W); }
+  ctx.restore();
+  // countdown 3-2-1, then "출발!"
+  if(state==='count' || now<goFlash){
+    const counting = state==='count';
+    const left = Math.max(0, countEnd-now), n = Math.ceil(left/1000);
+    const frac = counting ? (left%1000)/1000 : (goFlash-now)/600; // 1 → 0 within each second
+    if(counting){ ctx.fillStyle='rgba(19,13,51,.55)'; ctx.fillRect(0,0,W,W); }
+    ctx.save();
+    ctx.textAlign='center'; ctx.textBaseline='middle';
+    const colors = {3:'#ff4fa3',2:'#ffc23b',1:'#3be8ff'};
+    const label = counting ? String(n||1) : '출발!';
+    const col = counting ? colors[n] || '#3be8ff' : '#b6ff3b';
+    const scale = counting ? 1 + frac*.35 : 1 + (1-frac)*.25;
+    ctx.globalAlpha = counting ? Math.min(1, .35 + frac*1.2) : Math.max(0, frac);
+    ctx.translate(W/2, W/2); ctx.scale(scale, scale);
+    ctx.font = `${W*(counting?.32:.17)}px "Black Han Sans",sans-serif`;
+    ctx.lineWidth = W*.018; ctx.strokeStyle = '#130d33'; ctx.strokeText(label, 0, 0);
+    ctx.shadowColor = col; ctx.shadowBlur = W*.05; ctx.fillStyle = col; ctx.fillText(label, 0, 0);
+    ctx.restore();
+    if(counting){
+      ctx.save(); ctx.textAlign='center'; ctx.textBaseline='middle';
+      ctx.font = `${W*.045}px "Black Han Sans",sans-serif`; ctx.fillStyle = '#f6f0ff';
+      ctx.fillText(`스테이지 ${stage}`, W/2, W*.25);
+      ctx.font = `${W*.026}px "Gowun Dodum",sans-serif`; ctx.fillStyle = '#a9a0dc';
+      ctx.fillText('방향을 미리 정해 두어도 돼요', W/2, W*.76);
+      ctx.restore();
+    }
+  }
+}
+
+function interval(){ return Math.max(58, D.base-(stage-1)*6) * (effects.slow>0?1.6:1); }
+
+function loop(now){
+  const dt=Math.min(50, now-last); last=now;
+  if(state==='count'){
+    const n = Math.ceil((countEnd-now)/1000);
+    if(n!==loop.lastN){ loop.lastN=n; if(n>0) buzz(15); }
+    if(now>=countEnd){ state='play'; acc=0; goFlash=now+600; loop.lastN=null; buzz(40); }
+  }
+  else if(state==='play'){
+    gameTime+=dt;
+    for(const k of ['ghost','magnet','double','freeze','slow']) if(effects[k]>0) effects[k]=Math.max(0,effects[k]-dt);
+    if(invuln>0) invuln=Math.max(0,invuln-dt);
+    if(gameTime>=nextItemAt){ spawnItem(); nextItemAt=gameTime+5500+Math.random()*3500; }
+    items = items.filter(i=>i.expires>gameTime);
+    acc+=dt; let iv=interval();
+    while(acc>=iv && state==='play'){ acc-=iv; tick(); iv=interval(); }
+  }
+  for(const p of particles){ p.x+=p.vx*dt; p.y+=p.vy*dt; p.vx*=.97; p.vy*=.97; p.life-=dt; }
+  particles=particles.filter(p=>p.life>0);
+  for(const f of floats){ f.y-=dt*.0012; f.life-=dt; }
+  floats=floats.filter(f=>f.life>0);
+  if(shake>0) shake=Math.max(0,shake-dt*.04);
+  draw(now); renderFx();
+  requestAnimationFrame(loop);
+}
+
+if(window.ResizeObserver) new ResizeObserver(resize).observe(cv); else addEventListener('resize', resize);
+if(playerName){ $('who').hidden=false; $('whoName').textContent=playerName; }
+menu(); resize();
+requestAnimationFrame(t=>{ last=t; loop(t); });
+})();
+</script>
+
+</body></html>

@@ -1,0 +1,199 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>하모하 쿠키 시안</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Jua&family=Gowun+Dodum&display=swap">
+<style>
+:root{--bg:#f4f1fb;--plate:#fff;--ink:#3a2f57;--sub:#857aa3;--soft:#f8f5ff;--line:#e7e1f5;--accent:#ff6b9d;--gold:#ffb21e;--shadow:0 10px 30px -12px rgba(98,72,170,.28)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#1b1630;--plate:#241d3d;--ink:#f4effd;--sub:#aea3cf;--soft:#2b2449;--line:#382e5c;--accent:#ff7fab;--gold:#ffc54d;--shadow:0 12px 30px -14px rgba(0,0,0,.6);color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#1b1630;--plate:#241d3d;--ink:#f4effd;--sub:#aea3cf;--soft:#2b2449;--line:#382e5c;--accent:#ff7fab;--gold:#ffc54d;--shadow:0 12px 30px -14px rgba(0,0,0,.6);color-scheme:dark}
+body{background:var(--bg);color:var(--ink);font-family:"Gowun Dodum",sans-serif;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:20px 48px}
+main{max-width:1180px;margin:0 auto;display:flex;flex-direction:column;gap:18px}
+h1,h2,h3{font-family:Jua,sans-serif;font-weight:400;margin:0;text-wrap:balance}
+p{margin:0;line-height:1.6}
+.head{display:flex;align-items:center;gap:14px;flex-wrap:wrap}.head .lg{width:72px;height:72px}
+.head h1{font-size:clamp(28px,4vw,40px)}.muted{color:var(--sub)}
+.card{background:var(--plate);border-radius:28px;padding:20px;box-shadow:var(--shadow);display:flex;flex-direction:column;gap:12px;min-width:0}
+.stages{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:14px}
+.st{background:var(--soft);border-radius:22px;padding:10px;text-align:center;display:flex;flex-direction:column;gap:4px;align-items:center}
+.st svg{width:100%;max-width:240px;height:auto}.st b{font-family:Jua,sans-serif;font-weight:400;font-size:18px}.st small{color:var(--sub);font-size:13px;line-height:1.4}
+.st .need{font-family:Jua,sans-serif;color:var(--accent);font-size:14px}
+.board{display:grid;grid-template-columns:minmax(0,260px) minmax(0,1fr);gap:20px;align-items:center}
+@media (max-width:700px){.board{grid-template-columns:1fr}}
+.big svg{width:100%;height:auto}
+.bar{height:22px;border-radius:99px;background:var(--soft);overflow:hidden}.bar i{display:block;height:100%;background:linear-gradient(90deg,#01854e,#fcd31a,#e6142d,#cb6fe2,#004caf);border-radius:99px}
+.stats{display:flex;gap:10px;flex-wrap:wrap}.stats div{background:var(--soft);border-radius:18px;padding:8px 14px;min-width:120px}
+.stats small{display:block;color:var(--sub);font-size:13px}.stats b{font-family:Jua,sans-serif;font-weight:400;font-size:26px}
+.pill{display:inline-block;border-radius:999px;padding:3px 12px;background:var(--soft);font-family:Jua,sans-serif;font-size:14px}
+.mini{display:flex;gap:14px;align-items:center;background:var(--soft);border-radius:22px;padding:12px}.mini .c{width:96px;flex:none}.mini svg{width:100%;height:auto}
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:18px}
+.twinkle{animation:tw 1.6s ease-in-out infinite;transform-box:fill-box;transform-origin:center}@keyframes tw{0%,100%{opacity:.3}50%{opacity:1}}
+.spin{animation:sp 16s linear infinite}@keyframes sp{to{transform:rotate(360deg)}}
+.bob{animation:bob 2.6s ease-in-out infinite}@keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+@media (prefers-reduced-motion:reduce){.twinkle,.spin,.bob{animation:none}}
+</style>
+<main id="m"></main>
+<script>const FLAVORS=[
+ {id:'berry',name:'딸기',dough:'#f6b3c0',edge:'#d97a90',chip:'#cf2d4b',raw:'#fcdbe2',icing:'#fff3f6',sp:['#ff6f91','#ffffff','#ffd166']},
+ {id:'choco',name:'초코',dough:'#ad7550',edge:'#7a4b2e',chip:'#3b2014',raw:'#d8b597',icing:'#f6dfc2',sp:['#ff6f91','#7bd3ea','#ffd166']},
+ {id:'milk',name:'우유',dough:'#f6e7c9',edge:'#d6b98a',chip:'#c9975a',raw:'#fdf5e6',icing:'#ffffff',sp:['#9cc7e8','#ffb3c6','#ffe08a']},
+ {id:'matcha',name:'말차',dough:'#a9c97a',edge:'#759a45',chip:'#46622a',raw:'#d6e6bd',icing:'#f1f8e2',sp:['#ff8fab','#ffffff','#f6d860']},
+ {id:'lemon',name:'레몬',dough:'#f6d966',edge:'#d9ad2c',chip:'#f08c12',raw:'#fbedb3',icing:'#fffbea',sp:['#7bd389','#ff8fab','#7bc8f6']},
+ {id:'blue',name:'블루베리',dough:'#a9a3e0',edge:'#6f66b8',chip:'#3c2f86',raw:'#d9d6f3',icing:'#f3f1ff',sp:['#ff8fab','#ffffff','#ffd166']},
+ {id:'mint',name:'민트초코',dough:'#8fd9c8',edge:'#4fae98',chip:'#3b2014',raw:'#cdeee6',icing:'#f0fffb',sp:['#5b3a29','#ff8fab','#ffffff']}
+];
+const STAGES=[
+ {name:'반죽 쿠키',desc:'아직 오븐에 들어가기 전, 말랑말랑 졸린 반죽이에요. 모든 쿠키는 여기서 시작해요.',min:0},
+ {name:'구운 쿠키',desc:'노릇하게 구워져서 눈을 떴어요. 머리에 맛 장식이 생겼어요.',min:10},
+ {name:'칩 쿠키',desc:'쿠키 칩이 콕콕 박혀서 더 맛있어졌어요.',min:25},
+ {name:'토핑 쿠키',desc:'달콤한 아이싱과 알록달록 스프링클을 얹었어요.',min:45},
+ {name:'리본 쿠키',desc:'멋진 리본을 매고 활짝 웃는 쿠키가 되었어요.',min:70},
+ {name:'왕관 쿠키',desc:'맡은 역할을 꾸준히 해낸 쿠키에게 금빛 왕관이 생겨요.',min:100},
+ {name:'별빛 쿠키',desc:'몸에서 따뜻한 빛이 나고 별이 반짝반짝 맴돌아요.',min:140},
+ {name:'전설의 쿠키',desc:'날개와 무지개 빛을 두른, 우리 반 최고의 쿠키예요.',min:190}
+];
+let uid=0;
+const star=(x,y,r,c,cls='')=>`<path class="${cls}" style="transform-origin:${x}px ${y}px" d="M${x} ${y-r} Q${x+r*.18} ${y-r*.18} ${x+r} ${y} Q${x+r*.18} ${y+r*.18} ${x} ${y+r} Q${x-r*.18} ${y+r*.18} ${x-r} ${y} Q${x-r*.18} ${y-r*.18} ${x} ${y-r}Z" fill="${c}"/>`;
+function topper(id,x,y,k){
+  let s='';
+  if(id==='berry') s=`<path d="M0 -10 C10 -10 14 0 8 10 C4 16 -4 16 -8 10 C-14 0 -10 -10 0 -10Z" fill="#e8384f"/><g fill="#ffe08a"><circle cx="-4" cy="-2" r="1.3"/><circle cx="4" cy="0" r="1.3"/><circle cx="0" cy="6" r="1.3"/><circle cx="-3" cy="9" r="1.1"/><circle cx="4" cy="8" r="1.1"/></g><path d="M-9 -9 L-3 -11 L0 -17 L3 -11 L9 -9 L3 -7 L0 -10 L-3 -7Z" fill="#4caf50"/>`;
+  if(id==='choco') s=`<path d="M0 -16 C2 -8 12 -2 12 6 C12 13 6 16 0 16 C-6 16 -12 13 -12 6 C-12 -2 -2 -8 0 -16Z" fill="#4a2818"/><path d="M-5 0 C-6 4 -5 8 -2 10" stroke="#8a5a3a" stroke-width="2.5" fill="none" stroke-linecap="round"/>`;
+  if(id==='milk') s=`<path d="M0 -16 C2 -8 12 -2 12 6 C12 13 6 16 0 16 C-6 16 -12 13 -12 6 C-12 -2 -2 -8 0 -16Z" fill="#ffffff" stroke="#8fbde3" stroke-width="2.5"/><circle cx="-4" cy="4" r="2.6" fill="#cfe5f7"/>`;
+  if(id==='matcha') s=`<ellipse cx="-7" cy="0" rx="6" ry="13" transform="rotate(-30 -7 0)" fill="#5d8f38"/><ellipse cx="7" cy="0" rx="6" ry="13" transform="rotate(30 7 0)" fill="#78ad4c"/><path d="M-7 -8 L-7 8 M7 -8 L7 8" stroke="#d9ecc4" stroke-width="1.4" transform="rotate(0)"/>`;
+  if(id==='lemon') s=`<circle r="13" fill="#ffe066" stroke="#f0b400" stroke-width="3"/><g stroke="#fff6c8" stroke-width="2"><path d="M0 -10 V10 M-10 0 H10 M-7 -7 L7 7 M7 -7 L-7 7"/></g><circle r="2.5" fill="#fff6c8"/>`;
+  if(id==='blue') s=`<circle cx="-6" cy="3" r="8" fill="#4b3fa8"/><circle cx="6" cy="3" r="8" fill="#5d50c4"/><circle cx="0" cy="-7" r="8" fill="#6f62d6"/><path d="M-2 -10 L0 -13 L2 -10" stroke="#2c2370" stroke-width="2" fill="none"/><circle cx="-8" cy="0" r="2" fill="#fff" opacity=".5"/>`;
+  if(id==='mint') s=`<path d="M-13 12 Q-15 2 -6 2 Q-12 -6 -3 -8 Q-4 -16 5 -16 Q2 -8 9 -6 Q16 2 10 4 Q16 6 13 12Z" fill="#c8f2e8" stroke="#4fae98" stroke-width="2"/><circle cx="-4" cy="5" r="2" fill="#3b2014"/><circle cx="5" cy="-4" r="1.8" fill="#3b2014"/>`;
+  return `<g transform="translate(${x} ${y}) scale(${k})">${s}</g>`;
+}
+function cookie(f,s){
+  uid++; const g='c'+uid; let o=`<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="${f.name} ${STAGES[s].name}"><defs>
+   <clipPath id="${g}cl"><circle cx="100" cy="108" r="59"/></clipPath>
+   <radialGradient id="${g}gl"><stop offset="0" stop-color="#fff6b0" stop-opacity=".95"/><stop offset=".6" stop-color="#ffd86b" stop-opacity=".35"/><stop offset="1" stop-color="#ffd86b" stop-opacity="0"/></radialGradient>
+   <linearGradient id="${g}rb" x1="0" x2="1"><stop offset="0" stop-color="#ff6b6b"/><stop offset=".25" stop-color="#ffd166"/><stop offset=".5" stop-color="#5dd39e"/><stop offset=".75" stop-color="#5aa9ff"/><stop offset="1" stop-color="#b47cff"/></linearGradient></defs>`;
+  if(s>=6) o+=`<circle cx="100" cy="108" r="96" fill="url(#${g}gl)"/>`;
+  if(s>=7){
+    o+=`<circle class="spin" cx="100" cy="108" r="84" fill="none" stroke="url(#${g}rb)" stroke-width="5" stroke-dasharray="10 9" stroke-linecap="round" opacity=".85"/>`;
+    const w=`<path d="M44 98 C14 72 2 108 18 118 C6 126 18 142 32 134 C26 146 42 150 50 132Z" fill="#ffffff" stroke="#bcd6f5" stroke-width="2.5"/>`;
+    o+=w+`<g transform="translate(200 0) scale(-1 1)">${w}</g>`;
+  }
+  if(s===0){
+    o+=`<ellipse cx="100" cy="168" rx="58" ry="7" fill="#000" opacity=".08"/>
+    <path d="M100 56 C142 52 170 80 165 114 C161 150 134 170 99 168 C62 170 34 148 37 112 C40 78 62 58 100 56Z" fill="${f.raw}" stroke="${f.dough}" stroke-width="4"/>
+    <g fill="#ffffff" opacity=".8"><circle cx="70" cy="80" r="2.2"/><circle cx="132" cy="86" r="1.8"/><circle cx="58" cy="140" r="2"/><circle cx="142" cy="140" r="2.4"/><circle cx="104" cy="74" r="1.6"/></g>`;
+  } else {
+    o+=`<ellipse cx="100" cy="172" rx="56" ry="7" fill="#000" opacity=".1"/>
+    <circle cx="100" cy="108" r="62" fill="${f.dough}" stroke="${f.edge}" stroke-width="6"/>
+    <ellipse cx="78" cy="78" rx="22" ry="9" transform="rotate(-28 78 78)" fill="#fff" opacity=".28"/>`;
+    if(s>=2) [[66,80,0],[134,78,40],[50,112,80],[150,114,20],[78,152,60],[124,154,110],[100,166,10]].forEach(([x,y,r])=>{
+      o+=`<ellipse cx="${x}" cy="${y}" rx="6.5" ry="5" transform="rotate(${r} ${x} ${y})" fill="${f.chip}"/>`});
+  }
+  if(s>=3){
+    o+=`<g clip-path="url(#${g}cl)"><path d="M30 30 H170 V82 Q160 98 150 84 Q140 100 130 86 Q120 100 110 86 Q100 102 90 86 Q80 100 70 86 Q60 100 50 84 Q40 98 30 82Z" fill="${f.icing}"/>`;
+    [[62,70,20],[80,60,-30],[98,72,60],[118,62,10],[136,72,-50],[90,82,30],[124,84,-10],[72,84,70],[108,56,45],[146,84,0]].forEach(([x,y,r],i)=>{
+      o+=`<rect x="${x-4}" y="${y-1.6}" width="8" height="3.2" rx="1.6" transform="rotate(${r} ${x} ${y})" fill="${f.sp[i%3]}"/>`});
+    o+=`</g>`;
+  }
+  // 얼굴
+  const dark='#3a2418';
+  o+=`<ellipse cx="66" cy="126" rx="8.5" ry="5" fill="#ff7f9a" opacity=".5"/><ellipse cx="134" cy="126" rx="8.5" ry="5" fill="#ff7f9a" opacity=".5"/>`;
+  if(s===0){
+    o+=`<path d="M74 112 Q81 117 88 112 M112 112 Q119 117 126 112" stroke="${dark}" stroke-width="3.2" fill="none" stroke-linecap="round"/><path d="M95 128 Q100 132 105 128" stroke="${dark}" stroke-width="3" fill="none" stroke-linecap="round"/>
+    <text x="140" y="74" font-family="Jua,sans-serif" font-size="16" fill="${f.edge}">z</text><text x="150" y="62" font-family="Jua,sans-serif" font-size="12" fill="${f.edge}">z</text>`;
+  } else {
+    o+=`<ellipse cx="82" cy="110" rx="6.5" ry="8.5" fill="${dark}"/><ellipse cx="118" cy="110" rx="6.5" ry="8.5" fill="${dark}"/><circle cx="84.5" cy="106.5" r="2.4" fill="#fff"/><circle cx="120.5" cy="106.5" r="2.4" fill="#fff"/>`;
+    if(s>=6) o+=`<circle cx="79" cy="113" r="1.6" fill="#fff"/><circle cx="115" cy="113" r="1.6" fill="#fff"/>`;
+    if(s<4) o+=`<path d="M90 124 Q100 134 110 124" stroke="${dark}" stroke-width="3.4" fill="none" stroke-linecap="round"/>`;
+    else o+=`<path d="M88 122 Q100 142 112 122Z" fill="${dark}"/><path d="M94 132 Q100 128 106 132 Q100 138 94 132Z" fill="#ff7f9a"/>`;
+  }
+  // 리본
+  if(s>=4) o+=`<g transform="translate(100 158)"><path d="M0 0 L-22 -11 Q-27 0 -22 11Z" fill="#ff5d8f" stroke="#d63a6c" stroke-width="2" stroke-linejoin="round"/><path d="M0 0 L22 -11 Q27 0 22 11Z" fill="#ff5d8f" stroke="#d63a6c" stroke-width="2" stroke-linejoin="round"/><rect x="-6" y="-6" width="12" height="12" rx="4" fill="#ff86aa" stroke="#d63a6c" stroke-width="2"/></g>`;
+  // 맛 장식
+  if(s>=1&&s<5) o+=topper(f.id,100,50,1.15);
+  if(s>=5){
+    o+=topper(f.id,152,64,.8);
+    const gem=s>=7?'#e8384f':s>=6?'#9b5cff':'#5aa9ff';
+    o+=`<g transform="translate(100 46)"><path d="M-23 9 L-25 -14 L-11 -2 L0 -19 L11 -2 L25 -14 L23 9Z" fill="#ffcc33" stroke="#d99100" stroke-width="2.5" stroke-linejoin="round"/><rect x="-23" y="4" width="46" height="6" rx="2" fill="#f2b300"/><circle cx="0" cy="-1" r="${s>=6?5:3.8}" fill="${gem}"/><circle cx="-25" cy="-15" r="3" fill="#fff3a6"/><circle cx="0" cy="-20" r="3" fill="#fff3a6"/><circle cx="25" cy="-15" r="3" fill="#fff3a6"/></g>`;
+    const sp=s>=7?[[34,56,9],[170,52,8],[22,150,7],[178,156,9],[60,24,6],[146,22,7]]:s>=6?[[34,60,9],[168,96,8],[28,150,7],[172,160,8],[56,26,6]]:[[40,60,8],[164,96,7],[34,150,6]];
+    sp.forEach(([x,y,r],i)=>{o+=`<g style="animation-delay:${i*.27}s" class="twinkle">${star(x,y,r,'#ffc928')}</g>`});
+  }
+  return o+`</svg>`;
+}
+/* ===== 하모하 쿠키 (우리 반 전체 쿠키) =====
+   hamoCookie(단계 0~6, 반짝이는 친구 수, 전체 친구 수) → SVG */
+const HAMO_STAGES=[
+ {name:'하모하 반죽',desc:'우리 반 마음이 모이기 시작했어요. 아직 말랑한 반죽이에요.'},
+ {name:'구운 하모하',desc:'첫 힘이 모여 노릇하게 구워졌어요.'},
+ {name:'손바닥 하모하',desc:'다섯 색 손바닥이 찍혔어요. 하나는 모두를 위해!'},
+ {name:'무지개 하모하',desc:'무지개 아이싱과 친구 별 스프링클이 생겼어요.'},
+ {name:'리본 하모하',desc:'"하모하" 리본을 둘렀어요. 모두는 하나를 위해!'},
+ {name:'왕관 하모하',desc:'함께 해낸 반에게 금빛 왕관이 생겼어요.'},
+ {name:'전설의 하모하',desc:'날개와 무지개 빛을 두른, 우리 반 최고의 쿠키예요.'}
+];
+const HAMO_COLS=['#fcd31a','#01854e','#e6142d','#cb6fe2','#004caf'];
+let huid=0;
+function hand(x,y,rot,col,k){
+  /* 손바닥 + 네 손가락 + 엄지 */
+  const F=[[-27,19,6.4],[-9,23,6.8],[9,22,6.6],[27,17,6]];let o=`<ellipse cx="0" cy="2" rx="15" ry="16"/>`;
+  F.forEach(([a,l,w])=>{const r=a*Math.PI/180,bx=Math.sin(r)*10,by=-Math.cos(r)*10;o+=`<rect x="${(bx-w/2).toFixed(1)}" y="${(by-l).toFixed(1)}" width="${w}" height="${l+4}" rx="${w/2}" transform="rotate(${a} ${bx.toFixed(1)} ${by.toFixed(1)})"/>`});
+  o+=`<rect x="-3.4" y="-15" width="6.8" height="17" rx="3.4" transform="translate(-12 4) rotate(-62 0 0)"/>`;
+  return `<g transform="translate(${x} ${y}) rotate(${rot}) scale(${k})" fill="${col}">${o}</g>`;
+}
+function hamoCookie(stage,lit,total){
+  stage=Math.max(0,Math.min(6,stage|0));huid++;const g='h'+huid;total=total||0;lit=Math.min(lit||0,total);
+  const dough='#f2c98a',edge='#c98d4b',raw='#fbe7c4',ink='#3a2418';
+  let o=`<svg viewBox="0 0 240 240" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="${HAMO_STAGES[stage].name}"><defs>
+   <radialGradient id="${g}gl"><stop offset="0" stop-color="#fff6b0" stop-opacity=".95"/><stop offset=".6" stop-color="#ffd86b" stop-opacity=".35"/><stop offset="1" stop-color="#ffd86b" stop-opacity="0"/></radialGradient>
+   <linearGradient id="${g}rb" x1="0" x2="1"><stop offset="0" stop-color="#01854e"/><stop offset=".25" stop-color="#fcd31a"/><stop offset=".5" stop-color="#e6142d"/><stop offset=".75" stop-color="#cb6fe2"/><stop offset="1" stop-color="#004caf"/></linearGradient>
+   <clipPath id="${g}cl"><circle cx="120" cy="128" r="74"/></clipPath></defs>`;
+  if(stage>=5)o+=`<circle cx="120" cy="128" r="116" fill="url(#${g}gl)"/>`;
+  if(stage>=6){o+=`<circle class="spin" style="transform-origin:120px 128px" cx="120" cy="128" r="104" fill="none" stroke="url(#${g}rb)" stroke-width="6" stroke-dasharray="12 10" stroke-linecap="round" opacity=".9"/>`;
+    const w=`<path d="M60 112 C26 60 0 82 8 108 C-4 118 4 140 22 138 C8 152 22 172 42 160 C40 178 60 180 68 150Z" fill="#fff" stroke="#bcd6f5" stroke-width="3"/><path d="M58 122 C40 104 26 100 16 108 M60 134 C44 128 32 132 26 140 M62 146 C52 146 44 152 42 158" stroke="#cfe2f8" stroke-width="2.5" fill="none" stroke-linecap="round"/>`;o+=w+`<g transform="translate(240 0) scale(-1 1)">${w}</g>`}
+  if(stage===0){
+    o+=`<ellipse cx="120" cy="208" rx="70" ry="9" fill="#000" opacity=".08"/>
+    <path d="M120 70 C170 66 200 100 194 140 C189 182 158 206 118 204 C76 206 44 180 47 136 C50 96 76 72 120 70Z" fill="${raw}" stroke="${dough}" stroke-width="5"/>
+    <path d="M100 136 Q108 142 116 136 M126 136 Q134 142 142 136" stroke="${ink}" stroke-width="3.4" fill="none" stroke-linecap="round"/><path d="M114 154 Q120 159 126 154" stroke="${ink}" stroke-width="3" fill="none" stroke-linecap="round"/>
+    <ellipse cx="94" cy="150" rx="9" ry="5" fill="#ff7f9a" opacity=".45"/><ellipse cx="148" cy="150" rx="9" ry="5" fill="#ff7f9a" opacity=".45"/>`;
+    HAMO_COLS.forEach((c,i)=>{o+=`<circle cx="${84+i*18}" cy="${104+(i%2)*6}" r="3.2" fill="${c}" opacity=".7"/>`});
+    return o+`</svg>`;
+  }
+  o+=`<ellipse cx="120" cy="212" rx="70" ry="9" fill="#000" opacity=".1"/><circle cx="120" cy="128" r="78" fill="${dough}" stroke="${edge}" stroke-width="7"/>`;
+  o+=`<ellipse cx="92" cy="92" rx="26" ry="10" transform="rotate(-28 92 92)" fill="#fff" opacity=".25"/>`;
+  /* 손바닥 자국 */
+  if(stage===1)o+=hand(120,82,0,HAMO_COLS[0],.85);
+  if(stage>=2){const pos=[[120,74,0],[66,108,-62],[174,108,62],[84,176,-140],[156,176,140]];
+    pos.forEach(([x,y,r],i)=>{o+=`<g opacity="${stage>=3?.92:1}">${hand(x,y,r,HAMO_COLS[i],.72)}</g>`})}
+  /* 무지개 아이싱 + 친구 별 */
+  if(stage>=3){o+=`<circle cx="120" cy="128" r="70" fill="none" stroke="url(#${g}rb)" stroke-width="5" opacity=".85"/>`;
+    const N=Math.max(total,1);for(let i=0;i<total;i++){const a=-Math.PI/2+i/N*Math.PI*2;const x=120+Math.cos(a)*90,y=128+Math.sin(a)*90;
+      o+=i<lit?`<g class="twinkle" style="animation-delay:${(i%7)*.2}s">${star(x,y,5.5,HAMO_COLS[i%5])}</g>`:`<circle cx="${x}" cy="${y}" r="2.6" fill="#d9cdbb"/>`}}
+  /* 얼굴 */
+  o+=`<ellipse cx="94" cy="144" rx="10" ry="6" fill="#ff7f9a" opacity=".5"/><ellipse cx="146" cy="144" rx="10" ry="6" fill="#ff7f9a" opacity=".5"/>`;
+  o+=`<ellipse cx="104" cy="128" rx="7" ry="9" fill="${ink}"/><ellipse cx="136" cy="128" rx="7" ry="9" fill="${ink}"/><circle cx="107" cy="124" r="2.6" fill="#fff"/><circle cx="139" cy="124" r="2.6" fill="#fff"/>`;
+  o+=stage<3?`<path d="M110 146 Q120 156 130 146" stroke="${ink}" stroke-width="3.6" fill="none" stroke-linecap="round"/>`
+    :`<path d="M106 144 Q120 166 134 144Z" fill="${ink}"/><path d="M113 155 Q120 150 127 155 Q120 161 113 155Z" fill="#ff7f9a"/>`;
+  /* 리본 띠 */
+  if(stage>=4)o+=`<g transform="translate(120 190)"><path d="M-62 -8 L-74 4 L-62 6 L-66 18 L-48 8Z M62 -8 L74 4 L62 6 L66 18 L48 8Z" fill="#d63a6c"/>
+    <path d="M-56 -12 Q0 4 56 -12 L54 8 Q0 24 -54 8Z" fill="#ff6b9d" stroke="#d63a6c" stroke-width="2"/>
+    <text x="0" y="8" text-anchor="middle" font-family="Jua,sans-serif" font-size="17" fill="#fff">하모하</text></g>`;
+  if(stage>=5)o+=`<g transform="translate(120 44)"><path d="M-30 12 L-33 -18 L-15 -3 L0 -26 L15 -3 L33 -18 L30 12Z" fill="#ffcc33" stroke="#d99100" stroke-width="3" stroke-linejoin="round"/><rect x="-30" y="7" width="60" height="8" rx="3" fill="#f2b300"/>
+    ${HAMO_COLS.map((c,i)=>`<circle cx="${-24+i*12}" cy="11" r="3.2" fill="${c}"/>`).join('')}<circle cx="0" cy="-27" r="4" fill="#fff3a6"/><circle cx="-33" cy="-19" r="3.5" fill="#fff3a6"/><circle cx="33" cy="-19" r="3.5" fill="#fff3a6"/></g>`;
+  if(stage>=5){const sp=stage>=6?[[30,40,9],[210,40,9],[22,196,7],[218,196,8],[120,8,6]]:[[36,52,8],[204,56,7]];
+    sp.forEach(([x,y,r],i)=>{o+=`<g class="twinkle" style="animation-delay:${i*.3}s">${star(x,y,r,'#ffc928')}</g>`})}
+  return o+`</svg>`;
+}
+/* 하모하 로고 (선생님이 주신 그림을 벡터로 옮김) */
+const LOGO=`<svg role="img" aria-label="하모하" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 520 520"><path d="M 262 26 L 259 28 259 40 C 260 105, 259 102, 264 103 C 267 104, 268 104, 271 101 L 274 97 274 85 C 274 79, 274 72, 275 71 C 277 66, 276 30, 274 27 C 271 23, 266 23, 262 26 M 215 40 C 212 42, 212 57, 216 66 C 217 68, 219 75, 220 81 C 222 87, 224 93, 226 96 C 227 99, 229 103, 229 106 C 232 116, 239 115, 238 105 C 238 102, 237 99, 237 99 C 237 98, 237 94, 236 91 C 234 84, 233 76, 232 62 C 230 44, 222 33, 215 40 M 313 45 C 312 45, 311 46, 309 46 C 306 47, 304 51, 304 56 C 304 58, 303 61, 303 62 C 301 65, 300 73, 298 84 C 298 90, 297 92, 294 95 C 291 100, 287 108, 287 112 C 286 117, 278 121, 274 117 C 268 112, 255 117, 254 126 C 253 131, 252 132, 248 129 C 245 126, 238 128, 231 134 C 230 134, 227 135, 224 135 C 214 135, 205 156, 213 165 C 214 166, 215 169, 216 171 C 216 173, 218 176, 219 178 C 221 180, 222 184, 222 187 C 222 190, 223 195, 224 197 C 225 199, 226 203, 226 206 C 226 212, 230 220, 233 220 C 235 221, 261 217, 270 215 C 282 214, 291 213, 293 213 C 294 213, 298 212, 303 209 C 308 207, 315 203, 318 202 C 325 200, 336 190, 337 185 C 338 183, 339 182, 341 182 C 343 182, 345 180, 346 179 C 347 178, 348 178, 349 178 C 352 178, 359 169, 361 164 C 370 145, 351 141, 336 159 C 334 162, 332 164, 327 166 C 324 167, 319 169, 316 171 C 313 173, 310 175, 310 175 C 309 175, 300 165, 297 161 L 295 159 298 149 C 300 143, 302 137, 302 136 C 302 135, 302 132, 303 129 C 304 126, 305 123, 305 121 C 305 119, 305 116, 307 113 C 308 110, 309 108, 308 105 C 308 101, 308 100, 309 98 C 314 92, 324 64, 324 57 C 324 50, 319 44, 313 45 M 174 104 C 173 108, 174 110, 176 113 C 182 118, 194 133, 196 137 C 200 144, 207 141, 208 131 C 209 125, 206 121, 200 117 C 188 108, 182 103, 182 102 C 182 100, 175 102, 174 104" fill="#fcd31a"/><path d="M 176 143 C 169 146, 169 155, 175 167 C 178 172, 179 175, 179 180 C 179 184, 180 188, 180 190 L 181 194 195 194 C 202 194, 209 193, 209 193 C 209 191, 203 180, 201 178 C 200 176, 199 173, 198 167 C 195 150, 185 139, 176 143 M 66 147 C 59 150, 58 161, 65 164 C 66 165, 70 167, 73 168 C 76 170, 80 173, 82 174 C 84 175, 88 177, 93 180 C 98 183, 101 184, 101 186 C 103 190, 107 195, 114 200 C 118 202, 119 204, 119 205 C 119 206, 119 208, 119 209 C 119 210, 117 213, 116 214 C 108 221, 108 231, 116 235 C 122 238, 122 239, 118 242 C 111 246, 112 248, 123 248 C 132 248, 131 248, 132 239 C 132 235, 133 231, 133 229 L 134 226 146 226 C 160 226, 160 225, 160 237 L 160 246 164 245 C 167 245, 170 245, 171 245 C 174 245, 174 240, 175 216 C 175 203, 176 203, 166 207 L 162 209 153 202 C 148 198, 143 195, 141 194 C 139 193, 137 191, 135 190 C 134 189, 131 187, 130 187 C 128 187, 125 184, 122 182 C 120 179, 117 177, 116 178 C 112 178, 110 177, 109 175 C 108 173, 103 168, 97 163 C 92 159, 86 154, 85 153 C 80 147, 71 145, 66 147 M 27 185 C 24 187, 24 195, 27 197 C 29 199, 42 204, 60 209 C 65 211, 71 213, 74 214 C 94 223, 103 222, 99 212 C 98 209, 90 204, 86 204 C 83 204, 75 200, 72 198 C 59 190, 31 182, 27 185 M 208 221 C 207 230, 206 242, 205 248 C 204 262, 207 266, 211 253 C 211 251, 212 247, 213 245 C 214 242, 213 233, 211 215 C 210 201, 209 202, 208 221 M 26 235 C 22 238, 21 244, 25 247 C 33 252, 99 255, 99 250 C 99 245, 92 243, 60 239 C 56 238, 51 237, 49 236 C 43 233, 30 233, 26 235 M 344 243 L 344 252 353 252 L 361 252 353 252 L 345 251 344 243 L 344 234 344 243 M 161 274 C 161 275, 162 276, 163 277 C 165 278, 167 280, 169 283 L 171 287 172 284 C 174 276, 173 274, 166 274 C 163 274, 161 274, 161 274 M 116 275 C 116 276, 117 278, 118 279 L 121 283 125 279 C 127 277, 128 275, 128 275 C 127 274, 117 274, 116 275 M 85 287 C 79 291, 73 295, 71 296 C 67 298, 67 301, 69 304 C 72 306, 76 306, 80 304 C 82 302, 85 302, 85 302 C 86 302, 90 300, 94 299 C 98 297, 103 295, 106 294 C 115 292, 116 286, 108 282 C 101 278, 98 279, 85 287" fill="#01854e"/><path d="M 387 143 C 384 144, 382 147, 382 149 C 382 150, 380 152, 379 154 C 378 156, 375 159, 374 163 C 372 166, 370 170, 368 173 C 361 183, 372 190, 381 182 C 384 179, 384 178, 390 157 C 391 153, 392 150, 393 149 C 394 147, 392 142, 390 143 C 389 143, 388 143, 387 143 M 451 161 C 447 163, 442 166, 440 168 C 438 170, 433 174, 429 177 C 421 183, 404 199, 402 201 C 400 205, 407 206, 412 202 C 414 201, 416 200, 417 200 C 417 200, 420 198, 423 196 C 425 194, 430 191, 433 190 C 436 188, 439 186, 441 185 C 442 184, 445 182, 448 181 C 461 178, 471 165, 465 159 C 462 157, 459 157, 451 161 M 355 195 C 349 197, 347 199, 346 200 C 345 202, 343 204, 341 206 C 339 208, 337 210, 336 212 C 333 215, 327 220, 325 220 C 324 220, 322 221, 321 222 C 319 223, 315 226, 311 228 C 303 232, 301 236, 301 244 C 301 249, 301 250, 302 249 C 303 248, 308 248, 313 248 C 323 247, 323 247, 324 236 C 325 225, 324 226, 338 226 L 350 226 351 235 C 351 246, 351 246, 359 245 L 365 244 366 226 C 366 216, 366 205, 367 201 C 367 191, 367 191, 355 195 M 482 199 C 476 201, 460 208, 451 212 C 450 213, 447 214, 444 214 C 442 214, 438 216, 435 217 C 432 218, 429 220, 427 220 C 421 222, 420 229, 426 232 C 431 234, 434 233, 444 228 C 447 227, 452 225, 455 225 C 459 225, 478 218, 488 214 C 505 207, 500 193, 482 199 M 399 227 C 399 228, 398 234, 397 251 C 396 261, 395 260, 406 261 L 411 262 411 267 C 411 273, 411 273, 418 271 C 421 270, 425 270, 428 270 C 432 271, 433 270, 435 269 C 436 267, 438 267, 459 267 C 481 268, 482 268, 487 266 C 500 259, 494 244, 479 247 C 476 248, 471 249, 468 250 C 464 250, 457 252, 452 253 L 443 255 438 252 C 434 251, 432 250, 424 251 L 415 251 413 248 C 412 246, 412 243, 412 241 C 411 232, 408 226, 402 226 C 401 226, 399 226, 399 227 M 353 274 C 353 275, 353 276, 355 276 C 356 276, 358 279, 360 282 C 363 288, 364 288, 364 280 L 364 274 358 274 C 355 274, 353 274, 353 274 M 359 313 C 356 318, 356 318, 358 319 C 362 322, 363 321, 363 315 C 363 307, 363 307, 359 313 M 391 318 C 390 325, 390 337, 390 338 C 398 342, 413 337, 412 330 C 412 322, 392 310, 391 318" fill="#e6142d"/><path d="M 366 215 C 366 225, 365 234, 366 234 C 366 234, 367 226, 367 216 C 367 205, 368 196, 367 196 C 367 196, 366 204, 366 215 M 182 201 C 181 201, 181 205, 181 210 L 181 218 181 210 L 182 201 192 201 L 202 200 203 203 C 203 206, 203 206, 203 203 L 203 200 193 200 C 186 200, 183 200, 182 201 M 373 201 C 373 202, 373 204, 373 207 L 373 212 373 206 L 374 201 384 201 L 394 201 394 207 L 394 213 395 208 C 395 204, 395 201, 395 201 C 394 199, 374 199, 373 201 M 325 226 C 325 227, 324 230, 324 234 L 324 240 325 233 L 326 227 338 227 L 349 227 350 231 L 350 235 350 230 L 351 226 338 226 C 331 226, 325 226, 325 226 M 308 256 C 308 257, 308 260, 308 263 L 308 268 328 268 L 349 268 329 268 L 309 267 309 261 C 309 256, 309 255, 311 255 L 313 254 311 254 C 309 254, 308 254, 308 256 M 116 268 C 116 268, 126 268, 137 268 C 157 268, 155 268, 130 267 C 122 267, 116 267, 116 268 M 454 268 C 459 268, 468 268, 473 268 C 478 268, 473 268, 463 268 C 453 268, 448 268, 454 268 M 328 278 C 322 280, 314 289, 316 291 C 316 291, 317 290, 317 289 C 322 277, 350 272, 349 283 C 348 285, 349 285, 349 284 C 353 278, 337 274, 328 278 M 252 289 C 252 290, 252 291, 252 292 C 252 292, 252 292, 252 291 C 252 289, 253 289, 261 289 L 270 289 271 297 L 271 305 271 297 L 271 288 262 288 C 254 287, 252 288, 252 289 M 111 302 C 104 309, 109 319, 120 319 C 126 319, 127 318, 124 315 C 122 313, 118 305, 118 301 C 117 297, 115 298, 111 302 M 201 300 C 201 301, 200 313, 197 344 L 196 359 189 360 C 185 360, 179 360, 176 360 L 169 361 170 341 C 170 331, 171 319, 171 315 C 172 308, 170 305, 169 310 C 169 311, 167 314, 165 316 C 162 319, 162 320, 163 321 C 164 322, 165 325, 166 332 L 167 342 164 344 C 163 345, 159 348, 156 350 C 150 354, 142 361, 137 366 C 135 368, 132 371, 129 372 C 126 374, 124 375, 124 377 C 123 380, 121 382, 118 383 C 115 384, 104 390, 90 400 C 77 409, 76 425, 89 425 C 94 425, 95 424, 115 404 C 123 396, 126 394, 128 394 C 133 394, 137 391, 144 386 L 150 382 154 384 C 156 385, 158 387, 158 388 C 161 396, 173 400, 179 394 C 183 390, 186 390, 186 393 C 186 398, 191 401, 201 401 C 204 401, 206 401, 208 403 C 214 408, 223 406, 230 398 C 236 391, 237 389, 236 386 C 236 385, 236 382, 237 379 C 238 377, 239 374, 239 372 C 239 368, 240 363, 244 358 C 245 356, 247 353, 247 353 C 247 352, 248 349, 250 346 C 253 342, 254 340, 254 336 L 254 330 233 331 L 213 331 213 317 L 214 303 210 301 C 204 298, 202 298, 201 300 M 389 330 C 388 339, 389 339, 399 340 C 407 340, 413 338, 413 334 C 413 334, 411 335, 410 336 C 408 339, 407 339, 399 339 C 389 338, 389 339, 390 330 C 390 327, 391 324, 390 324 C 390 324, 389 327, 389 330 M 361 350 C 361 357, 361 361, 362 361 C 362 361, 362 362, 361 368 C 360 370, 361 370, 361 369 C 362 368, 362 366, 362 365 C 362 364, 363 363, 364 362 C 366 361, 366 361, 364 360 C 362 359, 362 359, 361 350 L 361 340 361 350 M 151 403 C 146 404, 141 409, 138 415 C 136 419, 135 421, 128 427 C 125 430, 116 441, 109 452 C 102 461, 104 470, 112 470 C 117 470, 121 465, 132 447 C 138 439, 145 430, 147 427 C 153 421, 160 411, 160 409 C 160 407, 156 402, 154 403 C 154 403, 152 403, 151 403 M 221 415 C 215 420, 214 424, 220 441 C 221 445, 223 450, 223 452 C 225 463, 236 461, 234 450 C 234 448, 233 439, 233 430 C 232 410, 230 407, 221 415 M 183 416 C 182 416, 180 418, 179 421 C 178 424, 176 427, 176 428 C 175 428, 172 435, 168 442 C 165 449, 161 456, 160 458 C 151 469, 150 487, 159 487 C 163 487, 175 470, 175 465 C 175 464, 176 459, 178 453 C 181 447, 183 439, 184 435 C 185 431, 186 427, 187 425 C 190 417, 188 414, 183 416" fill="#cb6fe2"/><path d="M 308 315 C 308 322, 307 328, 307 329 C 307 329, 298 330, 288 330 L 270 330 267 333 C 266 334, 264 338, 263 341 C 262 344, 261 347, 260 348 C 259 348, 258 351, 257 354 C 256 356, 254 361, 252 364 C 248 370, 245 383, 246 389 C 247 391, 246 394, 245 396 C 240 406, 240 409, 240 414 C 240 440, 260 438, 262 412 C 263 406, 263 403, 266 399 C 268 396, 270 393, 270 393 C 270 393, 270 391, 271 389 C 272 387, 273 385, 273 383 C 275 380, 275 380, 290 383 L 296 384 299 391 C 304 405, 305 407, 307 410 C 308 411, 309 413, 309 414 C 309 414, 310 417, 311 419 C 313 422, 315 426, 315 428 C 315 431, 317 433, 319 435 C 322 438, 323 439, 323 442 C 323 444, 323 449, 325 453 C 332 479, 334 483, 340 486 C 349 492, 359 481, 352 472 C 351 470, 348 464, 345 459 C 343 453, 339 446, 337 444 C 335 440, 335 439, 335 433 C 335 426, 333 421, 330 414 C 328 410, 333 405, 338 404 C 348 402, 352 394, 349 387 C 345 381, 346 380, 351 379 C 354 379, 356 378, 357 378 C 361 368, 363 361, 361 361 C 361 361, 360 357, 361 346 C 361 331, 361 330, 356 330 C 355 330, 353 329, 352 328 C 350 325, 347 324, 338 324 C 322 324, 313 317, 310 306 C 309 304, 309 308, 308 315 M 389 344 C 389 344, 388 348, 388 352 C 387 360, 386 360, 407 359 C 425 359, 427 358, 424 353 C 423 350, 422 350, 411 347 C 398 344, 393 343, 391 343 C 390 343, 389 343, 389 344 M 371 385 C 370 387, 372 390, 378 396 C 382 400, 389 406, 394 411 C 399 415, 405 421, 407 423 C 415 435, 435 438, 432 427 C 431 424, 420 412, 416 410 C 414 409, 408 405, 403 401 C 398 398, 392 394, 390 392 C 387 391, 383 389, 380 387 C 375 383, 372 383, 371 385 M 353 410 C 347 412, 350 422, 360 433 C 363 436, 366 439, 366 440 C 366 443, 385 469, 390 474 C 397 480, 406 473, 402 464 C 401 461, 393 451, 387 444 C 379 435, 375 431, 373 428 C 371 423, 362 412, 359 410 C 358 409, 356 409, 353 410" fill="#004caf"/><path d="M 183 203 C 183 204, 182 220, 181 239 C 178 302, 178 321, 177 337 L 176 354 180 353 C 182 353, 185 353, 187 353 C 190 352, 190 346, 194 294 C 195 285, 194 286, 206 283 L 212 282 212 276 C 212 273, 212 270, 212 269 C 212 268, 209 268, 205 267 L 197 266 198 256 C 198 244, 200 224, 202 212 C 203 200, 203 201, 192 201 C 183 201, 183 201, 183 203 M 374 202 C 374 203, 373 220, 370 291 C 370 306, 369 326, 369 335 C 368 354, 367 354, 375 353 C 381 352, 381 353, 382 335 C 386 285, 386 286, 391 285 C 393 285, 397 284, 399 283 L 403 282 403 275 L 404 268 396 267 L 389 266 389 261 C 389 257, 390 246, 391 235 C 392 223, 393 211, 393 208 L 393 201 384 201 C 377 200, 374 201, 374 202 M 273 222 C 268 223, 259 224, 253 225 C 233 228, 233 228, 234 229 C 234 230, 235 239, 235 250 C 237 283, 237 285, 240 284 C 242 284, 251 282, 272 280 C 276 279, 280 278, 282 278 L 285 278 285 271 C 284 264, 284 264, 282 264 C 278 264, 278 265, 282 240 C 283 235, 284 228, 284 225 C 285 220, 286 220, 273 222 M 140 234 C 140 234, 139 238, 139 242 C 138 254, 138 253, 129 254 C 117 255, 118 255, 118 262 L 118 268 145 267 C 176 267, 174 268, 174 259 L 174 252 163 252 L 153 253 153 243 L 153 233 146 233 C 143 233, 140 233, 140 234 M 332 234 C 332 234, 331 239, 330 243 C 329 254, 330 253, 319 254 L 310 255 309 261 C 309 264, 309 267, 309 267 C 310 268, 351 268, 359 267 L 366 266 366 259 L 366 252 355 252 L 344 252 344 242 L 343 233 338 233 C 335 233, 332 233, 332 234 M 249 238 L 269 237 L 268 267 L 250 268 Z M 140 278 C 128 280, 121 296, 126 306 C 136 325, 165 318, 165 298 C 165 287, 164 285, 157 288 C 155 289, 155 287, 156 284 C 158 280, 148 277, 140 278 M 331 278 C 314 283, 311 307, 326 315 C 340 322, 357 313, 357 297 C 357 289, 354 285, 350 288 C 348 289, 345 287, 347 285 C 352 281, 340 276, 331 278 M 253 289 C 253 290, 252 292, 252 295 C 252 298, 252 301, 252 303 L 251 306 236 307 C 219 307, 221 306, 220 316 L 220 324 239 323 C 263 323, 299 322, 300 321 C 300 321, 301 317, 301 313 L 302 305 286 305 L 271 306 270 297 L 270 289 262 289 C 257 289, 253 289, 253 289 M 142 292 C 135 295, 137 304, 145 304 C 150 304, 152 302, 152 297 C 152 291, 147 289, 142 292 M 332 292 C 329 295, 328 300, 331 302 C 333 304, 340 304, 342 301 C 347 294, 339 287, 332 292" fill="#111" fill-rule="evenodd" stroke="#fff" stroke-width="7" paint-order="stroke" stroke-linejoin="round"/></svg>`;
+const BRAND=`<span class="brand-ic" aria-hidden="true">${LOGO}</span><span class="brand-t"><span class="hm">하모하</span><small>1인1역, 아주 작은 목표의 힘</small></span>`;
+
+const N=21,TH=[0,60,180,360,600,900,1300];
+const ex=[0,4,9,14,17,20,21];
+let h=`<div class="head"><span class="lg">${LOGO}</span><div><h1>하모하 쿠키 시안</h1><p class="muted">우리 반 모두의 1인 1역과 2주 목표가 모여 함께 자라는 우리 반 쿠키 · 예시: 5학년 나리반 21명</p></div></div>`;
+h+=`<section class="card"><h2>7단계 진화</h2><p class="muted">별 = 이번 기간에 힘을 보탠 친구 (반짝이면 보탰어요, 회색 점은 아직)</p><div class="stages">${HAMO_STAGES.map((s,i)=>`<div class="st">${hamoCookie(i,ex[i],i>=3?N:0)}<b>${i+1}. ${s.name}</b><span class="need">하모하 힘 ${TH[i]}+</span><small>${s.desc}</small></div>`).join('')}</div></section>`;
+const now=455,st=3,nx=TH[4];
+h+=`<div class="grid2"><section class="card"><h2>📺 칠판 화면 맨 위 (예시)</h2><div class="board"><div class="big bob">${hamoCookie(st,16,N)}</div><div style="display:flex;flex-direction:column;gap:10px">
+<h3 style="font-size:26px">5학년 나리반 ${HAMO_STAGES[st].name}</h3><div class="bar"><i style="width:${Math.round((now-TH[st])/(nx-TH[st])*100)}%"></i></div><p class="muted">다음 단계 '${HAMO_STAGES[st+1].name}'까지 하모하 힘 <b style="color:var(--accent)">${nx-now}</b></p>
+<div class="stats"><div><small>하모하 힘</small><b>${now}</b></div><div><small>이번 기간 힘 보탠 친구</small><b>16/21</b></div><div><small>목표 해낸 친구</small><b>9</b></div></div></div></div></section>
+<section class="card"><h2>🙋 학생 화면 카드 (예시)</h2><div class="mini"><span class="c">${hamoCookie(st,16,N)}</span><div><b style="font-family:Jua,sans-serif;font-size:20px">우리 반 ${HAMO_STAGES[st].name}</b><p class="muted">내가 보탠 힘 <b style="color:var(--accent)">+24</b> · 다음 단계까지 ${nx-now}</p><span class="pill">⭐ 이번 기간 나도 반짝!</span></div></div>
+<h3>하모하 힘이 모이는 방법 (예시 기준)</h3><p>· 1인 1역 하루 체크 ★★★ 3 · ★★ 2 · ★ 1<br>· 2주 목표 하루 ⭕ 2 · 🔺 1<br>· 목표 성실 인정 +10 · 소감·돌아보기 채택 +5 · 칭찬 인정 +3<br>· 🌈 우리 반 모두가 그날 체크하면 '모두 함께' +20</p><h3>정해진 것</h3><p>· 단계가 오르면 반 친구 모두에게 보너스 쿠키 (선생님이 개수 정함)<br>· 전설까지 가도 그대로 두고, 선생님이 원할 때 [처음부터 다시 키우기]</p></section></div>`;
+document.getElementById('m').innerHTML=h;
+</script>
+</body></html>

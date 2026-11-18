@@ -1,0 +1,189 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>고고전진 로고 시안</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Jua&family=Black+Han+Sans&family=Gowun+Dodum&display=swap">
+<style>
+/* 레이아웃: 시안 4개를 위에서 아래로, 각 시안마다 따뜻한 테마/네온 테마를 나란히 */
+:root{
+  --paper:#fff6ea; --card:#fffdf9; --ink:#4b3427; --muted:#7b6153; --line:#f1dcc4;
+  --peach:#ef7656; --go:#3caf73; --yellow:#ffc845; --blue:#4ea3e4; --shadow:#ead2b8;
+  --n-bg:#0c0a24; --n-pink:#ff3cac; --n-cyan:#27e6ff; --n-yellow:#ffe53b; --n-green:#5dff9b;
+  --f-warm:"Jua","Apple SD Gothic Neo","Malgun Gothic",sans-serif;
+  --f-neon:"Black Han Sans","Jua","Apple SD Gothic Neo",sans-serif;
+  --f-body:"Gowun Dodum","Apple SD Gothic Neo","Malgun Gothic",sans-serif;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--paper:#2a1f19;--card:#36291f;--ink:#fbefe4;--muted:#d6c1b0;--line:#4e3b2e;--shadow:#1d1511;color-scheme:dark}}
+:root[data-theme="dark"]{--paper:#2a1f19;--card:#36291f;--ink:#fbefe4;--muted:#d6c1b0;--line:#4e3b2e;--shadow:#1d1511;color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--paper);color:var(--ink);font-family:var(--f-body);font-size:17px;line-height:1.55;background-image:radial-gradient(var(--line) 1.6px,transparent 1.7px);background-size:30px 30px}
+.wrap{max-width:1100px;margin:0 auto;padding-block:28px 56px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));display:grid;gap:28px}
+header h1{font-family:var(--f-warm);font-weight:400;font-size:clamp(28px,4vw,40px);margin:0}
+header p{margin:6px 0 0;color:var(--muted)}
+.opt{background:var(--card);border:2px solid var(--line);border-radius:30px;box-shadow:0 6px 0 var(--shadow);padding:22px;display:grid;gap:16px}
+.opt-head{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap}
+.opt-head .tag{font-family:var(--f-warm);font-size:22px;background:var(--peach);color:#fff;border-radius:999px;padding:2px 14px}
+.opt-head h2{font-family:var(--f-warm);font-weight:400;font-size:26px;margin:0}
+.opt-head p{margin:0;color:var(--muted);flex-basis:100%}
+.pair{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+@media (max-width:760px){.pair{grid-template-columns:1fr}}
+.stage{border-radius:24px;min-height:220px;display:grid;place-items:center;padding:24px 12px;overflow:hidden;min-width:0}
+.warm{background:#fff6ea;background-image:radial-gradient(#f1dcc4 1.6px,transparent 1.7px);background-size:30px 30px;color:#4b3427;border:2px solid #f1dcc4}
+.neon{background:var(--n-bg);background-image:linear-gradient(rgba(124,92,255,.14) 1px,transparent 1px),linear-gradient(90deg,rgba(124,92,255,.14) 1px,transparent 1px);background-size:40px 40px;color:#f5f2ff}
+.label{font-size:14px;color:var(--muted);margin:-6px 0 0 6px}
+.labels{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+@media (max-width:760px){.labels{display:none}}
+
+/* ---------- 시안 A: 계단 ---------- */
+.stairs{display:flex;align-items:flex-end;gap:6px}
+.stairs .st{display:grid;justify-items:center;gap:6px}
+.stairs .ch{font-size:clamp(40px,6.4vw,70px);line-height:1}
+.stairs .blk{width:clamp(58px,8vw,92px);border-radius:14px 14px 6px 6px;display:grid;place-items:start center;padding-top:6px;font-size:16px}
+.stairs .st:nth-child(1) .blk{height:30px}.stairs .st:nth-child(2) .blk{height:54px}.stairs .st:nth-child(3) .blk{height:78px}.stairs .st:nth-child(4) .blk{height:102px}
+.stairs .flag{position:relative}
+.warm .stairs{font-family:var(--f-warm)}
+.warm .stairs .ch{color:var(--peach)}.warm .stairs .st:nth-child(n+3) .ch{color:var(--go)}
+.warm .stairs .blk{background:#ffe0b8;color:#a0765a;box-shadow:0 5px 0 #ead2b8}
+.warm .stairs .st:nth-child(4) .blk{background:var(--yellow);color:#5b3a00}
+.neon .stairs{font-family:var(--f-neon)}
+.neon .stairs .ch{color:var(--n-pink);text-shadow:0 0 10px var(--n-pink),0 0 26px var(--n-pink)}
+.neon .stairs .st:nth-child(n+3) .ch{color:var(--n-cyan);text-shadow:0 0 10px var(--n-cyan),0 0 26px var(--n-cyan)}
+.neon .stairs .blk{background:transparent;border:3px solid #7c5cff;color:#bdb6ec;box-shadow:0 0 12px rgba(124,92,255,.6)}
+.neon .stairs .st:nth-child(4) .blk{border-color:var(--n-yellow);color:var(--n-yellow);box-shadow:0 0 16px var(--n-yellow)}
+.goal{width:clamp(34px,4.6vw,48px);height:clamp(34px,4.6vw,48px);border-radius:50%;border:5px solid currentColor;transform:rotate(-8deg)}
+.warm .goal{color:var(--peach)}.neon .goal{color:var(--n-yellow);box-shadow:0 0 14px var(--n-yellow)}
+
+/* ---------- 시안 B: 달리는 트랙 ---------- */
+.track-logo{display:grid;gap:12px;justify-items:center}
+.track-logo .word{display:flex;align-items:center;gap:.12em;font-size:clamp(48px,8vw,92px);line-height:1}
+.track-logo .chev{font-size:.6em;letter-spacing:-.12em;transform:translateY(-.04em)}
+.track-logo .lane{display:flex;align-items:center;gap:8px;width:min(100%,420px)}
+.track-logo .lane i{flex:1;height:12px;border-radius:999px}
+.track-logo .lane b{font-size:15px;font-weight:400}
+.warm .track-logo{font-family:var(--f-warm)}
+.warm .track-logo .a{color:var(--peach)}.warm .track-logo .b{color:var(--go)}.warm .track-logo .chev{color:var(--yellow)}
+.warm .track-logo .lane i{background:#f1dcc4}.warm .track-logo .lane i.on{background:var(--peach)}
+.warm .track-logo .lane b{color:#7b6153}
+.neon .track-logo{font-family:var(--f-neon)}
+.neon .track-logo .a{color:var(--n-pink);text-shadow:0 0 10px var(--n-pink),0 0 28px var(--n-pink)}
+.neon .track-logo .b{color:var(--n-cyan);text-shadow:0 0 10px var(--n-cyan),0 0 28px var(--n-cyan)}
+.neon .track-logo .chev{color:var(--n-yellow);text-shadow:0 0 12px var(--n-yellow)}
+.neon .track-logo .lane i{background:#2a2366}.neon .track-logo .lane i.on{background:var(--n-pink);box-shadow:0 0 10px var(--n-pink)}
+.neon .track-logo .lane b{color:#bdb6ec}
+@media (prefers-reduced-motion:no-preference){.track-logo .chev{animation:dash 1.2s ease-in-out infinite}}
+@keyframes dash{0%,100%{transform:translate(0,-.04em)}50%{transform:translate(.12em,-.04em)}}
+
+/* ---------- 시안 C: 단계 번호 + 통과 동그라미 ---------- */
+.ring-logo{display:flex;align-items:flex-end;gap:.06em;font-size:clamp(48px,8vw,92px);line-height:1}
+.ring-logo .s{display:grid;justify-items:center;gap:4px}
+.ring-logo .n{font-size:.22em;border-radius:999px;padding:2px 10px;line-height:1.3}
+.ring-logo .last{position:relative}
+.ring-logo .last::after{content:"";position:absolute;inset:-.14em -.16em -.1em -.16em;border:.075em solid currentColor;border-radius:48% 52% 50% 46%;transform:rotate(-10deg)}
+.warm .ring-logo{font-family:var(--f-warm)}
+.warm .ring-logo .s{color:#4b3427}.warm .ring-logo .s:nth-child(4) .ch{color:var(--peach)}
+.warm .ring-logo .n{background:#ffe0b8;color:#8a5f45}
+.warm .ring-logo .s:nth-child(4) .n{background:var(--peach);color:#fff}
+.warm .ring-logo .last::after{color:var(--peach)}
+.neon .ring-logo{font-family:var(--f-neon)}
+.neon .ring-logo .s{color:#f5f2ff;text-shadow:0 0 12px rgba(190,170,255,.7)}
+.neon .ring-logo .s:nth-child(4) .ch{color:var(--n-yellow);text-shadow:0 0 12px var(--n-yellow),0 0 28px var(--n-yellow)}
+.neon .ring-logo .n{border:2px solid #7c5cff;color:#bdb6ec}
+.neon .ring-logo .s:nth-child(4) .n{border-color:var(--n-yellow);color:var(--n-yellow)}
+.neon .ring-logo .last::after{color:var(--n-yellow);filter:drop-shadow(0 0 8px var(--n-yellow))}
+
+/* ---------- 시안 D: 팀 타일이 한 칸씩 전진 ---------- */
+.tiles{display:flex;align-items:center;gap:clamp(3px,.7vw,8px);flex-wrap:nowrap;padding-top:20px}
+.tiles .t{width:clamp(44px,6vw,70px);aspect-ratio:1;display:grid;place-items:center;border-radius:18px;font-size:clamp(28px,3.9vw,46px);line-height:1;flex:none}
+.tiles .t:nth-child(3){transform:translateY(-8px) rotate(-3deg)}
+.tiles .t:nth-child(5){transform:translateY(-16px) rotate(2deg)}
+.tiles .t:nth-child(7){transform:translateY(-24px) rotate(-4deg)}
+.tiles .ar{font-size:clamp(14px,1.8vw,20px)}
+.tiles .bang{font-size:clamp(32px,4.4vw,52px);transform:translateY(-24px)}
+.warm .tiles{font-family:var(--f-warm)}
+.warm .tiles .t.y{background:var(--yellow);color:#5b3a00;box-shadow:0 6px 0 #e0a62a}
+.warm .tiles .t.b{background:var(--blue);color:#fff;box-shadow:0 6px 0 #2f7fbf}
+.warm .tiles .ar{color:#c9a98e}.warm .tiles .bang{color:var(--peach)}
+.neon .tiles{font-family:var(--f-neon)}
+.neon .tiles .t.y{border:4px solid var(--n-yellow);color:var(--n-yellow);box-shadow:0 0 16px var(--n-yellow),inset 0 0 12px rgba(255,229,59,.3);text-shadow:0 0 10px var(--n-yellow)}
+.neon .tiles .t.b{border:4px solid var(--n-cyan);color:var(--n-cyan);box-shadow:0 0 16px var(--n-cyan),inset 0 0 12px rgba(39,230,255,.3);text-shadow:0 0 10px var(--n-cyan)}
+.neon .tiles .ar{color:#7c5cff;text-shadow:0 0 8px #7c5cff}.neon .tiles .bang{color:var(--n-pink);text-shadow:0 0 14px var(--n-pink)}
+.sub{font-size:clamp(15px,1.8vw,18px);margin-top:14px;text-align:center;opacity:.85}
+.stage-inner{display:grid;justify-items:center}
+</style>
+
+<div class="wrap">
+  <header>
+    <h1>고고전진 로고 시안</h1>
+    <p>병아리 캐릭터를 빼고, 글자 자체에 놀이 방법이 보이게 만든 4가지예요. 왼쪽은 따뜻한 테마, 오른쪽은 네온 테마예요.</p>
+  </header>
+
+  <section class="opt">
+    <div class="opt-head"><span class="tag">A</span><h2>계단 오르기</h2><p>글자 한 자가 한 단계예요. 1단계부터 4단계까지 계단을 올라가고, 맨 위에 통과 동그라미가 있어요.</p></div>
+    <div class="pair">
+      <div class="stage warm"><div class="stage-inner">
+        <div class="stairs">
+          <div class="st"><span class="ch">고</span><span class="blk">1</span></div>
+          <div class="st"><span class="ch">고</span><span class="blk">2</span></div>
+          <div class="st"><span class="ch">전</span><span class="blk">3</span></div>
+          <div class="st"><span class="goal" aria-hidden="true"></span><span class="ch">진</span><span class="blk">4</span></div>
+        </div>
+        <div class="sub">한 칸씩 올라가 끝까지!</div></div></div>
+      <div class="stage neon"><div class="stage-inner">
+        <div class="stairs">
+          <div class="st"><span class="ch">고</span><span class="blk">1</span></div>
+          <div class="st"><span class="ch">고</span><span class="blk">2</span></div>
+          <div class="st"><span class="ch">전</span><span class="blk">3</span></div>
+          <div class="st"><span class="goal" aria-hidden="true"></span><span class="ch">진</span><span class="blk">4</span></div>
+        </div>
+        <div class="sub">한 칸씩 올라가 끝까지!</div></div></div>
+    </div>
+  </section>
+
+  <section class="opt">
+    <div class="opt-head"><span class="tag">B</span><h2>달려가는 트랙</h2><p>'고고'와 '전진' 사이에 앞으로 가는 화살표를 넣고, 아래에 1단계부터 6단계까지 채워지는 트랙을 그렸어요. 화살표가 살짝 움직여요.</p></div>
+    <div class="pair">
+      <div class="stage warm"><div class="track-logo">
+        <div class="word"><span class="a">고고</span><span class="chev">▶▶</span><span class="b">전진</span></div>
+        <div class="lane"><b>1</b><i class="on"></i><i class="on"></i><i class="on"></i><i></i><i></i><i></i><b>6</b></div>
+      </div></div>
+      <div class="stage neon"><div class="track-logo">
+        <div class="word"><span class="a">고고</span><span class="chev">▶▶</span><span class="b">전진</span></div>
+        <div class="lane"><b>1</b><i class="on"></i><i class="on"></i><i class="on"></i><i></i><i></i><i></i><b>6</b></div>
+      </div></div>
+    </div>
+  </section>
+
+  <section class="opt">
+    <div class="opt-head"><span class="tag">C</span><h2>단계 번호와 통과 동그라미</h2><p>글자 위에 단계 번호를 달고, 마지막 '진'에 칠판 점수판처럼 분필 동그라미를 쳤어요. 칠판 점수판과 가장 잘 이어져요.</p></div>
+    <div class="pair">
+      <div class="stage warm"><div class="stage-inner">
+        <div class="ring-logo">
+          <div class="s"><span class="n">1단계</span><span class="ch">고</span></div>
+          <div class="s"><span class="n">2단계</span><span class="ch">고</span></div>
+          <div class="s"><span class="n">3단계</span><span class="ch">전</span></div>
+          <div class="s"><span class="n">통과!</span><span class="ch last">진</span></div>
+        </div></div></div>
+      <div class="stage neon"><div class="stage-inner">
+        <div class="ring-logo">
+          <div class="s"><span class="n">1단계</span><span class="ch">고</span></div>
+          <div class="s"><span class="n">2단계</span><span class="ch">고</span></div>
+          <div class="s"><span class="n">3단계</span><span class="ch">전</span></div>
+          <div class="s"><span class="n">통과!</span><span class="ch last">진</span></div>
+        </div></div></div>
+    </div>
+  </section>
+
+  <section class="opt">
+    <div class="opt-head"><span class="tag">D</span><h2>팀 타일 전진</h2><p>노랑 팀·파랑 팀 색 타일이 화살표를 따라 한 칸씩 올라가요. 두 팀이 겨루는 놀이라는 게 한눈에 보여요.</p></div>
+    <div class="pair">
+      <div class="stage warm"><div class="tiles">
+        <span class="t y">고</span><span class="ar">▶</span><span class="t b">고</span><span class="ar">▶</span><span class="t y">전</span><span class="ar">▶</span><span class="t b">진</span><span class="bang">!</span>
+      </div></div>
+      <div class="stage neon"><div class="tiles">
+        <span class="t y">고</span><span class="ar">▶</span><span class="t b">고</span><span class="ar">▶</span><span class="t y">전</span><span class="ar">▶</span><span class="t b">진</span><span class="bang">!</span>
+      </div></div>
+    </div>
+  </section>
+</div>
+
+</body></html>

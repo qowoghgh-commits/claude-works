@@ -1,0 +1,435 @@
+<!doctype html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>우마시 – 우리들의 마음 나누는 시간</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Jua&family=Noto+Sans+KR:wght@400;500;600;700;800&family=Gowun+Dodum&family=Gowun+Batang:wght@400;700&family=Song+Myung&family=Nanum+Pen+Script&display=swap">
+<style>
+html,body{margin:0;height:100%;background:#111;overflow:hidden;font-family:'Noto Sans KR',sans-serif}
+#wrap{position:fixed;inset:0 0 56px 0;display:flex;align-items:center;justify-content:center}
+#stage{position:relative;width:1920px;height:1080px;flex:none;transform-origin:center center;box-shadow:0 10px 40px rgba(0,0,0,.5)}
+#stage *{box-sizing:border-box}
+#stage section{position:absolute;inset:0;width:1920px;height:1080px;overflow:hidden;visibility:hidden}
+#stage section.on{visibility:visible}
+#stage p,#stage h1,#stage h2,#stage h3,#stage ul,#stage ol{margin:0}
+#stage ul,#stage ol{padding-left:1.2em}
+#stage aside{display:none}
+#stage table{border-collapse:collapse;width:100%}
+#stage th{text-align:left;padding:20px 24px}
+#stage td{padding:20px 24px;vertical-align:top;border-bottom:1px solid rgba(0,0,0,.08)}
+x-shape{display:block;flex:none}
+x-shape[kind="ellipse"]{border-radius:50%}
+x-shape[kind="arrow-right"]{clip-path:polygon(0 32%,58% 32%,58% 0,100% 50%,58% 100%,58% 68%,0 68%)}
+x-shape[kind="arrow-up"]{clip-path:polygon(32% 100%,32% 42%,0 42%,50% 0,100% 42%,68% 42%,68% 100%)}
+x-icon{display:inline-flex;align-items:center;justify-content:center;flex:none;line-height:1}
+x-connector{display:block;flex:none;align-self:center;height:0;border-top-style:solid;border-top-color:currentColor;position:relative;margin:0 6px}
+x-connector::after{content:"";position:absolute;right:-4px;top:-11px;border-style:solid;border-width:9px 0 9px 14px;border-color:transparent transparent transparent currentColor}
+#bar{position:fixed;left:0;right:0;bottom:0;height:56px;display:flex;align-items:center;justify-content:center;gap:14px;background:#1c1c1c;color:#ddd;font-size:15px}
+#bar button,#bar a{font:inherit;color:#eee;background:#333;border:0;border-radius:8px;padding:8px 14px;cursor:pointer;text-decoration:none}
+#bar button:hover,#bar a:hover{background:#444}
+#n{min-width:70px;text-align:center;font-variant-numeric:tabular-nums}
+</style></head><body>
+<div id="wrap"><div id="stage"><section id="cover" data-transition="fade" style="background:#FBF6EC;color:#3B3A36;font-family:'Gowun Dodum', Arial, sans-serif;padding:128px;display:flex;flex-direction:row;align-items:center;justify-content:space-between;gap:64px">
+<div style="position:absolute;left:0;top:0;width:1920px;height:28px;background:#A9C4A3"></div>
+<div style="position:absolute;left:0;bottom:0;width:1920px;height:28px;background:#F7E3A1"></div>
+<div style="display:flex;flex-direction:column;gap:32px;flex:1">
+<p style="font-size:32px;color:#4E6B4F;background:#E3EDE0;padding:12px 28px;border-radius:999px;align-self:start">5학년 나리반</p>
+<h1 style="font-family:'Jua', Arial, sans-serif;font-size:240px;font-weight:400;line-height:1;color:#3B3A36">우마시</h1>
+<p style="font-family:'Jua', Arial, sans-serif;font-size:72px;line-height:1.2;color:#4E6B4F"><span style="color:#C9764A">우</span>리들의 <span style="color:#C9764A">마</span>음 나누는 <span style="color:#C9764A">시</span>간</p>
+<p style="font-size:36px;line-height:1.5;color:#6A665C">자신이 쓴 글을 친구들과 함께 읽으며 마음을 나누는 수업</p>
+</div>
+<svg aria-label="펼친 책 위에 하트와 연필이 놓인 그림" width="640" height="560" viewBox="0 0 640 560" xmlns="http://www.w3.org/2000/svg">
+<circle cx="320" cy="300" r="250" fill="#F3EAD3"/>
+<path d="M320 230 C260 190 160 180 70 205 L70 470 C160 450 260 458 320 495 Z" fill="#FFFDF7" stroke="#4E6B4F" stroke-width="8" stroke-linejoin="round"/>
+<path d="M320 230 C380 190 480 180 570 205 L570 470 C480 450 380 458 320 495 Z" fill="#FFFDF7" stroke="#4E6B4F" stroke-width="8" stroke-linejoin="round"/>
+<path d="M120 260 C180 248 240 252 280 268 M120 310 C180 298 240 302 280 318 M120 360 C180 348 240 352 280 368 M120 410 C170 400 220 402 260 414" stroke="#C9D8C5" stroke-width="7" stroke-linecap="round" fill="none"/>
+<path d="M360 268 C400 252 460 248 520 260 M360 318 C400 302 460 298 520 310 M360 368 C400 352 460 348 520 360" stroke="#C9D8C5" stroke-width="7" stroke-linecap="round" fill="none"/>
+<path d="M320 175 C320 175 250 128 250 88 C250 60 274 46 294 46 C308 46 316 56 320 64 C324 56 332 46 346 46 C366 46 390 60 390 88 C390 128 320 175 320 175 Z" fill="#F4B183" stroke="#C9764A" stroke-width="7" stroke-linejoin="round"/>
+<g transform="rotate(-35 470 420)"><rect x="380" y="400" width="200" height="40" rx="6" fill="#F7E3A1" stroke="#B8923A" stroke-width="5"/><path d="M580 400 L625 420 L580 440 Z" fill="#F3D9B5" stroke="#B8923A" stroke-width="5" stroke-linejoin="round"/><path d="M612 414 L625 420 L612 426 Z" fill="#3B3A36"/><rect x="360" y="400" width="24" height="40" rx="6" fill="#F4B183" stroke="#C9764A" stroke-width="5"/></g>
+<path d="M120 120 l8 18 18 8 -18 8 -8 18 -8 -18 -18 -8 18 -8 Z" fill="#F7E3A1" stroke="#B8923A" stroke-width="4" stroke-linejoin="round"/>
+<path d="M540 110 l6 13 13 6 -13 6 -6 13 -6 -13 -13 -6 13 -6 Z" fill="#A9C4A3" stroke="#4E6B4F" stroke-width="4" stroke-linejoin="round"/>
+</svg>
+<p style="position:absolute;left:128px;bottom:72px;width:900px;font-size:28px;color:#6A665C">소담초등학교 5학년 나리반</p>
+<aside>[1분] 차분한 분위기로 시작합니다. “오늘은 우리들의 마음 나누는 시간, 우마시입니다.” 제목의 첫 글자(우·마·시)를 함께 읽어 봅니다.</aside>
+</section>
+
+<section id="goal" data-transition="fade" style="background:#4E6B4F;color:#FBF6EC;font-family:'Gowun Dodum', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;justify-content:center;gap:56px">
+<p style="font-size:32px;color:#3B3A36;background:#F7E3A1;padding:10px 28px;border-radius:999px;align-self:start">배움 열기 · 오늘의 배움 목표</p>
+<h1 style="font-family:'Jua', Arial, sans-serif;font-size:112px;font-weight:400;line-height:1.25;color:#FBF6EC">자신이 쓴 글을 친구들과 함께 읽으며<br><span style="color:#F7E3A1">마음을 나눈다.</span></h1>
+<div style="display:flex;flex-direction:row;gap:24px;align-items:center">
+<x-icon name="Book" style="color:#F4B183;width:56px;height:56px"></x-icon>
+<p style="font-size:36px;color:#E3EDE0">읽고 · 생각하고 · 댓글로 마음을 건네요</p>
+</div>
+<p style="position:absolute;left:128px;bottom:64px;width:1000px;font-size:24px;color:#C9D8C5">우마시 · 우리들의 마음 나누는 시간</p>
+<p style="position:absolute;right:128px;bottom:64px;width:200px;font-size:24px;color:#C9D8C5;text-align:right">2</p>
+<aside>[2분] 목표 문장을 다 함께 소리 내어 읽습니다. “오늘은 친구의 글을 ‘평가’하는 게 아니라, 글 속에 담긴 친구의 마음을 만나 보는 시간이에요.”</aside>
+</section>
+
+<section id="promise" data-transition="fade" style="display:flex; flex-direction:column; gap:56px; padding:128px 128px 160px; background:#fbf6ec">
+  <div style="display:flex; flex-direction:column; gap:20px">
+    <p style="width:161px; align-self:start; padding:8px 24px; font-family:'Gowun Dodum', Arial, sans-serif; font-size:28px; color:#4e6b4f; background:#e3ede0; border-radius:256px">배움 열기&nbsp;</p>
+    <h2 style="font-family:Jua, Arial, sans-serif; font-size:80px; font-weight:400; line-height:1.15; color:#3b3a36">마음을 나누는 약속</h2>
+  </div>
+  <div style="display:grid; gap:40px; grid-template-columns:1fr 1fr 1fr; flex:1">
+    <div style="display:flex; flex-direction:column; gap:28px; padding:48px; background:#fffdf7; border:3px solid #a9c4a3; border-radius:32px">
+      <p style="font-family:Jua, Arial, sans-serif; font-size:72px; line-height:1; color:#4e6b4f">1</p>
+      <x-icon name="Book" style="width:72px; height:72px; color:#4e6b4f"></x-icon>
+      <p style="font-family:Jua, Arial, sans-serif; font-size:44px; line-height:1.4; color:#3b3a36">친구의 글을<br>끝까지 읽어요.</p>
+    </div>
+    <div style="display:flex; flex-direction:column; gap:28px; padding:48px; background:#fffdf7; border:3px solid #f4b183; border-radius:32px">
+      <p style="font-family:Jua, Arial, sans-serif; font-size:72px; line-height:1; color:#c9764a">2</p>
+      <x-icon name="Trust" style="width:72px; height:72px; color:#c9764a"></x-icon>
+      <p style="font-family:Jua, Arial, sans-serif; font-size:44px; line-height:1.4; color:#3b3a36">친구의 마음을<br>함부로 판단하지 않아요.</p>
+    </div>
+    <div style="display:flex; flex-direction:column; gap:28px; padding:48px; background:#fffdf7; border:3px solid #e8cb6e; border-radius:32px">
+      <p style="font-family:Jua, Arial, sans-serif; font-size:72px; line-height:1; color:#9a7a22">3</p>
+      <x-icon name="Users" style="width:72px; height:72px; color:#9a7a22"></x-icon>
+      <p style="font-family:Jua, Arial, sans-serif; font-size:44px; line-height:1.4; color:#3b3a36">내 생각과 다른 마음도<br>존중해요.</p>
+    </div>
+  </div>
+  <p style="position:absolute; bottom:64px; left:128px; width:1000px; font-family:'Gowun Dodum', Arial, sans-serif; font-size:24px; color:#8a857a">우마시 · 우리들의 마음 나누는 시간</p>
+  <p style="position:absolute; right:128px; bottom:64px; width:200px; font-family:'Gowun Dodum', Arial, sans-serif; font-size:24px; text-align:right; color:#8a857a">3</p>
+  <aside>[2분] 세 가지 약속을 한 줄씩 함께 읽습니다. 글을 공개하는 친구가 부담을 느끼지 않도록, 존중하는 분위기를 먼저 만들어 줍니다.</aside>
+</section>
+
+<section id="tread" data-transition="fade" style="display:flex; flex-direction:row; gap:56px; padding:128px 128px 160px; background:#fbf6ec">
+  <div style="width:520px; display:flex; flex-direction:column; gap:32px">
+    <p style="align-self:start; padding:8px 24px; font-family:'Gowun Dodum', Arial, sans-serif; font-size:28px; color:#4e6b4f; background:#e3ede0; border-radius:256px">배움 열기&nbsp;</p>
+    <h2 style="font-family:Jua, Arial, sans-serif; font-size:80px; font-weight:400; line-height:1.15; color:#3b3a36">선생님 마음<br>나누기</h2>
+    <p style="font-family:'Gowun Dodum', Arial, sans-serif; font-size:36px; line-height:1.5; color:#5b5850">선생님이 쓴 글을 천천히 읽어 봐요.</p>
+    <div style="display:flex; flex-direction:column; gap:12px; padding:32px; background:#f7e3a1; border-radius:24px">
+      <h3 style="font-family:'Gowun Dodum', Arial, sans-serif; font-size:32px; font-weight:600; color:#3b3a36">읽으며 생각해요</h3>
+      <p style="font-family:'Gowun Dodum', Arial, sans-serif; font-size:30px; line-height:1.5; color:#3b3a36">이 글에는 선생님의 어떤 마음이 담겨 있을까요?</p>
+    </div>
+  </div>
+  <div style="display:flex; flex-direction:column; gap:24px; flex:1; padding:64px; background:#fffdf7; border:3px solid #e6dcc4; border-radius:32px; box-shadow:0 12px 32px #78643c1f">
+    <p style="font-family:'Gowun Dodum', Arial, sans-serif; font-size:28px; color:#c9764a">✎ 선생님의 글</p>
+    <p style="font-family:'Gowun Dodum', Arial, sans-serif; font-size:40px; line-height:1.7; color:#8a857a">[선생님이 쓴 글 전문을 여기에 넣어 주세요.]</p>
+    <p style="font-family:'Gowun Dodum', Arial, sans-serif; font-size:40px; line-height:1.7; color:#b5afa2">학생들이 교실 뒤에서도 읽을 수 있도록 40px 이상 크기를 권장합니다.</p>
+  </div>
+  <p style="position:absolute; bottom:64px; left:128px; width:1000px; font-family:'Gowun Dodum', Arial, sans-serif; font-size:24px; color:#8a857a">우마시 · 우리들의 마음 나누는 시간</p>
+  <p style="position:absolute; right:128px; bottom:64px; width:200px; font-family:'Gowun Dodum', Arial, sans-serif; font-size:24px; text-align:right; color:#8a857a">4</p>
+  <aside>[3분] 교사가 쓴 글을 화면에 제시합니다. 처음에는 조용히 눈으로 읽고, 이어서 교사가 천천히 읽어 줄 수 있습니다. 오른쪽 상자의 안내 문구를 지우고 원고를 붙여 넣으세요.</aside>
+</section>
+
+<section id="tblank" data-transition="fade" style="background:#FBF6EC;color:#3B3A36;font-family:'Gowun Dodum', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:40px">
+<div style="display:flex;flex-direction:column;gap:20px">
+<p style="font-size:28px;color:#4E6B4F;background:#E3EDE0;padding:8px 24px;border-radius:999px;align-self:start">배움 열기 · 4분</p>
+<h2 style="font-family:'Jua', Arial, sans-serif;font-size:80px;font-weight:400;line-height:1.15">선생님 글의 빈칸 생각하기</h2>
+</div>
+<div style="display:flex;flex-direction:row;gap:48px;flex:1">
+<div style="flex:1;background:#FFFDF7;border:3px solid #E6DCC4;border-radius:32px;padding:56px;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:40px;line-height:1.8;color:#8A857A">[빈칸이 있는 선생님 글을 넣어 주세요.]</p>
+<p style="font-size:40px;line-height:1.8;color:#5B5850">예) 그날 나는 정말 <span style="color:#C9764A"><b>(　　　　　)</b></span> 마음이 들었다.</p>
+</div>
+<div style="width:560px;display:flex;flex-direction:column;gap:32px">
+<div style="background:#F4B183;border-radius:40px 40px 40px 8px;padding:44px;display:flex;flex-direction:column;gap:12px">
+<p style="font-family:'Jua', Arial, sans-serif;font-size:48px;line-height:1.35;color:#3B3A36">선생님은 이 부분에 어떤 말을 쓰셨을까요?</p>
+</div>
+<div style="background:#E3EDE0;border-radius:24px;padding:36px;display:flex;flex-direction:column;gap:12px">
+<h3 style="font-size:32px;font-weight:600;color:#4E6B4F">정답보다 중요한 것</h3>
+<p style="font-size:30px;line-height:1.5;color:#3B3A36">글 속 단서와 선생님의 마음을 떠올려 보는 것!</p>
+</div>
+</div>
+</div>
+<p style="position:absolute;left:128px;bottom:64px;width:1000px;font-size:24px;color:#8A857A">우마시 · 우리들의 마음 나누는 시간</p>
+<p style="position:absolute;right:128px;bottom:64px;width:200px;font-size:24px;color:#8A857A;text-align:right">5</p>
+<aside>[4분] 빈칸이 있는 교사 글을 보여 주고, 떠오른 단어와 그 이유를 자유롭게 말하게 합니다. 여러 답을 칠판에 적어 두면 다음 슬라이드의 이야기로 이어가기 좋습니다.</aside>
+</section>
+
+<section id="tshare" data-transition="fade" style="background:#FBF6EC;color:#3B3A36;font-family:'Gowun Dodum', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:56px">
+<div style="display:flex;flex-direction:column;gap:20px">
+<p style="font-size:28px;color:#4E6B4F;background:#E3EDE0;padding:8px 24px;border-radius:999px;align-self:start">배움 열기 · 3분</p>
+<h2 style="font-family:'Jua', Arial, sans-serif;font-size:80px;font-weight:400;line-height:1.15">선생님 글을 통해 마음 나누기</h2>
+</div>
+<div style="display:flex;flex-direction:column;gap:28px;flex:1;justify-content:center">
+<div style="display:flex;flex-direction:row;align-items:center;gap:36px;background:#FFFDF7;border:3px solid #A9C4A3;border-radius:28px;padding:36px 48px">
+<x-icon name="Chat" style="color:#4E6B4F;width:64px;height:64px"></x-icon>
+<p style="font-size:48px;font-family:'Jua', Arial, sans-serif">어떤 말이 들어갈 것 같았나요?</p>
+</div>
+<div style="display:flex;flex-direction:row;align-items:center;gap:36px;background:#FFFDF7;border:3px solid #F4B183;border-radius:28px;padding:36px 48px">
+<x-icon name="Search" style="color:#C9764A;width:64px;height:64px"></x-icon>
+<p style="font-size:48px;font-family:'Jua', Arial, sans-serif">그렇게 생각한 까닭은 무엇인가요?</p>
+</div>
+<div style="display:flex;flex-direction:row;align-items:center;gap:36px;background:#FFFDF7;border:3px solid #E8CB6E;border-radius:28px;padding:36px 48px">
+<x-icon name="Lightbulb" style="color:#9A7A22;width:64px;height:64px"></x-icon>
+<p style="font-size:48px;font-family:'Jua', Arial, sans-serif">글을 읽으며 선생님에 대해 새롭게 알게 된 점이 있나요?</p>
+</div>
+</div>
+<p style="position:absolute;left:128px;bottom:64px;width:1000px;font-size:24px;color:#8A857A">우마시 · 우리들의 마음 나누는 시간</p>
+<p style="position:absolute;right:128px;bottom:64px;width:200px;font-size:24px;color:#8A857A;text-align:right">6</p>
+<aside>[3분] 학생들의 답을 들은 뒤 실제로 쓴 말을 공개합니다. “글 한 편으로도 그 사람을 새롭게 알게 되지요? 이번에는 친구들의 글로 해 볼 거예요.”</aside>
+</section>
+
+<section id="umasi" data-transition="fade" style="background:#F7E3A1;color:#3B3A36;font-family:'Gowun Dodum', Arial, sans-serif;padding:128px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:40px">
+<svg aria-label="하트가 그려진 펼친 책" width="360" height="260" viewBox="0 0 360 260" xmlns="http://www.w3.org/2000/svg">
+<path d="M180 100 C145 78 85 72 30 86 L30 236 C85 224 145 228 180 250 Z" fill="#FFFDF7" stroke="#4E6B4F" stroke-width="7" stroke-linejoin="round"/>
+<path d="M180 100 C215 78 275 72 330 86 L330 236 C275 224 215 228 180 250 Z" fill="#FFFDF7" stroke="#4E6B4F" stroke-width="7" stroke-linejoin="round"/>
+<path d="M180 76 C180 76 132 44 132 18 C132 4 146 -2 158 0 C168 2 176 8 180 14 C184 8 192 2 202 0 C214 -2 228 4 228 18 C228 44 180 76 180 76 Z" fill="#F4B183" stroke="#C9764A" stroke-width="6" stroke-linejoin="round" transform="translate(0 10)"/>
+</svg>
+<p style="font-size:32px;color:#4E6B4F;background:#FBF6EC;padding:10px 28px;border-radius:999px">배움 펼치기 · 50분</p>
+<h1 style="font-family:'Jua', Arial, sans-serif;font-size:200px;font-weight:400;line-height:1;text-align:center">우마시</h1>
+<p style="font-family:'Jua', Arial, sans-serif;font-size:60px;color:#4E6B4F;text-align:center">우리들의 마음 나누는 시간</p>
+<p style="font-size:40px;color:#5B5850;text-align:center">“이번에는 친구의 글을 통해 서로의 마음을 만나 봅시다.”</p>
+<aside>[1분] 전환 화면. 분위기를 환기하며 본 활동을 안내합니다.</aside>
+</section>
+
+<section id="collection" data-transition="fade" style="background:#FBF6EC;color:#3B3A36;font-family:'Gowun Dodum', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:48px">
+<div style="display:flex;flex-direction:column;gap:20px">
+<p style="font-size:28px;color:#9A4F25;background:#FBE3D1;padding:8px 24px;border-radius:999px;align-self:start">배움 펼치기 · 5분</p>
+<h2 style="font-family:'Jua', Arial, sans-serif;font-size:80px;font-weight:400;line-height:1.15">글 모음집 읽기</h2>
+</div>
+<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:40px;flex:1">
+<div style="background:#FFFDF7;border-radius:32px;padding:48px;display:flex;flex-direction:column;gap:24px;border-top:16px solid #A9C4A3">
+<x-icon name="Book" style="color:#4E6B4F;width:72px;height:72px"></x-icon>
+<h3 style="font-family:'Jua', Arial, sans-serif;font-size:44px;font-weight:400">친구의 글을 만나요</h3>
+<p style="font-size:32px;line-height:1.5;color:#5B5850">글 모음집을 펼쳐 친구들의 글을 읽어요.</p>
+</div>
+<div style="background:#FFFDF7;border-radius:32px;padding:48px;display:flex;flex-direction:column;gap:24px;border-top:16px solid #F4B183">
+<x-icon name="Search" style="color:#C9764A;width:72px;height:72px"></x-icon>
+<h3 style="font-family:'Jua', Arial, sans-serif;font-size:44px;font-weight:400">무엇을 살펴볼까요?</h3>
+<p style="font-size:32px;line-height:1.5;color:#5B5850">글쓴이는 어떤 경험을 했을까? 무엇에 관심이 있을까?</p>
+</div>
+<div style="background:#FFFDF7;border-radius:32px;padding:48px;display:flex;flex-direction:column;gap:24px;border-top:16px solid #E8CB6E">
+<x-icon name="Users" style="color:#9A7A22;width:72px;height:72px"></x-icon>
+<h3 style="font-family:'Jua', Arial, sans-serif;font-size:44px;font-weight:400">골고루 읽어요</h3>
+<p style="font-size:32px;line-height:1.5;color:#5B5850">친한 친구만 고르지 말고, 여러 친구의 글을 읽어 봐요.</p>
+</div>
+</div>
+<p style="position:absolute;left:128px;bottom:64px;width:1000px;font-size:24px;color:#8A857A">우마시 · 우리들의 마음 나누는 시간</p>
+<p style="position:absolute;right:128px;bottom:64px;width:200px;font-size:24px;color:#8A857A;text-align:right">8</p>
+<aside>[5분] 글 모음집을 나눠 주거나 화면에 띄웁니다. 다양한 친구의 글을 읽도록 순서를 정해 주는 것도 방법입니다.</aside>
+</section>
+
+<section id="worksheet" data-transition="fade" style="background:#FBF6EC;color:#3B3A36;font-family:'Gowun Dodum', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:row;gap:56px">
+<div style="display:flex;flex-direction:column;gap:32px;width:540px">
+<p style="font-size:28px;color:#9A4F25;background:#FBE3D1;padding:8px 24px;border-radius:999px;align-self:start">배움 펼치기 · 10분</p>
+<h2 style="font-family:'Jua', Arial, sans-serif;font-size:80px;font-weight:400;line-height:1.15">학습지 빈칸<br>단어 생각하기</h2>
+<div style="display:flex;flex-direction:column;gap:20px">
+<p style="font-size:34px;line-height:1.5"><span style="color:#C9764A"><b>①</b></span> 글 속 단서를 찾아요.</p>
+<p style="font-size:34px;line-height:1.5"><span style="color:#C9764A"><b>②</b></span> 빈칸에 들어갈 단어를 생각해요.</p>
+<p style="font-size:34px;line-height:1.5"><span style="color:#C9764A"><b>③</b></span> 내 예상과 그 이유를 적어요.</p>
+</div>
+</div>
+<div style="flex:1;background:#FFFDF7;border:3px dashed #D6C9A8;border-radius:32px;padding:56px;display:flex;flex-direction:column;gap:28px">
+<p style="font-size:28px;color:#C9764A">✎ 학습지</p>
+<p style="font-size:40px;line-height:1.7;color:#8A857A">[학습지 문항을 여기에 넣어 주세요.]</p>
+<div style="display:flex;flex-direction:row;gap:24px;align-items:center">
+<p style="font-size:32px;color:#5B5850;width:200px">내 예상</p>
+<div style="flex:1;height:72px;border-bottom:3px solid #D6C9A8"></div>
+</div>
+<div style="display:flex;flex-direction:row;gap:24px;align-items:center">
+<p style="font-size:32px;color:#5B5850;width:200px">그 이유</p>
+<div style="flex:1;height:72px;border-bottom:3px solid #D6C9A8"></div>
+</div>
+</div>
+<p style="position:absolute;left:128px;bottom:64px;width:1000px;font-size:24px;color:#8A857A">우마시 · 우리들의 마음 나누는 시간</p>
+<p style="position:absolute;right:128px;bottom:64px;width:200px;font-size:24px;color:#8A857A;text-align:right">9</p>
+<aside>[10분] 글 모음집과 연결된 학습지를 사용합니다. 오른쪽 점선 상자에 실제 문항(캡처 또는 텍스트)을 넣어 주세요. 이유를 꼭 함께 적도록 안내합니다.</aside>
+</section>
+
+<section id="reread" data-transition="fade" style="background:#E3EDE0;color:#3B3A36;font-family:'Gowun Dodum', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:56px">
+<div style="display:flex;flex-direction:column;gap:20px">
+<p style="font-size:28px;color:#9A4F25;background:#FBE3D1;padding:8px 24px;border-radius:999px;align-self:start">배움 펼치기 · 3분</p>
+<h2 style="font-family:'Jua', Arial, sans-serif;font-size:80px;font-weight:400;line-height:1.15">친구의 글 다시 살펴보기</h2>
+</div>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:48px;flex:1">
+<div style="background:#FFFDF7;border-radius:40px 40px 40px 8px;padding:64px;display:flex;flex-direction:column;gap:32px;justify-content:center">
+<x-icon name="Search" style="color:#4E6B4F;width:80px;height:80px"></x-icon>
+<p style="font-family:'Jua', Arial, sans-serif;font-size:52px;line-height:1.4">내가 생각한 단어를 뒷받침하는 <span style="color:#C9764A">단서</span>는 무엇인가요?</p>
+</div>
+<div style="background:#FFFDF7;border-radius:40px 40px 8px 40px;padding:64px;display:flex;flex-direction:column;gap:32px;justify-content:center">
+<x-icon name="Book" style="color:#4E6B4F;width:80px;height:80px"></x-icon>
+<p style="font-family:'Jua', Arial, sans-serif;font-size:52px;line-height:1.4">글의 <span style="color:#C9764A">어느 부분</span>을 읽고 그렇게 생각했나요?</p>
+</div>
+</div>
+<p style="position:absolute;left:128px;bottom:64px;width:1000px;font-size:24px;color:#6A7A66">우마시 · 우리들의 마음 나누는 시간</p>
+<p style="position:absolute;right:128px;bottom:64px;width:200px;font-size:24px;color:#6A7A66;text-align:right">10</p>
+<aside>[3분] 댓글 활동 전에 친구의 글을 자세히 읽도록 돕습니다. 짝과 단서를 짧게 말해 보게 해도 좋습니다.</aside>
+</section>
+
+<section id="web" data-transition="fade" style="background:#FBF6EC;color:#3B3A36;font-family:'Gowun Dodum', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:row;gap:56px">
+<div style="display:flex;flex-direction:column;gap:32px;width:540px">
+<p style="font-size:28px;color:#9A4F25;background:#FBE3D1;padding:8px 24px;border-radius:999px;align-self:start">배움 펼치기 · 10분</p>
+<h2 style="font-family:'Jua', Arial, sans-serif;font-size:80px;font-weight:400;line-height:1.15">웹 프로그램으로<br>댓글 달기</h2>
+<div style="display:flex;flex-direction:column;gap:20px">
+<div style="display:flex;flex-direction:row;gap:20px;align-items:center"><p style="font-family:'Jua', Arial, sans-serif;font-size:36px;color:#FBF6EC;background:#4E6B4F;width:64px;height:64px;border-radius:999px;text-align:center;line-height:1.75">1</p><p style="font-size:34px">웹 프로그램에 접속해요.</p></div>
+<div style="display:flex;flex-direction:row;gap:20px;align-items:center"><p style="font-family:'Jua', Arial, sans-serif;font-size:36px;color:#FBF6EC;background:#4E6B4F;width:64px;height:64px;border-radius:999px;text-align:center;line-height:1.75">2</p><p style="font-size:34px">친구의 글을 골라 다시 읽어요.</p></div>
+<div style="display:flex;flex-direction:row;gap:20px;align-items:center"><p style="font-family:'Jua', Arial, sans-serif;font-size:36px;color:#FBF6EC;background:#4E6B4F;width:64px;height:64px;border-radius:999px;text-align:center;line-height:1.75">3</p><p style="font-size:34px">떠오른 마음을 댓글로 써요.</p></div>
+</div>
+<p style="font-size:28px;color:#5B5850;background:#F7E3A1;padding:16px 24px;border-radius:16px">접속 주소: [웹 프로그램 주소]</p>
+</div>
+<div style="flex:1;background:#FFFDF7;border:3px solid #E6DCC4;border-radius:24px;display:flex;flex-direction:column;overflow:hidden;box-shadow:0 12px 32px rgba(120,100,60,0.12)">
+<div style="background:#E6DCC4;padding:20px 28px;display:flex;flex-direction:row;gap:12px;align-items:center">
+<div style="width:20px;height:20px;border-radius:999px;background:#F4B183"></div>
+<div style="width:20px;height:20px;border-radius:999px;background:#F7E3A1"></div>
+<div style="width:20px;height:20px;border-radius:999px;background:#A9C4A3"></div>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:24px;padding:48px">
+<x-icon name="Globe" style="color:#B5AFA2;width:96px;height:96px"></x-icon>
+<p style="font-size:36px;color:#8A857A;text-align:center">[웹 프로그램 화면 캡처를 넣어 주세요]</p>
+</div>
+</div>
+<p style="position:absolute;left:128px;bottom:64px;width:1000px;font-size:24px;color:#8A857A">우마시 · 우리들의 마음 나누는 시간</p>
+<p style="position:absolute;right:128px;bottom:64px;width:200px;font-size:24px;color:#8A857A;text-align:right">11</p>
+<aside>[10분] 웹 프로그램 주소를 안내하고 접속을 돕습니다. 오른쪽 브라우저 틀 안에 실제 화면 캡처를 넣어 주세요. 접속이 늦은 학생은 짝과 함께 보도록 합니다.</aside>
+</section>
+
+<section id="comment" data-transition="fade" style="background:#FBF6EC;color:#3B3A36;font-family:'Gowun Dodum', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:40px">
+<div style="display:flex;flex-direction:row;justify-content:space-between;align-items:end;gap:40px">
+<div style="display:flex;flex-direction:column;gap:20px">
+<p style="font-size:28px;color:#9A4F25;background:#FBE3D1;padding:8px 24px;border-radius:999px;align-self:start">배움 펼치기 · 5분</p>
+<h2 style="font-family:'Jua', Arial, sans-serif;font-size:80px;font-weight:400;line-height:1.15">마음을 전하는 댓글 쓰기</h2>
+</div>
+<p style="font-size:28px;line-height:1.4;color:#3B3A36;background:#F7E3A1;padding:20px 28px;border-radius:20px;width:560px">“좋다”, “재미있다”에서 멈추지 말고 글의 <b>구체적인 부분</b>을 짚어요!</p>
+</div>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:32px;flex:1">
+<div style="background:#FFFDF7;border:3px solid #A9C4A3;border-radius:28px;padding:40px;display:flex;flex-direction:row;gap:28px;align-items:center">
+<x-icon name="ThumbsUp" style="color:#4E6B4F;width:72px;height:72px"></x-icon>
+<div style="display:flex;flex-direction:column;gap:8px"><h3 style="font-family:'Jua', Arial, sans-serif;font-size:44px;font-weight:400;color:#4E6B4F">공감하기</h3><p style="font-size:32px;color:#5B5850">“나도 비슷한 경험이 있어.”</p></div>
+</div>
+<div style="background:#FFFDF7;border:3px solid #F4B183;border-radius:28px;padding:40px;display:flex;flex-direction:row;gap:28px;align-items:center">
+<x-icon name="Lightbulb" style="color:#C9764A;width:72px;height:72px"></x-icon>
+<div style="display:flex;flex-direction:column;gap:8px"><h3 style="font-family:'Jua', Arial, sans-serif;font-size:44px;font-weight:400;color:#9A4F25">새롭게 발견하기</h3><p style="font-size:32px;color:#5B5850">“네 글을 읽고 처음 알게 되었어.”</p></div>
+</div>
+<div style="background:#FFFDF7;border:3px solid #E8CB6E;border-radius:28px;padding:40px;display:flex;flex-direction:row;gap:28px;align-items:center">
+<x-icon name="Chat" style="color:#9A7A22;width:72px;height:72px"></x-icon>
+<div style="display:flex;flex-direction:column;gap:8px"><h3 style="font-family:'Jua', Arial, sans-serif;font-size:44px;font-weight:400;color:#7A5F14">질문하기</h3><p style="font-size:32px;color:#5B5850">“그때 어떤 마음이었는지 궁금해.”</p></div>
+</div>
+<div style="background:#FFFDF7;border:3px solid #C7B8D9;border-radius:28px;padding:40px;display:flex;flex-direction:row;gap:28px;align-items:center">
+<x-icon name="Star" style="color:#7B6896;width:72px;height:72px"></x-icon>
+<div style="display:flex;flex-direction:column;gap:8px"><h3 style="font-family:'Jua', Arial, sans-serif;font-size:44px;font-weight:400;color:#5E4E78">내 마음 덧붙이기</h3><p style="font-size:32px;color:#5B5850">“나는 이 부분을 읽고 이런 생각이 들었어.”</p></div>
+</div>
+</div>
+<p style="position:absolute;left:128px;bottom:64px;width:1000px;font-size:24px;color:#8A857A">우마시 · 우리들의 마음 나누는 시간</p>
+<p style="position:absolute;right:128px;bottom:64px;width:200px;font-size:24px;color:#8A857A;text-align:right">12</p>
+<aside>[5분] 네 가지 댓글 방향을 소개하고, 한 가지 이상을 골라 쓰도록 합니다. 좋은 예와 아쉬운 예를 하나씩 비교해 보여 주면 효과적입니다.</aside>
+</section>
+
+<section id="check" data-transition="fade" style="background:#FBF6EC;color:#3B3A36;font-family:'Gowun Dodum', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:48px">
+<div style="display:flex;flex-direction:column;gap:20px">
+<p style="font-size:28px;color:#9A4F25;background:#FBE3D1;padding:8px 24px;border-radius:999px;align-self:start">배움 펼치기 · 5분</p>
+<h2 style="font-family:'Jua', Arial, sans-serif;font-size:80px;font-weight:400;line-height:1.15">학습지 정답 및 댓글 확인</h2>
+</div>
+<div style="display:flex;flex-direction:row;gap:48px;flex:1">
+<div style="flex:1;background:#FFFDF7;border:3px solid #E6DCC4;border-radius:32px;padding:48px;display:flex;flex-direction:column;gap:24px">
+<div style="display:flex;flex-direction:row;gap:20px;align-items:center"><x-icon name="CheckCircle" style="color:#4E6B4F;width:64px;height:64px"></x-icon><h3 style="font-family:'Jua', Arial, sans-serif;font-size:48px;font-weight:400">빈칸 정답과 근거</h3></div>
+<p style="font-size:34px;line-height:1.6;color:#8A857A">[정답 단어와 글 속 근거 문장을 넣어 주세요.]</p>
+</div>
+<div style="flex:1;background:#FFFDF7;border:3px solid #E6DCC4;border-radius:32px;padding:48px;display:flex;flex-direction:column;gap:24px">
+<div style="display:flex;flex-direction:row;gap:20px;align-items:center"><x-icon name="Chat" style="color:#C9764A;width:64px;height:64px"></x-icon><h3 style="font-family:'Jua', Arial, sans-serif;font-size:48px;font-weight:400">친구들의 댓글</h3></div>
+<p style="font-size:34px;line-height:1.6;color:#5B5850">어떤 댓글이 글쓴이의 마음을 이해하는 데 도움이 되었나요?</p>
+<p style="font-size:30px;line-height:1.6;color:#8A857A">[함께 볼 댓글 캡처를 넣어 주세요.]</p>
+</div>
+</div>
+<p style="position:absolute;left:128px;bottom:64px;width:1000px;font-size:24px;color:#8A857A">우마시 · 우리들의 마음 나누는 시간</p>
+<p style="position:absolute;right:128px;bottom:64px;width:200px;font-size:24px;color:#8A857A;text-align:right">13</p>
+<aside>[5분] 정답보다 근거를 강조합니다. 댓글은 글쓴이의 동의를 얻은 것 위주로 소개하고, 구체적으로 마음을 짚은 댓글을 칭찬합니다.</aside>
+</section>
+
+<section id="quiz" data-transition="fade" style="background:#FBF6EC;color:#3B3A36;font-family:'Gowun Dodum', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:48px">
+<div style="display:flex;flex-direction:row;justify-content:space-between;align-items:end;gap:40px">
+<div style="display:flex;flex-direction:column;gap:20px">
+<p style="font-size:28px;color:#9A4F25;background:#FBE3D1;padding:8px 24px;border-radius:999px;align-self:start">배움 펼치기 · 12분</p>
+<h2 style="font-family:'Jua', Arial, sans-serif;font-size:80px;font-weight:400;line-height:1.15">친구들 글 내용으로 퀴즈 풀기</h2>
+</div>
+<p style="font-size:28px;line-height:1.4;background:#E3EDE0;color:#3B3A36;padding:20px 28px;border-radius:20px;width:520px">점수보다 <b>친구를 새롭게 알아가는 것</b>이 중요해요!</p>
+</div>
+<div style="background:#FFFDF7;border:3px solid #E6DCC4;border-radius:32px;padding:56px;display:flex;flex-direction:column;gap:32px;flex:1">
+<p style="font-family:'Jua', Arial, sans-serif;font-size:48px;color:#C9764A">Q. [퀴즈 문항을 넣어 주세요]</p>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:24px">
+<p style="font-size:36px;background:#E3EDE0;padding:28px 36px;border-radius:20px">① [보기]</p>
+<p style="font-size:36px;background:#FBE3D1;padding:28px 36px;border-radius:20px">② [보기]</p>
+<p style="font-size:36px;background:#F7E3A1;padding:28px 36px;border-radius:20px">③ [보기]</p>
+<p style="font-size:36px;background:#E9E1F0;padding:28px 36px;border-radius:20px">④ [보기]</p>
+</div>
+</div>
+<p style="position:absolute;left:128px;bottom:64px;width:1000px;font-size:24px;color:#8A857A">우마시 · 우리들의 마음 나누는 시간</p>
+<p style="position:absolute;right:128px;bottom:64px;width:200px;font-size:24px;color:#8A857A;text-align:right">14</p>
+<aside>[12분] 글 모음집 내용(친구의 경험, 관심사, 생각)으로 퀴즈를 풉니다. 퀴즈 프로그램을 쓰는 경우 이 슬라이드에 접속 주소를 적어 두세요. 정답 공개 때마다 글쓴이에게 한마디를 들어 보면 좋습니다.</aside>
+</section>
+
+<section id="quizfind" data-transition="fade" style="background:#E3EDE0;color:#3B3A36;font-family:'Gowun Dodum', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:56px">
+<div style="display:flex;flex-direction:column;gap:20px">
+<p style="font-size:28px;color:#9A4F25;background:#FBE3D1;padding:8px 24px;border-radius:999px;align-self:start">배움 펼치기 · 4분</p>
+<h2 style="font-family:'Jua', Arial, sans-serif;font-size:80px;font-weight:400;line-height:1.15">퀴즈에서 발견한 친구의 모습</h2>
+</div>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:48px;flex:1">
+<div style="background:#FFFDF7;border-radius:40px 40px 40px 8px;padding:64px;display:flex;flex-direction:column;gap:32px;justify-content:center">
+<x-icon name="Users" style="color:#4E6B4F;width:80px;height:80px"></x-icon>
+<p style="font-family:'Jua', Arial, sans-serif;font-size:52px;line-height:1.4">퀴즈를 통해 <span style="color:#C9764A">새롭게 알게 된</span> 친구의 모습은 무엇인가요?</p>
+</div>
+<div style="background:#FFFDF7;border-radius:40px 40px 8px 40px;padding:64px;display:flex;flex-direction:column;gap:32px;justify-content:center">
+<x-icon name="Book" style="color:#4E6B4F;width:80px;height:80px"></x-icon>
+<p style="font-family:'Jua', Arial, sans-serif;font-size:52px;line-height:1.4">친구의 글 중 <span style="color:#C9764A">다시 읽어 보고 싶은</span> 부분이 있나요?</p>
+</div>
+</div>
+<p style="position:absolute;left:128px;bottom:64px;width:1000px;font-size:24px;color:#6A7A66">우마시 · 우리들의 마음 나누는 시간</p>
+<p style="position:absolute;right:128px;bottom:64px;width:200px;font-size:24px;color:#6A7A66;text-align:right">15</p>
+<aside>[4분] 퀴즈를 점수 확인이 아니라 친구를 알아가는 과정으로 마무리합니다. 2~3명의 이야기를 들어 봅니다.</aside>
+</section>
+
+<section id="feedback" data-transition="fade" style="background:#FBF6EC;color:#3B3A36;font-family:'Gowun Dodum', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:40px">
+<div style="display:flex;flex-direction:row;justify-content:space-between;align-items:end;gap:40px">
+<div style="display:flex;flex-direction:column;gap:20px">
+<p style="font-size:28px;color:#7A5F14;background:#F7E3A1;padding:8px 24px;border-radius:999px;align-self:start">배움 닫기 · 7분</p>
+<h2 style="font-family:'Jua', Arial, sans-serif;font-size:80px;font-weight:400;line-height:1.15">소감 나누기</h2>
+</div>
+<p style="font-size:28px;color:#5B5850;width:620px;line-height:1.4">한 문장을 골라 내 마음을 나눠요. 말하기 어렵다면 학습지에 먼저 적어도 좋아요.</p>
+</div>
+<div style="display:flex;flex-direction:column;gap:24px;flex:1;justify-content:center">
+<p style="font-size:42px;background:#FFFDF7;border:3px solid #A9C4A3;border-radius:24px;padding:28px 44px">친구의 글을 읽고 새롭게 알게 된 것은 <span style="color:#C9764A">__________</span>입니다.</p>
+<p style="font-size:42px;background:#FFFDF7;border:3px solid #F4B183;border-radius:24px;padding:28px 44px">친구의 글을 읽으며 좋았던 점은 <span style="color:#C9764A">__________</span>입니다.</p>
+<p style="font-size:42px;background:#FFFDF7;border:3px solid #E8CB6E;border-radius:24px;padding:28px 44px">친구에게 댓글을 쓰면서 <span style="color:#C9764A">__________</span>을 느꼈습니다.</p>
+<p style="font-size:42px;background:#FFFDF7;border:3px solid #C7B8D9;border-radius:24px;padding:28px 44px">오늘 글나눔을 통해 <span style="color:#C9764A">__________</span>을 알게 되었습니다.</p>
+</div>
+<p style="position:absolute;left:128px;bottom:64px;width:1000px;font-size:24px;color:#8A857A">우마시 · 우리들의 마음 나누는 시간</p>
+<p style="position:absolute;right:128px;bottom:64px;width:200px;font-size:24px;color:#8A857A;text-align:right">16</p>
+<aside>[7분] 네 문장 중 하나를 골라 소감을 말합니다. 발표가 어려운 학생은 마음속으로 생각하거나 학습지에 짧게 적게 합니다.</aside>
+</section>
+
+<section id="reflect" data-transition="fade" style="background:#4E6B4F;color:#FBF6EC;font-family:'Gowun Dodum', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;justify-content:center;gap:56px">
+<p style="font-size:32px;color:#3B3A36;background:#F7E3A1;padding:10px 28px;border-radius:999px;align-self:start">배움 닫기 · 오늘의 배움 돌아보기</p>
+<h1 style="font-family:'Jua', Arial, sans-serif;font-size:112px;font-weight:400;line-height:1.25;color:#FBF6EC">글을 읽는다는 것은<br><span style="color:#F7E3A1">글쓴이의 마음을 만나는 일</span>입니다.</h1>
+<p style="font-size:40px;line-height:1.5;color:#E3EDE0">오늘 친구의 글에서 어떤 마음을 발견했나요?</p>
+<p style="position:absolute;left:128px;bottom:64px;width:1000px;font-size:24px;color:#C9D8C5">우마시 · 우리들의 마음 나누는 시간</p>
+<p style="position:absolute;right:128px;bottom:64px;width:200px;font-size:24px;color:#C9D8C5;text-align:right">17</p>
+<aside>[2분] 문장을 함께 읽고, 오늘 발견한 친구의 마음을 잠시 떠올려 보게 합니다.</aside>
+</section>
+
+<section id="closing" data-transition="fade" style="background:#FBF6EC;color:#3B3A36;font-family:'Gowun Dodum', Arial, sans-serif;padding:128px;display:flex;flex-direction:row;align-items:center;justify-content:space-between;gap:64px">
+<div style="position:absolute;left:0;top:0;width:1920px;height:28px;background:#A9C4A3"></div>
+<div style="position:absolute;left:0;bottom:0;width:1920px;height:28px;background:#F7E3A1"></div>
+<div style="display:flex;flex-direction:column;gap:32px;flex:1">
+<h1 style="font-family:'Jua', Arial, sans-serif;font-size:200px;font-weight:400;line-height:1;color:#3B3A36">우마시</h1>
+<p style="font-family:'Jua', Arial, sans-serif;font-size:64px;line-height:1.2;color:#4E6B4F"><span style="color:#C9764A">우</span>리들의 <span style="color:#C9764A">마</span>음 나누는 <span style="color:#C9764A">시</span>간</p>
+<p style="font-size:40px;line-height:1.6;color:#5B5850;background:#FFFDF7;border-left:12px solid #F4B183;padding:32px 40px;border-radius:0 24px 24px 0">“댓글은 친구의 글을 평가하는 말이 아니라, 친구의 글을 읽은 내가 건네는 또 하나의 글입니다.”</p>
+</div>
+<svg aria-label="펼친 책 위에 하트와 연필이 놓인 그림" width="560" height="490" viewBox="0 0 640 560" xmlns="http://www.w3.org/2000/svg">
+<circle cx="320" cy="300" r="250" fill="#F3EAD3"/>
+<path d="M320 230 C260 190 160 180 70 205 L70 470 C160 450 260 458 320 495 Z" fill="#FFFDF7" stroke="#4E6B4F" stroke-width="8" stroke-linejoin="round"/>
+<path d="M320 230 C380 190 480 180 570 205 L570 470 C480 450 380 458 320 495 Z" fill="#FFFDF7" stroke="#4E6B4F" stroke-width="8" stroke-linejoin="round"/>
+<path d="M120 260 C180 248 240 252 280 268 M120 310 C180 298 240 302 280 318 M120 360 C180 348 240 352 280 368 M120 410 C170 400 220 402 260 414" stroke="#C9D8C5" stroke-width="7" stroke-linecap="round" fill="none"/>
+<path d="M360 268 C400 252 460 248 520 260 M360 318 C400 302 460 298 520 310 M360 368 C400 352 460 348 520 360" stroke="#C9D8C5" stroke-width="7" stroke-linecap="round" fill="none"/>
+<path d="M320 175 C320 175 250 128 250 88 C250 60 274 46 294 46 C308 46 316 56 320 64 C324 56 332 46 346 46 C366 46 390 60 390 88 C390 128 320 175 320 175 Z" fill="#F4B183" stroke="#C9764A" stroke-width="7" stroke-linejoin="round"/>
+<g transform="rotate(-35 470 420)"><rect x="380" y="400" width="200" height="40" rx="6" fill="#F7E3A1" stroke="#B8923A" stroke-width="5"/><path d="M580 400 L625 420 L580 440 Z" fill="#F3D9B5" stroke="#B8923A" stroke-width="5" stroke-linejoin="round"/><path d="M612 414 L625 420 L612 426 Z" fill="#3B3A36"/><rect x="360" y="400" width="24" height="40" rx="6" fill="#F4B183" stroke="#C9764A" stroke-width="5"/></g>
+<path d="M120 120 l8 18 18 8 -18 8 -8 18 -8 -18 -18 -8 18 -8 Z" fill="#F7E3A1" stroke="#B8923A" stroke-width="4" stroke-linejoin="round"/>
+<path d="M540 110 l6 13 13 6 -13 6 -6 13 -6 -13 -13 -6 13 -6 Z" fill="#A9C4A3" stroke="#4E6B4F" stroke-width="4" stroke-linejoin="round"/>
+</svg>
+<aside>[1분] 처음 표지와 같은 그림으로 마무리합니다. 마지막 문장을 함께 읽고, 오늘 글을 공개해 준 친구들에게 박수를 보냅니다.</aside>
+</section>
+
+</div></div>
+<div id="bar"><a href="../index.html">← 작품 서랍</a><button id="prev" type="button">이전</button><span id="n"></span><button id="next" type="button">다음</button><button id="fs" type="button">전체 화면</button></div>
+<script>
+const S=[...document.querySelectorAll('#stage > section')],stage=document.getElementById('stage');let i=0;
+const ICON={Star:'★',CheckCircle:'✔',Search:'🔍',Book:'📖',Lightbulb:'💡',Chat:'💬',Users:'👥',Globe:'🌐',Home:'🏠',Trust:'🤝',Key:'🔑',Chart:'📊',Tool:'🛠️',Lightning:'⚡',ThumbsUp:'👍'};
+document.querySelectorAll('x-icon').forEach(e=>{e.textContent=ICON[e.getAttribute('name')]||'●';const h=parseFloat(e.style.height)||48;e.style.fontSize=(h*0.8)+'px'});
+document.querySelectorAll('x-connector').forEach(e=>{if(!e.style.borderTopWidth)e.style.borderTopWidth=(e.style.borderWidth||'4px')});
+function show(k){i=Math.max(0,Math.min(S.length-1,k));S.forEach((s,j)=>s.classList.toggle('on',j===i));document.getElementById('n').textContent=(i+1)+' / '+S.length;try{history.replaceState(null,'','#'+(i+1))}catch(_){}}
+function fit(){const w=innerWidth,h=innerHeight-56;stage.style.transform='scale('+Math.min(w/1920,h/1080)+')'}
+addEventListener('resize',fit);fit();
+addEventListener('keydown',e=>{if(['ArrowRight','PageDown',' ','Enter'].includes(e.key)){e.preventDefault();show(i+1)}if(['ArrowLeft','PageUp','Backspace'].includes(e.key)){e.preventDefault();show(i-1)}if(e.key==='Home')show(0);if(e.key==='End')show(S.length-1)});
+document.getElementById('wrap').addEventListener('click',e=>{show(e.clientX>innerWidth/2?i+1:i-1)});
+document.getElementById('prev').onclick=()=>show(i-1);document.getElementById('next').onclick=()=>show(i+1);
+document.getElementById('fs').onclick=()=>{const d=document.documentElement;(document.fullscreenElement?document.exitFullscreen():d.requestFullscreen&&d.requestFullscreen()).catch&&0};
+let tx=null;addEventListener('touchstart',e=>{tx=e.touches[0].clientX},{passive:true});addEventListener('touchend',e=>{if(tx===null)return;const d=e.changedTouches[0].clientX-tx;if(Math.abs(d)>40)show(d<0?i+1:i-1);tx=null});
+show((parseInt(location.hash.slice(1))||1)-1);
+</script></body></html>

@@ -1,0 +1,564 @@
+<!doctype html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>초코클래스 활용 연수: 달달수학 부진아 지도 &#183; 달달독해 아침활동</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Jua&family=Noto+Sans+KR:wght@400;500;600;700;800&family=Gowun+Dodum&family=Gowun+Batang:wght@400;700&family=Song+Myung&family=Nanum+Pen+Script&display=swap">
+<style>
+html,body{margin:0;height:100%;background:#111;overflow:hidden;font-family:'Noto Sans KR',sans-serif}
+#wrap{position:fixed;inset:0 0 56px 0;display:flex;align-items:center;justify-content:center}
+#stage{position:relative;width:1920px;height:1080px;flex:none;transform-origin:center center;box-shadow:0 10px 40px rgba(0,0,0,.5)}
+#stage *{box-sizing:border-box}
+#stage section{position:absolute;inset:0;width:1920px;height:1080px;overflow:hidden;visibility:hidden}
+#stage section.on{visibility:visible}
+#stage p,#stage h1,#stage h2,#stage h3,#stage ul,#stage ol{margin:0}
+#stage ul,#stage ol{padding-left:1.2em}
+#stage aside{display:none}
+#stage table{border-collapse:collapse;width:100%}
+#stage th{text-align:left;padding:20px 24px}
+#stage td{padding:20px 24px;vertical-align:top;border-bottom:1px solid rgba(0,0,0,.08)}
+x-shape{display:block;flex:none}
+x-shape[kind="ellipse"]{border-radius:50%}
+x-shape[kind="arrow-right"]{clip-path:polygon(0 32%,58% 32%,58% 0,100% 50%,58% 100%,58% 68%,0 68%)}
+x-shape[kind="arrow-up"]{clip-path:polygon(32% 100%,32% 42%,0 42%,50% 0,100% 42%,68% 42%,68% 100%)}
+x-icon{display:inline-flex;align-items:center;justify-content:center;flex:none;line-height:1}
+x-connector{display:block;flex:none;align-self:center;height:0;border-top-style:solid;border-top-color:currentColor;position:relative;margin:0 6px}
+x-connector::after{content:"";position:absolute;right:-4px;top:-11px;border-style:solid;border-width:9px 0 9px 14px;border-color:transparent transparent transparent currentColor}
+#bar{position:fixed;left:0;right:0;bottom:0;height:56px;display:flex;align-items:center;justify-content:center;gap:14px;background:#1c1c1c;color:#ddd;font-size:15px}
+#bar button,#bar a{font:inherit;color:#eee;background:#333;border:0;border-radius:8px;padding:8px 14px;cursor:pointer;text-decoration:none}
+#bar button:hover,#bar a:hover{background:#444}
+#n{min-width:70px;text-align:center;font-variant-numeric:tabular-nums}
+</style></head><body>
+<div id="wrap"><div id="stage"><section id="cover" data-transition="fade" style="background:#3B2A22;color:#FBF6EF;font-family:'Noto Sans KR', Arial, sans-serif;padding:128px;display:flex;flex-direction:column;justify-content:center;gap:40px">
+<div style="position:absolute;right:-120px;top:-120px;width:620px;height:620px;border-radius:50%;background:#D9486A;opacity:0.9"></div>
+<div style="position:absolute;right:300px;top:520px;width:300px;height:300px;border-radius:50%;background:#7A5CE0;opacity:0.85"></div>
+<div style="position:absolute;right:120px;bottom:120px;width:160px;height:160px;border-radius:50%;background:#F2C14E"></div>
+<p style="font-size:32px;font-weight:700;color:#F2C14E;letter-spacing:2px">2026 교원 연수 · 미래엔 초코클래스</p>
+<h1 style="font-family:'Jua', 'Noto Sans KR', sans-serif;font-size:120px;font-weight:400;line-height:1.15;width:1200px;color:#FBF6EF">초코클래스로 여는<br>맞춤 지도와 아침 독서</h1>
+<div style="display:flex;flex-direction:column;gap:16px;width:1150px">
+<p style="font-size:40px;color:#F7D9E0"><b>Part 1</b> 달달수학으로 하는 수학 부진아 맞춤 지도</p>
+<p style="font-size:40px;color:#E2DAFB"><b>Part 2</b> 달달독해로 만드는 아침활동 독서 습관</p>
+</div>
+<p style="font-size:28px;color:#D8CBBF">발표: [발표자 이름] · [소속 학교] · [연수 일자]</p>
+<aside>인사 후 연수 순서를 소개합니다. 오늘은 초코클래스를 처음 쓰는 선생님도 내일 바로 교실에서 시작할 수 있도록, 수학 보충 지도와 아침 독서 두 가지 장면만 집중해서 다룹니다.</aside>
+</section>
+
+<section id="goals" data-transition="push" style="background:#FBF6EF;color:#4A3B33;font-family:'Noto Sans KR', Arial, sans-serif;padding:112px 128px 128px;display:flex;flex-direction:column;gap:56px">
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:28px;font-weight:700;color:#B8304F">오늘의 연수</p>
+<h2 style="font-family:'Jua', 'Noto Sans KR', sans-serif;font-size:72px;font-weight:400;color:#3B2A22">연수가 끝나면 이 세 가지를 할 수 있어요</h2>
+</div>
+<div style="display:flex;gap:40px;flex:1">
+<div style="flex:1;display:flex;flex-direction:column;gap:24px;background:#FFFDFA;padding:48px;border:2px solid #EADFD3;border-radius:24px;box-shadow:0 12px 28px rgba(59,42,34,0.08)">
+<div style="width:96px;height:96px;border-radius:24px;background:#FBE3E9;display:flex;align-items:center;justify-content:center"><x-icon name="Search" style="color:#B8304F;width:52px;height:52px"></x-icon></div>
+<h3 style="font-size:40px;font-weight:700;color:#3B2A22">결손 찾기</h3>
+<p style="font-size:30px;line-height:1.5">달달수학 진단과 지식맵으로 부진 학생이 막힌 이전 학년 개념을 찾는다</p>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px;background:#FFFDFA;padding:48px;border:2px solid #EADFD3;border-radius:24px;box-shadow:0 12px 28px rgba(59,42,34,0.08)">
+<div style="width:96px;height:96px;border-radius:24px;background:#ECE6FC;display:flex;align-items:center;justify-content:center"><x-icon name="Book" style="color:#6A4BD1;width:52px;height:52px"></x-icon></div>
+<h3 style="font-size:40px;font-weight:700;color:#3B2A22">아침 15분 운영</h3>
+<p style="font-size:30px;line-height:1.5">달달독해로 출석 → 읽기 → 완료가 매일 반복되는 아침활동을 운영한다</p>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px;background:#FFFDFA;padding:48px;border:2px solid #EADFD3;border-radius:24px;box-shadow:0 12px 28px rgba(59,42,34,0.08)">
+<div style="width:96px;height:96px;border-radius:24px;background:#FDF0CF;display:flex;align-items:center;justify-content:center"><x-icon name="Chart" style="color:#8A5A00;width:52px;height:52px"></x-icon></div>
+<h3 style="font-size:40px;font-weight:700;color:#3B2A22">리포트로 피드백</h3>
+<p style="font-size:30px;line-height:1.5">초코클래스 학습현황과 학생별 리포트로 다음 지도를 정한다</p>
+</div>
+</div>
+<aside>오늘 연수의 목표 세 가지입니다. 기능 소개보다 교실에서 어떻게 쓰는지에 초점을 둡니다.</aside>
+</section>
+
+<section id="why" data-transition="push" style="background:#FBF6EF;color:#4A3B33;font-family:'Noto Sans KR', Arial, sans-serif;padding:112px 128px 128px;display:flex;flex-direction:column;gap:56px">
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:28px;font-weight:700;color:#B8304F">왜 필요할까요</p>
+<h2 style="font-family:'Jua', 'Noto Sans KR', sans-serif;font-size:72px;font-weight:400;color:#3B2A22">교실의 두 가지 고민</h2>
+</div>
+<div style="display:flex;gap:40px;flex:1">
+<div style="flex:1;display:flex;flex-direction:column;gap:28px;background:#FBE3E9;padding:56px;border-radius:24px">
+<h3 style="font-size:44px;font-weight:700;color:#3B2A22">수학, 어디서부터 막혔을까?</h3>
+<ul style="font-size:30px;line-height:1.6;display:flex;flex-direction:column;gap:12px">
+<li>5학년 개념이 안 되는 이유가 3학년 곱셈일 수도 있다</li>
+<li>학생마다 결손 지점이 달라 한 번에 같이 가르치기 어렵다</li>
+<li>보충 시간은 짧고, 학생은 여럿이다</li>
+</ul>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:28px;background:#ECE6FC;padding:56px;border-radius:24px">
+<h3 style="font-size:44px;font-weight:700;color:#3B2A22">읽기, 매일 이어지게 하려면?</h3>
+<ul style="font-size:30px;line-height:1.6;display:flex;flex-direction:column;gap:12px">
+<li>영상·숏폼에 익숙해 긴 글 읽기를 힘들어한다</li>
+<li>아침독서 시간이 책 고르기로 끝나기 쉽다</li>
+<li>누가 읽었는지, 얼마나 이해했는지 확인하기 어렵다</li>
+</ul>
+</div>
+</div>
+<p style="font-size:32px;font-weight:700;color:#3B2A22;background:#FDF0CF;padding:24px 40px;border-radius:16px">학생별 진단 + 맞춤 콘텐츠 + 교사용 현황판 = 초코클래스로 두 고민을 함께 다룹니다</p>
+<aside>선생님들께 질문을 던지며 시작해도 좋습니다. 우리 반 수학 부진 학생은 어디서부터 막혔을까요? 아침독서 시간에 실제로 읽는 학생은 몇 명일까요?</aside>
+</section>
+
+<section id="family" data-transition="push" style="background:#FBF6EF;color:#4A3B33;font-family:'Noto Sans KR', Arial, sans-serif;padding:112px 128px 128px;display:flex;flex-direction:column;gap:48px">
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:28px;font-weight:700;color:#B8304F">초코클래스 한눈에 보기</p>
+<h2 style="font-family:'Jua', 'Noto Sans KR', sans-serif;font-size:72px;font-weight:400;color:#3B2A22">학생은 초코로 배우고, 교사는 초코클래스로 봅니다</h2>
+</div>
+<div style="display:flex;gap:32px">
+<div style="flex:1;display:flex;flex-direction:column;gap:16px;background:#FFFDFA;padding:40px;border:2px solid #EADFD3;border-top:12px solid #8B5E3C;border-radius:24px">
+<h3 style="font-size:40px;font-weight:700;color:#3B2A22">초코팝</h3>
+<p style="font-size:28px;line-height:1.5">국어·수학·사회·과학 교과서 진도 연계 학습. 학급 시간표로 운영</p>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:16px;background:#FFFDFA;padding:40px;border:2px solid #EADFD3;border-top:12px solid #D9486A;border-radius:24px">
+<h3 style="font-size:40px;font-weight:700;color:#B8304F">달달수학</h3>
+<p style="font-size:28px;line-height:1.5">수학 실력 진단 → 학생별 맞춤 코스. 지식맵·계산력·고난도 학습</p>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:16px;background:#FFFDFA;padding:40px;border:2px solid #EADFD3;border-top:12px solid #7A5CE0;border-radius:24px">
+<h3 style="font-size:40px;font-weight:700;color:#6A4BD1">달달독해</h3>
+<p style="font-size:28px;line-height:1.5">문해력·독서 성향 진단 → 맞춤 글 추천. 6개 분야 2,300여 개 지문</p>
+</div>
+</div>
+<div style="display:flex;align-items:center;gap:40px;background:#3B2A22;padding:48px 56px;border-radius:24px">
+<x-icon name="Users" style="color:#F2C14E;width:80px;height:80px"></x-icon>
+<div style="display:flex;flex-direction:column;gap:12px;flex:1">
+<h3 style="font-size:44px;font-weight:700;color:#FBF6EF">초코클래스 = 교사용 학습관리 화면(LMS)</h3>
+<p style="font-size:30px;color:#E6DACE">학급 만들기 · 학생 등록 · 실시간 현황 · 주간/월간 학습현황 · 학생별 리포트. 태블릿·PC·크롬북 모두 사용 가능</p>
+</div>
+</div>
+<aside>달달수학과 달달독해는 학생별 맞춤 학습이라 학급 시간표가 없습니다. 시간표가 있는 초코팝과 구분해서 설명합니다. 지문 수는 미래엔 발표 기준입니다.</aside>
+</section>
+
+<section id="teacher" data-transition="push" style="background:#FBF6EF;color:#4A3B33;font-family:'Noto Sans KR', Arial, sans-serif;padding:112px 128px 128px;display:flex;flex-direction:column;gap:48px">
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:28px;font-weight:700;color:#B8304F">교사가 자주 보는 화면</p>
+<h2 style="font-family:'Jua', 'Noto Sans KR', sans-serif;font-size:72px;font-weight:400;color:#3B2A22">수업 중 · 매주 · 학생별, 세 화면이면 충분해요</h2>
+</div>
+<div style="display:flex;gap:32px;flex:1">
+<div style="flex:1;display:flex;flex-direction:column;gap:20px;background:#FFFDFA;padding:36px;border:2px solid #EADFD3;border-radius:24px">
+<p style="font-size:24px;font-weight:700;color:#FFFDFA;background:#3B2A22;padding:8px 20px;border-radius:999px;align-self:start">수업 중</p>
+<h3 style="font-size:38px;font-weight:700;color:#3B2A22">우리반 현황</h3>
+<p style="font-size:26px;line-height:1.5">초코클래스 시작 → 아바타로 접속·오늘 완료 여부를 실시간 확인. 교실 TV용</p>
+<img src="img/9ae1b8c677229350c8849fd798f6cd60.jpg" alt="초코클래스 우리반 현황 아바타 화면, 학생 이름은 흐리게 가림" style="width:456px;height:300px;object-fit:contain;background:#F6EFE6;border:1px solid #EADFD3;border-radius:16px">
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:20px;background:#FFFDFA;padding:36px;border:2px solid #EADFD3;border-radius:24px">
+<p style="font-size:24px;font-weight:700;color:#FFFDFA;background:#3B2A22;padding:8px 20px;border-radius:999px;align-self:start">매주 월요일</p>
+<h3 style="font-size:38px;font-weight:700;color:#3B2A22">학습현황</h3>
+<p style="font-size:26px;line-height:1.5">학급 관리 → 학습현황. 요일별 출석·학습완료, 학생별 학습률과 평균 점수</p>
+<img src="img/4c47d0e68e803c4a9e44408ede45084e.jpg" alt="달달독해 주간 학습현황의 요일별 출석현황과 학습완료현황 화면" style="width:456px;height:300px;object-fit:contain;background:#F6EFE6;border:1px solid #EADFD3;border-radius:16px">
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:20px;background:#FFFDFA;padding:36px;border:2px solid #EADFD3;border-radius:24px">
+<p style="font-size:24px;font-weight:700;color:#FFFDFA;background:#3B2A22;padding:8px 20px;border-radius:999px;align-self:start">상담·피드백</p>
+<h3 style="font-size:38px;font-weight:700;color:#3B2A22">학생별 리포트</h3>
+<p style="font-size:26px;line-height:1.5">학생현황 → 리포트. 달달수학·달달독해 보고서, 4종 진단 결과</p>
+<img src="img/e9476fec8d14db2a8c73832a6f09df40.jpg" alt="달달독해 문해력 보고서의 점수와 평가 요소별 그래프, 학생 이름은 흐리게 가림" style="width:456px;height:300px;object-fit:contain;background:#F6EFE6;border:1px solid #EADFD3;border-radius:16px">
+</div>
+</div>
+<aside>실제 초코클래스 화면입니다. 학생 이름은 흐리게 가렸습니다. 주간 현황은 매주 월요일, 월간 현황은 매월 첫째 주 월요일에 지난 기간 기준으로 발행됩니다.</aside>
+</section>
+
+<section id="part1" data-transition="fade" style="background:#D9486A;color:#FFF5F7;font-family:'Noto Sans KR', Arial, sans-serif;padding:128px;display:flex;flex-direction:column;justify-content:center;gap:32px">
+<div style="position:absolute;right:120px;top:200px;width:520px;height:520px;border-radius:50%;background:#B8304F"></div>
+<x-icon name="Lightbulb" style="position:absolute;right:300px;top:380px;width:160px;height:160px;color:#FDF0CF"></x-icon>
+<p style="font-size:40px;font-weight:700;color:#FDF0CF">Part 1</p>
+<h1 style="font-family:'Jua', 'Noto Sans KR', sans-serif;font-size:120px;font-weight:400;line-height:1.15;width:1100px;color:#FFF5F7">달달수학으로<br>부진아 맞춤 지도</h1>
+<p style="font-size:40px;width:1050px;color:#FFE6EC">막힌 곳을 찾고, 거슬러 올라가 채우고, 다시 제 학년으로</p>
+<aside>Part 1을 시작합니다. 핵심은 지식맵입니다.</aside>
+</section>
+
+<section id="cycle" data-transition="push" style="background:#FBF6EF;color:#4A3B33;font-family:'Noto Sans KR', Arial, sans-serif;padding:112px 128px 128px;display:flex;flex-direction:column;gap:56px">
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:28px;font-weight:700;color:#B8304F">달달수학 지도 흐름</p>
+<h2 style="font-family:'Jua', 'Noto Sans KR', sans-serif;font-size:72px;font-weight:400;color:#3B2A22">진단에서 리포트까지, 다섯 단계로 돌아갑니다</h2>
+</div>
+<div style="display:flex;align-items:stretch;gap:0px">
+<div style="flex:1;display:flex;flex-direction:column;gap:16px;background:#FFFDFA;padding:32px;border:2px solid #EADFD3;border-radius:24px">
+<p style="font-family:'Jua', sans-serif;font-size:56px;color:#D9486A">1</p>
+<h3 style="font-size:34px;font-weight:700;color:#3B2A22">진단</h3>
+<p style="font-size:26px;line-height:1.5">수학 실력 진단 응시. 결과는 학생별 리포트에서 확인</p>
+</div>
+<x-connector style="width:48px;color:#C9B8A8;border-width:4px" head="end"></x-connector>
+<div style="flex:1;display:flex;flex-direction:column;gap:16px;background:#FBE3E9;padding:32px;border:3px solid #D9486A;border-radius:24px">
+<p style="font-family:'Jua', sans-serif;font-size:56px;color:#B8304F">2</p>
+<h3 style="font-size:34px;font-weight:700;color:#3B2A22">지식맵</h3>
+<p style="font-size:26px;line-height:1.5">선수 개념을 따라 이전 학년 결손 개념 찾기</p>
+</div>
+<x-connector style="width:48px;color:#C9B8A8;border-width:4px" head="end"></x-connector>
+<div style="flex:1;display:flex;flex-direction:column;gap:16px;background:#FFFDFA;padding:32px;border:2px solid #EADFD3;border-radius:24px">
+<p style="font-family:'Jua', sans-serif;font-size:56px;color:#D9486A">3</p>
+<h3 style="font-size:34px;font-weight:700;color:#3B2A22">필수 학습</h3>
+<p style="font-size:26px;line-height:1.5">개념 학습 → 수준별 학습 → 맞춤 학습</p>
+</div>
+<x-connector style="width:48px;color:#C9B8A8;border-width:4px" head="end"></x-connector>
+<div style="flex:1;display:flex;flex-direction:column;gap:16px;background:#FFFDFA;padding:32px;border:2px solid #EADFD3;border-radius:24px">
+<p style="font-family:'Jua', sans-serif;font-size:56px;color:#D9486A">4</p>
+<h3 style="font-size:34px;font-weight:700;color:#3B2A22">선택 학습</h3>
+<p style="font-size:26px;line-height:1.5">연산이 약하면 계산력, 개념을 마치면 단원별</p>
+</div>
+<x-connector style="width:48px;color:#C9B8A8;border-width:4px" head="end"></x-connector>
+<div style="flex:1;display:flex;flex-direction:column;gap:16px;background:#FFFDFA;padding:32px;border:2px solid #EADFD3;border-radius:24px">
+<p style="font-family:'Jua', sans-serif;font-size:56px;color:#D9486A">5</p>
+<h3 style="font-size:34px;font-weight:700;color:#3B2A22">리포트</h3>
+<p style="font-size:26px;line-height:1.5">일일·단원 평가·종합 보고서로 다음 지도 결정</p>
+</div>
+</div>
+<div style="display:flex;gap:24px;align-items:center;background:#FDF0CF;padding:28px 40px;border-radius:16px">
+<x-icon name="Tool" style="color:#8A5A00;width:56px;height:56px"></x-icon>
+<p style="font-size:30px;color:#3B2A22">문제 풀이 중 도구: <b>질문노트 · 연습장 · 개념영상</b> — 막히면 바로 영상으로 돌아가 다시 봅니다</p>
+</div>
+<aside>필수 학습 1회는 약 30분 분량입니다. 보충 시간 40분이면 필수 학습 한 번과 선택 학습 일부가 들어갑니다. 5단계 리포트를 본 뒤 다시 2단계 지식맵으로 돌아가는 순환 구조라고 설명합니다.</aside>
+</section>
+
+<section id="map" data-transition="push" style="background:#FBF6EF;color:#4A3B33;font-family:'Noto Sans KR', Arial, sans-serif;padding:112px 128px 128px;display:flex;flex-direction:column;gap:48px">
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:28px;font-weight:700;color:#B8304F">핵심 기능 · 지식맵</p>
+<h2 style="font-family:'Jua', 'Noto Sans KR', sans-serif;font-size:72px;font-weight:400;color:#3B2A22">막힌 개념의 뿌리를 화살표로 따라갑니다</h2>
+</div>
+<div style="display:flex;flex-direction:column;gap:24px;background:#FFFDFA;padding:48px;border:2px solid #EADFD3;border-radius:24px">
+<p style="font-size:26px;font-weight:700;color:#7A6656">예시 · 4학년 「곱셈과 나눗셈」이 어려운 학생</p>
+<div style="display:flex;align-items:center;gap:0px">
+<div style="flex:1;display:flex;flex-direction:column;gap:8px;background:#FDF0CF;padding:28px;border-radius:20px;border:3px solid #E0A82E">
+<p style="font-size:24px;font-weight:700;color:#8A5A00">초1 · 출발점</p>
+<h3 style="font-size:36px;font-weight:700;color:#3B2A22">덧셈과 뺄셈</h3>
+</div>
+<x-connector style="width:64px;color:#B8304F;border-width:4px" head="end"></x-connector>
+<div style="flex:1;display:flex;flex-direction:column;gap:8px;background:#FFFDFA;padding:28px;border-radius:20px;border:2px solid #EADFD3">
+<p style="font-size:24px;font-weight:700;color:#7A6656">초2</p>
+<h3 style="font-size:36px;font-weight:700;color:#3B2A22">곱셈구구</h3>
+</div>
+<x-connector style="width:64px;color:#B8304F;border-width:4px" head="end"></x-connector>
+<div style="flex:1;display:flex;flex-direction:column;gap:8px;background:#FFFDFA;padding:28px;border-radius:20px;border:2px solid #EADFD3">
+<p style="font-size:24px;font-weight:700;color:#7A6656">초3</p>
+<h3 style="font-size:36px;font-weight:700;color:#3B2A22">곱셈</h3>
+</div>
+<x-connector style="width:64px;color:#B8304F;border-width:4px" head="end"></x-connector>
+<div style="flex:1;display:flex;flex-direction:column;gap:8px;background:#FBE3E9;padding:28px;border-radius:20px;border:3px solid #D9486A">
+<p style="font-size:24px;font-weight:700;color:#B8304F">초4 · 지금 단원</p>
+<h3 style="font-size:36px;font-weight:700;color:#3B2A22">곱셈과 나눗셈</h3>
+</div>
+</div>
+<p style="font-size:26px;color:#7A6656">← 막히면 왼쪽으로 거슬러 올라가 결손을 채우고, 다시 오른쪽으로 돌아옵니다</p>
+</div>
+<div style="display:flex;gap:32px">
+<div style="flex:1;display:flex;gap:20px;align-items:start;background:#FFFDFA;padding:32px;border:2px solid #EADFD3;border-radius:20px">
+<x-icon name="Globe" style="color:#B8304F;width:48px;height:48px"></x-icon>
+<p style="font-size:26px;line-height:1.5">초1~초6 개념을 <b>수와 연산 · 변화와 관계 · 도형과 측정 · 자료와 가능성</b> 4개 영역으로 연결 (2022 개정)</p>
+</div>
+<div style="flex:1;display:flex;gap:20px;align-items:start;background:#FFFDFA;padding:32px;border:2px solid #EADFD3;border-radius:20px">
+<x-icon name="Home" style="color:#B8304F;width:48px;height:48px"></x-icon>
+<p style="font-size:26px;line-height:1.5">결손을 채우면 <b>‘기본 커리큘럼 적용하기’</b>로 제 학년 진도에 복귀. 단원 평가까지 남은 개념 수도 표시</p>
+</div>
+</div>
+<aside>예시의 개념 연결은 지식맵 화면을 바탕으로 단순화한 것입니다. 학생에게는 뒤로 가는 것이 아니라 기초를 다지는 것이라고 안내합니다. 지식맵 실제 화면 캡처를 이 슬라이드 뒤에 한 장 추가하면 좋습니다.</aside>
+</section>
+
+<section id="mapshot" data-transition="push" style="background:#FBF6EF;color:#4A3B33;font-family:'Noto Sans KR', Arial, sans-serif;padding:112px 128px 128px;display:flex;flex-direction:column;gap:40px">
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:28px;font-weight:700;color:#B8304F">실제 화면 · 지식맵</p>
+<h2 style="font-family:'Jua', 'Noto Sans KR', sans-serif;font-size:72px;font-weight:400;color:#3B2A22">학생 화면에서는 이렇게 보여요</h2>
+</div>
+<div style="display:flex;gap:40px;align-items:start">
+<img src="img/9c17d157b103fad8ce1a917d4b34841a.jpg" alt="달달수학 지식맵 화면. 왼쪽에 초5-2 합동과 대칭 단원 개념 목록, 오른쪽에 초1부터 초4까지 수와 연산 개념이 화살표로 이어진 계통도" style="width:1100px;height:624px;object-fit:contain;background:#FFFFFF;border:2px solid #EADFD3;border-radius:20px;box-shadow:0 12px 28px rgba(59,42,34,0.10)">
+<div style="flex:1;display:flex;flex-direction:column;gap:20px">
+<div style="display:flex;flex-direction:column;gap:8px;background:#FBE3E9;padding:28px;border-radius:20px"><p style="font-size:26px;font-weight:700;color:#B8304F">왼쪽</p><p style="font-size:26px;line-height:1.5">지금 단원의 개념 목록과 ‘단원 평가까지 남은 개념’ 수</p></div>
+<div style="display:flex;flex-direction:column;gap:8px;background:#FFFDFA;padding:28px;border-radius:20px;border:2px solid #EADFD3"><p style="font-size:26px;font-weight:700;color:#B8304F">가운데</p><p style="font-size:26px;line-height:1.5">학년별 개념이 화살표로 연결. 따라가면 선수 개념이 보임</p></div>
+<div style="display:flex;flex-direction:column;gap:8px;background:#FFFDFA;padding:28px;border-radius:20px;border:2px solid #EADFD3"><p style="font-size:26px;font-weight:700;color:#B8304F">오른쪽 아래</p><p style="font-size:26px;line-height:1.5">‘기본 커리큘럼 적용하기’로 제 학년 복귀</p></div>
+</div>
+</div>
+<aside>교사 계정의 학생 모드에서 캡처한 달달수학 지식맵 화면입니다. 시연할 때는 초코클래스 시작에서 달달수학 시작하기를 눌러 직접 보여 줄 수 있습니다.</aside>
+</section>
+
+<section id="lesson40" data-transition="push" style="background:#FBF6EF;color:#4A3B33;font-family:'Noto Sans KR', Arial, sans-serif;padding:112px 128px 128px;display:flex;flex-direction:column;gap:44px">
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:28px;font-weight:700;color:#B8304F">수업안 1 · 40분 보충 지도</p>
+<h2 style="font-family:'Jua', 'Noto Sans KR', sans-serif;font-size:72px;font-weight:400;color:#3B2A22">소그룹 4~6명, 이렇게 40분을 씁니다</h2>
+</div>
+<div style="display:flex;gap:0px;height:56px;border-radius:16px;overflow:hidden">
+<div style="flex:5;background:#F2C14E;display:flex;align-items:center;justify-content:center"><p style="font-size:24px;font-weight:700;color:#3B2A22">5분</p></div>
+<div style="flex:7;background:#F08AA2;display:flex;align-items:center;justify-content:center"><p style="font-size:24px;font-weight:700;color:#3B2A22">7분</p></div>
+<div style="flex:15;background:#D9486A;display:flex;align-items:center;justify-content:center"><p style="font-size:24px;font-weight:700;color:#FFF5F7">15분</p></div>
+<div style="flex:8;background:#A98BF0;display:flex;align-items:center;justify-content:center"><p style="font-size:24px;font-weight:700;color:#3B2A22">8분</p></div>
+<div style="flex:5;background:#8B5E3C;display:flex;align-items:center;justify-content:center"><p style="font-size:24px;font-weight:700;color:#FBF6EF">5분</p></div>
+</div>
+<table style="font-size:26px;color:#4A3B33;background:#FFFDFA;border-radius:16px">
+<tr style="background:#3B2A22"><th style="width:16%;color:#FBF6EF">단계</th><th style="width:42%;color:#FBF6EF">학생 활동</th><th style="width:42%;color:#FBF6EF">교사 지원</th></tr>
+<tr><td><b>도입</b> 5분</td><td>간편 로그인, ‘이 달의 나의 현황’ 확인</td><td>지난 리포트에서 잘한 점 칭찬, 오늘 목표 정하기</td></tr>
+<tr style="background:#FBF1F3"><td><b>결손 찾기</b> 7분</td><td>지식맵에서 완료 못 한 이전 학년 개념 찾기</td><td>TV로 지식맵 화살표를 함께 따라가기</td></tr>
+<tr><td><b>개념 쌓기</b> 15분</td><td>필수 학습: 개념 학습 → 수준별 학습</td><td>순회하며 연습장 확인, 질문노트 모으기</td></tr>
+<tr style="background:#FBF1F3"><td><b>연산 보충</b> 8분</td><td>선택 학습: 계산력 또는 단원별 학습</td><td>부진 학생에게 고난도 학습은 권하지 않기</td></tr>
+<tr><td><b>정리</b> 5분</td><td>오늘 알게 된 개념 한 문장 말하기</td><td>일일 보고서 발행 확인, 남은 맞춤 학습은 과제로</td></tr>
+</table>
+<aside>자세한 교수학습과정안은 함께 드리는 수업안 문서에 있습니다. 필수 학습 1회가 약 30분이라 40분 안에 맞춤 학습까지 다 하기 어렵습니다. 남은 부분은 가정 과제로 넘깁니다.</aside>
+</section>
+
+<section id="select" data-transition="push" style="background:#FBF6EF;color:#4A3B33;font-family:'Noto Sans KR', Arial, sans-serif;padding:112px 128px 128px;display:flex;flex-direction:column;gap:48px">
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:28px;font-weight:700;color:#B8304F">대상 선별과 3차시 운영</p>
+<h2 style="font-family:'Jua', 'Noto Sans KR', sans-serif;font-size:72px;font-weight:400;color:#3B2A22">누구를, 몇 차시에 걸쳐 지도할까요</h2>
+</div>
+<div style="display:flex;gap:40px;flex:1">
+<div style="flex:1;display:flex;flex-direction:column;gap:24px;background:#FFFDFA;padding:48px;border:2px solid #EADFD3;border-radius:24px">
+<h3 style="font-size:40px;font-weight:700;color:#3B2A22">선별은 이 순서로</h3>
+<ol style="font-size:28px;line-height:1.6;display:flex;flex-direction:column;gap:12px">
+<li>학생이 ‘수학 실력 진단’ 응시</li>
+<li>학생별 리포트 → 학습&amp;성향 진단 결과 확인</li>
+<li>월간 학습현황(달달수학)에서 평균 점수가 낮거나 학습일이 적은 학생 표시</li>
+<li>단원평가 결과와 함께 보고 4~6명 확정</li>
+</ol>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:20px">
+<div style="display:flex;gap:24px;align-items:center;background:#FBE3E9;padding:32px 40px;border-radius:20px">
+<p style="font-family:'Jua', sans-serif;font-size:64px;color:#B8304F">1</p>
+<div style="display:flex;flex-direction:column;gap:6px"><h3 style="font-size:34px;font-weight:700;color:#3B2A22">결손 개념 찾기</h3><p style="font-size:26px">진단 결과 확인, 가장 아래 결손 개념부터 필수 학습</p></div>
+</div>
+<div style="display:flex;gap:24px;align-items:center;background:#F7E9EF;padding:32px 40px;border-radius:20px">
+<p style="font-family:'Jua', sans-serif;font-size:64px;color:#B8304F">2</p>
+<div style="display:flex;flex-direction:column;gap:6px"><h3 style="font-size:34px;font-weight:700;color:#3B2A22">결손 개념 채우기</h3><p style="font-size:26px">이어지는 선수 개념 필수 학습 + 계산력 학습</p></div>
+</div>
+<div style="display:flex;gap:24px;align-items:center;background:#ECE6FC;padding:32px 40px;border-radius:20px">
+<p style="font-family:'Jua', sans-serif;font-size:64px;color:#6A4BD1">3</p>
+<div style="display:flex;flex-direction:column;gap:6px"><h3 style="font-size:34px;font-weight:700;color:#3B2A22">제 학년 복귀</h3><p style="font-size:26px">본 단원 필수 학습, 단원 평가 보고서로 성장 확인</p></div>
+</div>
+</div>
+</div>
+<aside>같은 개념에서 두 번 이상 막힌 학생은 다음 차시에 교사가 1대1로 직접 설명합니다. 기초 수학 학습지는 초코클래스 학습뉴스에서 내려받아 오프라인 보충에 쓸 수 있습니다.</aside>
+</section>
+
+<section id="part2" data-transition="fade" style="background:#6A4BD1;color:#F6F2FF;font-family:'Noto Sans KR', Arial, sans-serif;padding:128px;display:flex;flex-direction:column;justify-content:center;gap:32px">
+<div style="position:absolute;right:120px;top:200px;width:520px;height:520px;border-radius:50%;background:#5536B8"></div>
+<x-icon name="Book" style="position:absolute;right:300px;top:380px;width:160px;height:160px;color:#FDF0CF"></x-icon>
+<p style="font-size:40px;font-weight:700;color:#FDF0CF">Part 2</p>
+<h1 style="font-family:'Jua', 'Noto Sans KR', sans-serif;font-size:120px;font-weight:400;line-height:1.15;width:1100px;color:#F6F2FF">달달독해로<br>아침 독서 습관</h1>
+<p style="font-size:40px;width:1050px;color:#E2DAFB">매일 같은 시간, 같은 순서로 15분. 4주면 루틴이 됩니다</p>
+<aside>Part 2를 시작합니다. 핵심은 매일 반복되는 짧은 루틴입니다.</aside>
+</section>
+
+<section id="routine" data-transition="push" style="background:#F4F0FC;color:#4A3B33;font-family:'Noto Sans KR', Arial, sans-serif;padding:112px 128px 128px;display:flex;flex-direction:column;gap:48px">
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:28px;font-weight:700;color:#6A4BD1">수업안 2 · 아침 15분</p>
+<h2 style="font-family:'Jua', 'Noto Sans KR', sans-serif;font-size:72px;font-weight:400;color:#3B2A22">출석 · 고르기 · 읽기 · 나누기</h2>
+</div>
+<div style="display:flex;gap:0px;height:56px;border-radius:16px;overflow:hidden">
+<div style="flex:2;background:#F2C14E;display:flex;align-items:center;justify-content:center"><p style="font-size:24px;font-weight:700;color:#3B2A22">2분</p></div>
+<div style="flex:2;background:#C9B8F5;display:flex;align-items:center;justify-content:center"><p style="font-size:24px;font-weight:700;color:#3B2A22">2분</p></div>
+<div style="flex:8;background:#7A5CE0;display:flex;align-items:center;justify-content:center"><p style="font-size:24px;font-weight:700;color:#F6F2FF">8분</p></div>
+<div style="flex:3;background:#D9486A;display:flex;align-items:center;justify-content:center"><p style="font-size:24px;font-weight:700;color:#FFF5F7">3분</p></div>
+</div>
+<div style="display:flex;gap:28px;flex:1">
+<div style="flex:1;display:flex;flex-direction:column;gap:16px;background:#FFFDFA;padding:36px;border-radius:24px;border:2px solid #E2DAFB">
+<p style="font-size:26px;font-weight:700;color:#8A5A00">8:40</p>
+<h3 style="font-size:36px;font-weight:700;color:#3B2A22">출석하기</h3>
+<p style="font-size:26px;line-height:1.5">간편 로그인 후 ‘오늘의 출석하기’ 누르기</p>
+<p style="font-size:24px;color:#6A4BD1;line-height:1.5">교사: 우리반 현황을 TV에</p>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:16px;background:#FFFDFA;padding:36px;border-radius:24px;border:2px solid #E2DAFB">
+<p style="font-size:26px;font-weight:700;color:#6A4BD1">8:42</p>
+<h3 style="font-size:36px;font-weight:700;color:#3B2A22">글 고르기</h3>
+<p style="font-size:26px;line-height:1.5">오늘의 추천 글 3편 중 하나 선택</p>
+<p style="font-size:24px;color:#6A4BD1;line-height:1.5">교사: 주 2회는 ‘낯선 글’</p>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:16px;background:#ECE6FC;padding:36px;border-radius:24px;border:3px solid #7A5CE0">
+<p style="font-size:26px;font-weight:700;color:#6A4BD1">8:44</p>
+<h3 style="font-size:36px;font-weight:700;color:#3B2A22">3단계 읽기</h3>
+<p style="font-size:26px;line-height:1.5">어휘 콕콕 → 독해 쑥쑥 → 실력 팡팡</p>
+<p style="font-size:24px;color:#6A4BD1;line-height:1.5">교사: ‘질문하기’ 도와주기</p>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:16px;background:#FFFDFA;padding:36px;border-radius:24px;border:2px solid #E2DAFB">
+<p style="font-size:26px;font-weight:700;color:#B8304F">8:52</p>
+<h3 style="font-size:36px;font-weight:700;color:#3B2A22">한 줄 나누기</h3>
+<p style="font-size:26px;line-height:1.5">‘학습 완료하기’ 후 짝에게 새로 안 낱말 하나</p>
+<p style="font-size:24px;color:#6A4BD1;line-height:1.5">교사: 색 점으로 완료 확인</p>
+</div>
+</div>
+<aside>달달독해 화면 위쪽에 출석하기, 학습 완료하기, 다시 보기 체크리스트가 있어서 이 순서를 학생이 스스로 따라갈 수 있습니다. 완료하지 못한 학생은 점심시간 같은 틈새시간에 마치게 합니다.</aside>
+</section>
+
+<section id="readshot" data-transition="push" style="background:#F4F0FC;color:#4A3B33;font-family:'Noto Sans KR', Arial, sans-serif;padding:112px 128px 128px;display:flex;flex-direction:column;gap:40px">
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:28px;font-weight:700;color:#6A4BD1">실제 화면 · 달달독해 첫 화면</p>
+<h2 style="font-family:'Jua', 'Noto Sans KR', sans-serif;font-size:72px;font-weight:400;color:#3B2A22">학생은 이 화면에서 아침을 시작해요</h2>
+</div>
+<div style="display:flex;gap:40px;align-items:start">
+<img src="img/7bb3c4e97c4156af8cacf0d7cd8c06ef.jpg" alt="달달독해 학생 첫 화면. 위쪽에 출석하기·학습 완료하기·다시 보기 체크리스트, 가운데 오늘의 추천 글 3편, 아래 디지털 바다에서 살아남기와 달달 도서관" style="width:1100px;height:624px;object-fit:contain;background:#FFFFFF;border:2px solid #E2DAFB;border-radius:20px;box-shadow:0 12px 28px rgba(59,42,34,0.10)">
+<div style="flex:1;display:flex;flex-direction:column;gap:20px">
+<div style="display:flex;flex-direction:column;gap:8px;background:#ECE6FC;padding:28px;border-radius:20px"><p style="font-size:26px;font-weight:700;color:#6A4BD1">맨 위</p><p style="font-size:26px;line-height:1.5">출석하기 → 학습 완료하기 → 다시 보기 체크리스트</p></div>
+<div style="display:flex;flex-direction:column;gap:8px;background:#FFFDFA;padding:28px;border-radius:20px;border:2px solid #E2DAFB"><p style="font-size:26px;font-weight:700;color:#6A4BD1">가운데</p><p style="font-size:26px;line-height:1.5">오늘의 추천 글 3편 중 하나를 골라 읽기</p></div>
+<div style="display:flex;flex-direction:column;gap:8px;background:#FFFDFA;padding:28px;border-radius:20px;border:2px solid #E2DAFB"><p style="font-size:26px;font-weight:700;color:#6A4BD1">아래</p><p style="font-size:26px;line-height:1.5">수요일엔 디지털 바다, 금요일엔 달달 도서관</p></div>
+</div>
+</div>
+<aside>교사 계정의 학생 모드에서 캡처한 달달독해 첫 화면입니다. 접속 계정 정보 표시줄은 흐리게 가렸습니다. 추천 글 카드의 이름은 화면마다 다르게 보일 수 있습니다.</aside>
+</section>
+
+<section id="steps" data-transition="push" style="background:#F4F0FC;color:#4A3B33;font-family:'Noto Sans KR', Arial, sans-serif;padding:112px 128px 128px;display:flex;flex-direction:column;gap:48px">
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:28px;font-weight:700;color:#6A4BD1">달달독해 글 한 편</p>
+<h2 style="font-family:'Jua', 'Noto Sans KR', sans-serif;font-size:72px;font-weight:400;color:#3B2A22">수준에 맞는 글을, 세 단계로 읽어요</h2>
+</div>
+<div style="display:flex;gap:40px;flex:1">
+<div style="flex:1;display:flex;flex-direction:column;gap:20px">
+<h3 style="font-size:36px;font-weight:700;color:#3B2A22">오늘의 추천 글 3종</h3>
+<div style="display:flex;flex-direction:column;gap:8px;background:#FFFDFA;padding:28px 32px;border-radius:20px;border:2px solid #E2DAFB"><p style="font-size:30px;font-weight:700;color:#6A4BD1">오늘의 새로운 발견</p><p style="font-size:26px">배경지식을 넓히는 글</p></div>
+<div style="display:flex;flex-direction:column;gap:8px;background:#FFFDFA;padding:28px 32px;border-radius:20px;border:2px solid #E2DAFB"><p style="font-size:30px;font-weight:700;color:#6A4BD1">오늘 펼쳐 읽는 글</p><p style="font-size:26px">읽으면 즐거운 관심 분야 글</p></div>
+<div style="display:flex;flex-direction:column;gap:8px;background:#FFFDFA;padding:28px 32px;border-radius:20px;border:2px solid #E2DAFB"><p style="font-size:30px;font-weight:700;color:#6A4BD1">낯선 글 읽기 도전</p><p style="font-size:26px">평소 안 읽던 분야에 도전</p></div>
+<p style="font-size:24px;color:#7A6656">글마다 분야와 ‘독해 지수’ 표시 · 글 목록은 주 단위로 바뀜</p>
+</div>
+<div style="flex:1.3;display:flex;flex-direction:column;gap:20px">
+<h3 style="font-size:36px;font-weight:700;color:#3B2A22">한 편을 읽는 3단계</h3>
+<div style="display:flex;gap:28px;align-items:center;background:#FDF0CF;padding:32px 36px;border-radius:20px">
+<x-icon name="Key" style="color:#8A5A00;width:64px;height:64px"></x-icon>
+<div style="display:flex;flex-direction:column;gap:6px"><p style="font-size:34px;font-weight:700;color:#3B2A22">① 어휘 콕콕</p><p style="font-size:26px">글에 나올 낱말을 카드로 먼저 익힌다</p></div>
+</div>
+<div style="display:flex;gap:28px;align-items:center;background:#ECE6FC;padding:32px 36px;border-radius:20px">
+<x-icon name="Book" style="color:#6A4BD1;width:64px;height:64px"></x-icon>
+<div style="display:flex;flex-direction:column;gap:6px"><p style="font-size:34px;font-weight:700;color:#3B2A22">② 독해 쑥쑥</p><p style="font-size:26px">글을 읽으며 내용을 이해한다</p></div>
+</div>
+<div style="display:flex;gap:28px;align-items:center;background:#FBE3E9;padding:32px 36px;border-radius:20px">
+<x-icon name="Star" style="color:#B8304F;width:64px;height:64px"></x-icon>
+<div style="display:flex;flex-direction:column;gap:6px"><p style="font-size:34px;font-weight:700;color:#3B2A22">③ 실력 팡팡</p><p style="font-size:26px">문제를 풀며 이해를 확인한다</p></div>
+</div>
+</div>
+</div>
+<aside>첫 시간에는 반드시 문해력 진단과 독서 성향 진단부터 응시하게 합니다. 진단을 하지 않으면 실전 문해력 테스트 안내 팝업이 계속 뜹니다. 진단 결과에 따라 글의 수준과 분야가 추천됩니다.</aside>
+</section>
+
+<section id="week" data-transition="push" style="background:#F4F0FC;color:#4A3B33;font-family:'Noto Sans KR', Arial, sans-serif;padding:112px 128px 128px;display:flex;flex-direction:column;gap:48px">
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:28px;font-weight:700;color:#6A4BD1">주간 운영표와 4주 계획</p>
+<h2 style="font-family:'Jua', 'Noto Sans KR', sans-serif;font-size:72px;font-weight:400;color:#3B2A22">요일마다 할 일이 정해져 있으면 고민이 없어요</h2>
+</div>
+<div style="display:flex;gap:20px">
+<div style="flex:1;display:flex;flex-direction:column;gap:12px;background:#FFFDFA;padding:28px;border-radius:20px;border:2px solid #E2DAFB"><p style="font-family:'Jua', sans-serif;font-size:44px;color:#6A4BD1">월</p><p style="font-size:26px;line-height:1.45">추천 글 자유 선택</p><p style="font-size:24px;color:#7A6656">지난주 결과 공유</p></div>
+<div style="flex:1;display:flex;flex-direction:column;gap:12px;background:#FFFDFA;padding:28px;border-radius:20px;border:2px solid #E2DAFB"><p style="font-family:'Jua', sans-serif;font-size:44px;color:#6A4BD1">화</p><p style="font-size:26px;line-height:1.45">낯선 글 읽기 도전</p><p style="font-size:24px;color:#7A6656">관심 밖 분야</p></div>
+<div style="flex:1;display:flex;flex-direction:column;gap:12px;background:#FFFDFA;padding:28px;border-radius:20px;border:2px solid #E2DAFB"><p style="font-family:'Jua', sans-serif;font-size:44px;color:#6A4BD1">수</p><p style="font-size:26px;line-height:1.45">디지털 바다에서 살아남기</p><p style="font-size:24px;color:#7A6656">디지털 문해력</p></div>
+<div style="flex:1;display:flex;flex-direction:column;gap:12px;background:#FFFDFA;padding:28px;border-radius:20px;border:2px solid #E2DAFB"><p style="font-family:'Jua', sans-serif;font-size:44px;color:#6A4BD1">목</p><p style="font-size:26px;line-height:1.45">낯선 글 읽기 도전</p><p style="font-size:24px;color:#7A6656">분야 넓히기</p></div>
+<div style="flex:1;display:flex;flex-direction:column;gap:12px;background:#ECE6FC;padding:28px;border-radius:20px;border:3px solid #7A5CE0"><p style="font-family:'Jua', sans-serif;font-size:44px;color:#6A4BD1">금</p><p style="font-size:26px;line-height:1.45">달달 도서관 책 읽기</p><p style="font-size:24px;color:#7A6656">5단계 독서 활동</p></div>
+</div>
+<table style="font-size:26px;color:#4A3B33;background:#FFFDFA">
+<tr style="background:#3B2A22"><th style="width:14%;color:#FBF6EF">주차</th><th style="width:28%;color:#FBF6EF">목표</th><th style="width:58%;color:#FBF6EF">교사 지원</th></tr>
+<tr><td><b>1주</b></td><td>진단, 루틴 익히기</td><td>문해력·독서 성향 진단 응시, 15분 흐름 연습</td></tr>
+<tr style="background:#F7F3FE"><td><b>2주</b></td><td>매일 완료하기</td><td>주간 출석현황으로 놓친 학생 확인, 칭호·인증서로 칭찬</td></tr>
+<tr><td><b>3주</b></td><td>약한 영역 알기</td><td>글 7편 이상이면 발행되는 ‘달달 보고서’를 학생과 함께 읽기</td></tr>
+<tr style="background:#F7F3FE"><td><b>4주</b></td><td>학급 목표 달성</td><td>학급 누적 권수·참여율 목표 점검, 포트폴리오 나누기</td></tr>
+</table>
+<aside>금요일 달달 도서관 책은 한 권을 2~3주에 걸쳐 끝까지 읽습니다. 독서 활동지는 초코클래스 학습뉴스에서 1~40권 분량을 내려받을 수 있습니다.</aside>
+</section>
+
+<section id="motivate" data-transition="push" style="background:#F4F0FC;color:#4A3B33;font-family:'Noto Sans KR', Arial, sans-serif;padding:112px 128px 128px;display:flex;flex-direction:column;gap:48px">
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:28px;font-weight:700;color:#6A4BD1">습관을 이어 가는 장치</p>
+<h2 style="font-family:'Jua', 'Noto Sans KR', sans-serif;font-size:72px;font-weight:400;color:#3B2A22">개인 보상 + 학급 목표로 4주를 버팁니다</h2>
+</div>
+<div style="display:flex;gap:40px;flex:1">
+<div style="flex:1;display:flex;flex-direction:column;gap:24px;background:#FFFDFA;padding:48px;border-radius:24px;border:2px solid #E2DAFB">
+<div style="display:flex;gap:20px;align-items:center"><x-icon name="Star" style="color:#E0A82E;width:64px;height:64px"></x-icon><h3 style="font-size:40px;font-weight:700;color:#3B2A22">나의 성장이 보여요</h3></div>
+<ul style="font-size:28px;line-height:1.6;display:flex;flex-direction:column;gap:10px">
+<li>칭호 (예: 독해의 고수)와 독해 학습 레벨</li>
+<li>달달 도서관 5단계 활동을 마치면 독서 인증서</li>
+<li>포트폴리오 · 지식 도감에 읽은 기록이 쌓임</li>
+</ul>
+<div style="display:flex;gap:8px;flex-wrap:wrap">
+<p style="font-size:24px;background:#FDF0CF;padding:8px 18px;border-radius:999px;color:#3B2A22">마음통통</p>
+<p style="font-size:24px;background:#FDF0CF;padding:8px 18px;border-radius:999px;color:#3B2A22">탐색똑똑</p>
+<p style="font-size:24px;background:#FDF0CF;padding:8px 18px;border-radius:999px;color:#3B2A22">생각씽씽</p>
+<p style="font-size:24px;background:#FDF0CF;padding:8px 18px;border-radius:999px;color:#3B2A22">표현척척</p>
+<p style="font-size:24px;background:#FDF0CF;padding:8px 18px;border-radius:999px;color:#3B2A22">정리톡톡</p>
+</div>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px;background:#3B2A22;padding:48px;border-radius:24px">
+<div style="display:flex;gap:20px;align-items:center"><x-icon name="Users" style="color:#F2C14E;width:64px;height:64px"></x-icon><h3 style="font-size:40px;font-weight:700;color:#FBF6EF">우리 반이 함께해요</h3></div>
+<p style="font-size:28px;line-height:1.6;color:#E6DACE">사례: 초코클래스 × 달달 도서관 반 대항 이벤트 ‘달달한 독서 대항전’ (2026.10.12~11.8, 4주)</p>
+<ul style="font-size:28px;line-height:1.6;color:#E6DACE;display:flex;flex-direction:column;gap:10px">
+<li>전자책 끝까지 읽기 + 독서 활동 5단계 완료</li>
+<li>학급별 누적 권수와 참여율로 순위</li>
+<li>이벤트가 없어도 같은 방식으로 학급 목표를 세울 수 있음</li>
+</ul>
+</div>
+</div>
+<aside>학급 현황을 공유할 때는 개인 점수는 보여 주지 않고 학급 평균과 참여율만 공유합니다. 이벤트 기간과 방식은 조사 시점의 초코클래스 이벤트 페이지 기준입니다.</aside>
+</section>
+
+<section id="report" data-transition="push" style="background:#FBF6EF;color:#4A3B33;font-family:'Noto Sans KR', Arial, sans-serif;padding:112px 128px 128px;display:flex;flex-direction:column;gap:48px">
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:28px;font-weight:700;color:#B8304F">리포트 읽는 법</p>
+<h2 style="font-family:'Jua', 'Noto Sans KR', sans-serif;font-size:72px;font-weight:400;color:#3B2A22">점수보다 ‘약한 유형 하나’를 찾습니다</h2>
+</div>
+<div style="display:flex;gap:40px;flex:1">
+<div style="flex:1.2;display:flex;flex-direction:column;gap:24px;background:#FFFDFA;padding:44px;border-radius:24px;border:2px solid #EADFD3">
+<h3 style="font-size:36px;font-weight:700;color:#6A4BD1">달달독해 · 문해력 보고서 (100점)</h3>
+<div style="display:flex;flex-direction:column;gap:18px">
+<div style="display:flex;align-items:center;gap:20px"><p style="font-size:28px;width:220px">어휘 이해</p><div style="width:150px;height:36px;background:#C9B8F5;border-radius:8px"></div><p style="font-size:28px;font-weight:700">15점</p></div>
+<div style="display:flex;align-items:center;gap:20px"><p style="font-size:28px;width:220px">사실적 독해</p><div style="width:300px;height:36px;background:#A98BF0;border-radius:8px"></div><p style="font-size:28px;font-weight:700">30점</p></div>
+<div style="display:flex;align-items:center;gap:20px"><p style="font-size:28px;width:220px">추론적 독해</p><div style="width:350px;height:36px;background:#7A5CE0;border-radius:8px"></div><p style="font-size:28px;font-weight:700">35점</p></div>
+<div style="display:flex;align-items:center;gap:20px"><p style="font-size:28px;width:220px">비판적 독해</p><div style="width:200px;height:36px;background:#5536B8;border-radius:8px"></div><p style="font-size:28px;font-weight:700">20점</p></div>
+</div>
+<p style="font-size:26px;line-height:1.5">요소별 배점 · 나의 점수를 <b>또래 평균, 상위 10%</b>와 비교하고, 문학(40점)·비문학(60점) 영역도 나눠 보여 줍니다</p>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<div style="display:flex;flex-direction:column;gap:16px;background:#FBE3E9;padding:40px;border-radius:24px">
+<h3 style="font-size:36px;font-weight:700;color:#B8304F">달달수학 보고서 5종</h3>
+<p style="font-size:28px;line-height:1.6">성향 진단 · 학습 진단 · 일일 · 단원 평가 · 종합 보고서</p>
+</div>
+<div style="display:flex;flex-direction:column;gap:16px;background:#FDF0CF;padding:40px;border-radius:24px;flex:1">
+<h3 style="font-size:36px;font-weight:700;color:#3B2A22">피드백 원칙</h3>
+<ul style="font-size:27px;line-height:1.6;display:flex;flex-direction:column;gap:8px">
+<li>습관 단계에서는 출석·완료를 먼저 칭찬</li>
+<li>약한 유형 하나만 다음 달 목표로</li>
+<li>보호자 상담 때 리포트를 근거 자료로</li>
+</ul>
+</div>
+</div>
+</div>
+<aside>막대 길이는 각 평가 요소의 배점 비율입니다. 학생 점수가 아닙니다. 리포트는 인쇄하거나 내려받을 수 있습니다.</aside>
+</section>
+
+<section id="start" data-transition="push" style="background:#FBF6EF;color:#4A3B33;font-family:'Noto Sans KR', Arial, sans-serif;padding:112px 128px 128px;display:flex;flex-direction:column;gap:48px">
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:28px;font-weight:700;color:#B8304F">내일 바로 시작하기</p>
+<h2 style="font-family:'Jua', 'Noto Sans KR', sans-serif;font-size:72px;font-weight:400;color:#3B2A22">시작 체크리스트와 꼭 기억할 점</h2>
+</div>
+<div style="display:flex;gap:40px;flex:1">
+<div style="flex:1;display:flex;flex-direction:column;gap:20px;background:#FFFDFA;padding:48px;border-radius:24px;border:2px solid #EADFD3">
+<h3 style="font-size:38px;font-weight:700;color:#3B2A22">처음 한 번만</h3>
+<div style="display:flex;gap:20px;align-items:center"><x-icon name="CheckCircle" style="color:#2F8F5B;width:48px;height:48px"></x-icon><p style="font-size:28px">학급 만들기, 학생 등록 (엑셀 일괄등록 가능)</p></div>
+<div style="display:flex;gap:20px;align-items:center"><x-icon name="CheckCircle" style="color:#2F8F5B;width:48px;height:48px"></x-icon><p style="font-size:28px">보호자 동의 받기 (서면 또는 알림톡·문자)</p></div>
+<div style="display:flex;gap:20px;align-items:center"><x-icon name="CheckCircle" style="color:#2F8F5B;width:48px;height:48px"></x-icon><p style="font-size:28px">학급 코드 + PIN 4자리 간편 로그인 안내</p></div>
+<div style="display:flex;gap:20px;align-items:center"><x-icon name="CheckCircle" style="color:#2F8F5B;width:48px;height:48px"></x-icon><p style="font-size:28px">첫 시간에 4종 진단 응시 (학습 성향·독서 성향·문해력·수학 실력)</p></div>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:20px;background:#FFF3D6;padding:48px;border-radius:24px;border:2px solid #F2C14E">
+<h3 style="font-size:38px;font-weight:700;color:#3B2A22">꼭 기억할 점</h3>
+<div style="display:flex;gap:20px;align-items:start"><x-icon name="Warning" style="color:#B8304F;width:48px;height:48px"></x-icon><p style="font-size:27px;line-height:1.5"><b>진단 다시보기</b>를 누르면 이전 결과가 지워지고 처음부터 재응시</p></div>
+<div style="display:flex;gap:20px;align-items:start"><x-icon name="Warning" style="color:#B8304F;width:48px;height:48px"></x-icon><p style="font-size:27px;line-height:1.5">달달수학·달달독해는 <b>학급 시간표가 없음</b> → 아침활동 시간을 일과로 정하기</p></div>
+<div style="display:flex;gap:20px;align-items:start"><x-icon name="Lock" style="color:#B8304F;width:48px;height:48px"></x-icon><p style="font-size:27px;line-height:1.5">학생현황 화면엔 실명·보호자 연락처 → <b>TV엔 우리반 현황만</b></p></div>
+<div style="display:flex;gap:20px;align-items:start"><x-icon name="Clock" style="color:#B8304F;width:48px;height:48px"></x-icon><p style="font-size:27px;line-height:1.5">교사 학생 모드 시연은 로그인 유효시간 60분</p></div>
+</div>
+</div>
+<aside>체크리스트는 수업안 문서의 개요 부분에도 그대로 있습니다. 이용 가이드 PDF는 초코클래스 교사 화면 오른쪽 퀵메뉴의 이용 가이드에서 내려받을 수 있습니다.</aside>
+</section>
+
+<section id="closing" data-transition="fade" style="background:#3B2A22;color:#FBF6EF;font-family:'Noto Sans KR', Arial, sans-serif;padding:128px;display:flex;flex-direction:column;justify-content:center;gap:48px">
+<div style="position:absolute;left:-140px;bottom:-140px;width:520px;height:520px;border-radius:50%;background:#7A5CE0;opacity:0.85"></div>
+<div style="position:absolute;right:-100px;top:-100px;width:420px;height:420px;border-radius:50%;background:#D9486A;opacity:0.9"></div>
+<h1 style="font-family:'Jua', 'Noto Sans KR', sans-serif;font-size:120px;font-weight:400;line-height:1.15;color:#FBF6EF;text-align:center">질문과 나눔</h1>
+<div style="display:flex;gap:32px;justify-content:center">
+<div style="width:520px;display:flex;flex-direction:column;gap:12px;background:#4E3A30;padding:40px;border-radius:24px">
+<p style="font-size:28px;font-weight:700;color:#F7D9E0">달달수학</p>
+<p style="font-size:30px;line-height:1.5;color:#FBF6EF">진단 → 지식맵 → 필수 학습 → 리포트</p>
+</div>
+<div style="width:520px;display:flex;flex-direction:column;gap:12px;background:#4E3A30;padding:40px;border-radius:24px">
+<p style="font-size:28px;font-weight:700;color:#E2DAFB">달달독해</p>
+<p style="font-size:30px;line-height:1.5;color:#FBF6EF">출석 → 고르기 → 3단계 읽기 → 나누기</p>
+</div>
+</div>
+<p style="font-size:30px;color:#D8CBBF;text-align:center">초코클래스 고객센터 1800-8890 · 교사 화면 오른쪽 퀵메뉴 ‘이용 가이드’</p>
+<aside>오늘 내용을 두 줄로 정리하고 질문을 받습니다. 실습 시간이 있다면 선생님들이 교사 계정으로 학생 모드에 들어가 달달수학 지식맵과 달달독해 추천 글을 직접 열어 보게 합니다.</aside>
+</section>
+
+</div></div>
+<div id="bar"><a href="../index.html">← 작품 서랍</a><button id="prev" type="button">이전</button><span id="n"></span><button id="next" type="button">다음</button><button id="fs" type="button">전체 화면</button></div>
+<script>
+const S=[...document.querySelectorAll('#stage > section')],stage=document.getElementById('stage');let i=0;
+const ICON={Star:'★',CheckCircle:'✔',Search:'🔍',Book:'📖',Lightbulb:'💡',Chat:'💬',Users:'👥',Globe:'🌐',Home:'🏠',Trust:'🤝',Key:'🔑',Chart:'📊',Tool:'🛠️',Lightning:'⚡',ThumbsUp:'👍'};
+document.querySelectorAll('x-icon').forEach(e=>{e.textContent=ICON[e.getAttribute('name')]||'●';const h=parseFloat(e.style.height)||48;e.style.fontSize=(h*0.8)+'px'});
+document.querySelectorAll('x-connector').forEach(e=>{if(!e.style.borderTopWidth)e.style.borderTopWidth=(e.style.borderWidth||'4px')});
+function show(k){i=Math.max(0,Math.min(S.length-1,k));S.forEach((s,j)=>s.classList.toggle('on',j===i));document.getElementById('n').textContent=(i+1)+' / '+S.length;try{history.replaceState(null,'','#'+(i+1))}catch(_){}}
+function fit(){const w=innerWidth,h=innerHeight-56;stage.style.transform='scale('+Math.min(w/1920,h/1080)+')'}
+addEventListener('resize',fit);fit();
+addEventListener('keydown',e=>{if(['ArrowRight','PageDown',' ','Enter'].includes(e.key)){e.preventDefault();show(i+1)}if(['ArrowLeft','PageUp','Backspace'].includes(e.key)){e.preventDefault();show(i-1)}if(e.key==='Home')show(0);if(e.key==='End')show(S.length-1)});
+document.getElementById('wrap').addEventListener('click',e=>{show(e.clientX>innerWidth/2?i+1:i-1)});
+document.getElementById('prev').onclick=()=>show(i-1);document.getElementById('next').onclick=()=>show(i+1);
+document.getElementById('fs').onclick=()=>{const d=document.documentElement;(document.fullscreenElement?document.exitFullscreen():d.requestFullscreen&&d.requestFullscreen()).catch&&0};
+let tx=null;addEventListener('touchstart',e=>{tx=e.touches[0].clientX},{passive:true});addEventListener('touchend',e=>{if(tx===null)return;const d=e.changedTouches[0].clientX-tx;if(Math.abs(d)>40)show(d<0?i+1:i-1);tx=null});
+show((parseInt(location.hash.slice(1))||1)-1);
+</script></body></html>

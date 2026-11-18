@@ -1,0 +1,441 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>땅따먹기 점수판 계획</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Do+Hyeon&family=Noto+Sans+KR:wght@500;700;900&display=swap">
+<style>
+:root{
+  color-scheme:light;
+  --paper:#eaf5ff; --card:#ffffff; --ink:#1d2846; --muted:#46557a; --line:#c6d9ef; --edge:#1d2846;
+  --peach:#ff6a2b; --gold:#ffc400; --gold-d:#d99a00;
+  --ca:#ff5fa2; --ca-ink:#fff; --cb:#22b35e; --cb-ink:#fff;
+  --f-d:"Do Hyeon","Apple SD Gothic Neo","Malgun Gothic",sans-serif;
+  --f-b:"Noto Sans KR","Apple SD Gothic Neo","Malgun Gothic",sans-serif;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--f-b);font-weight:500;font-size:17px;line-height:1.6;
+  background-image:linear-gradient(#d3e6fa 2px,transparent 2px),linear-gradient(90deg,#d3e6fa 2px,transparent 2px);background-size:48px 48px}
+.wrap{max-width:1100px;margin:0 auto;padding-block:28px 60px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));display:grid;gap:26px}
+h1,h2,h3{font-family:var(--f-d);font-weight:400;margin:0;line-height:1.2;text-wrap:balance}
+h1{font-size:clamp(34px,5vw,52px)}
+h2{font-size:30px}
+.lead{margin:6px 0 0;color:var(--muted);max-width:68ch}
+.panel{background:var(--card);border:3px solid var(--edge);border-radius:24px;box-shadow:0 7px 0 var(--edge);padding:22px;display:grid;gap:14px;min-width:0;align-content:start}
+.btn{font-family:var(--f-d);font-size:21px;background:var(--card);color:var(--ink);border:3px solid var(--edge);border-radius:16px;box-shadow:0 5px 0 var(--edge);padding:10px 18px;min-height:56px;cursor:pointer;touch-action:manipulation}
+.btn:active{transform:translateY(4px);box-shadow:0 1px 0 var(--edge)}
+.btn.ta{background:var(--ca);color:var(--ca-ink)}.btn.tb{background:var(--cb);color:var(--cb-ink)}
+.btn.g{background:var(--gold)}.btn.p{background:var(--peach);color:#fff}
+.btn:disabled{opacity:.45;cursor:default;transform:none}
+.ctrl{display:flex;flex-wrap:wrap;gap:12px;align-items:center}
+.hint{margin:0;color:var(--muted);font-size:15px}
+
+/* 팀 설정 */
+.teams-set{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:14px}
+.tset{border:3px solid var(--edge);border-radius:18px;padding:12px 14px;display:grid;gap:8px;background:#fff}
+.tset label{font-weight:700;font-size:15px}
+.tset input{font:inherit;font-family:var(--f-d);font-size:22px;border:3px solid var(--edge);border-radius:14px;padding:6px 12px;width:100%;min-height:50px;color:var(--ink)}
+.sw{display:flex;flex-wrap:wrap;gap:8px}
+.sw button{width:44px;height:44px;border-radius:50%;border:3px solid var(--edge);cursor:pointer;position:relative}
+.sw button.on::after{content:"✔";position:absolute;inset:0;display:grid;place-items:center;font-size:20px;font-weight:900;color:#fff;text-shadow:0 0 3px #000}
+.sw button:disabled{opacity:.25;cursor:not-allowed}
+
+/* ---------- 점수판 (흰 바탕) ---------- */
+.board{position:relative;background:#fff;color:var(--ink);border:10px solid var(--edge);border-radius:28px;padding:16px;display:grid;gap:12px;overflow:hidden;transition:box-shadow .3s,border-color .3s}
+.board.golden{border-color:var(--gold-d);box-shadow:0 0 0 6px var(--gold),0 0 50px 10px rgba(255,196,0,.7);animation:goldpulse 1s ease-in-out infinite}
+@keyframes goldpulse{50%{box-shadow:0 0 0 10px var(--gold),0 0 70px 20px rgba(255,196,0,.85)}}
+.board.golden::before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 50% 40%,rgba(255,220,80,.22),transparent 65%);pointer-events:none}
+.bhead{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+.bhead h3{font-size:clamp(22px,3vw,32px)}
+.bhead .right{display:flex;align-items:center;gap:10px}
+.timer{font-family:var(--f-d);font-size:clamp(28px,4vw,44px);font-variant-numeric:tabular-nums}
+.mute{font-family:var(--f-d);font-size:18px;border:3px solid var(--edge);border-radius:12px;background:#fff;padding:4px 12px;cursor:pointer;box-shadow:0 3px 0 var(--edge)}
+.gold-band{display:none;align-items:center;justify-content:center;gap:16px;background:linear-gradient(90deg,#ffe066,var(--gold),#ffe066);background-size:200% 100%;color:var(--ink);border:4px solid var(--edge);border-radius:18px;padding:6px 14px;font-family:var(--f-d);font-size:clamp(22px,3vw,34px);animation:shine 1.2s linear infinite}
+.gold-band b{font-weight:400;font-size:1.4em;font-variant-numeric:tabular-nums;color:#b01e00}
+.board.golden .gold-band{display:flex}
+@keyframes shine{to{background-position:-200% 0}}
+.scores{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:12px}
+.sc{display:flex;align-items:center;justify-content:space-between;gap:10px;border:4px solid var(--edge);border-radius:20px;padding:6px 18px;font-family:var(--f-d);box-shadow:0 6px 0 var(--edge);transition:transform .2s}
+.sc.A{background:var(--ca);color:var(--ca-ink)}.sc.B{background:var(--cb);color:var(--cb-ink);flex-direction:row-reverse}
+.sc .nm{font-size:clamp(20px,2.6vw,30px);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0}
+.sc .pt{font-size:clamp(40px,6vw,72px);line-height:1;font-variant-numeric:tabular-nums;flex:none}
+.sc .pt small{font-size:.38em;margin-left:4px}
+.sc.lead{transform:scale(1.04)}
+.sc.lead .nm::before{content:"👑 "}
+.sc.bump .pt{display:inline-block;animation:bump .5s cubic-bezier(.3,1.8,.5,1)}
+@keyframes bump{0%{transform:scale(1.6)}100%{transform:none}}
+.vs{width:clamp(60px,8vw,90px);aspect-ratio:1;border-radius:50%;display:grid;place-items:center;background:var(--ink);color:#fff;border:5px solid var(--edge);font-family:var(--f-d);font-size:clamp(26px,3.6vw,40px);transform:rotate(-8deg)}
+.ann{min-height:56px;display:flex;align-items:center;justify-content:center;text-align:center;border:3px dashed var(--line);border-radius:16px;font-family:var(--f-d);font-size:clamp(20px,2.8vw,32px);padding:6px 12px;background:#f7fbff}
+.ann.hot{animation:annpop .5s ease}
+@keyframes annpop{0%{transform:scale(.94);background:#fff3c0}100%{transform:none}}
+.mapbox{border-radius:18px;background:#f4f8fd;border:3px solid var(--line);padding:8px}
+svg.map{display:block;width:100%;height:auto}
+.hex{fill:#fff;stroke:#b9cde6;stroke-width:2.5;stroke-dasharray:6 5;transform-box:fill-box;transform-origin:center;transition:fill .2s}
+.hex.A{fill:var(--ca);stroke:var(--edge);stroke-width:3.5;stroke-dasharray:none}
+.hex.B{fill:var(--cb);stroke:var(--edge);stroke-width:3.5;stroke-dasharray:none}
+.hex.new{animation:claim .55s cubic-bezier(.3,1.7,.5,1)}
+.hex.stolen{animation:steal .75s ease}
+.hex.gold{stroke:var(--gold);stroke-width:6}
+@keyframes claim{0%{transform:scale(.15)}100%{transform:scale(1)}}
+@keyframes steal{0%{transform:rotate(0) scale(1)}30%{transform:rotate(-30deg) scale(1.3)}60%{transform:rotate(20deg) scale(.85)}100%{transform:none}}
+.star{font-size:30px;fill:var(--gold);stroke:var(--edge);stroke-width:1.5;paint-order:stroke;text-anchor:middle;dominant-baseline:central;pointer-events:none;transform-box:fill-box;transform-origin:center;animation:twinkle 1s ease-in-out infinite}
+@keyframes twinkle{50%{transform:scale(1.25)}}
+.swaps{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;font-size:15px;color:var(--muted)}
+.swaps b{color:var(--ink);font-weight:900}
+
+/* 겹치는 화면 */
+.overlay{position:absolute;inset:0;display:none;place-items:center;background:rgba(29,40,70,.55);z-index:5;padding:16px}
+.overlay.on{display:grid}
+.mcard{width:min(420px,90%);perspective:900px}
+.mcard .in{position:relative;aspect-ratio:3/2.1;transform-style:preserve-3d;transition:transform .8s cubic-bezier(.3,1.3,.5,1)}
+.mcard.flip .in{transform:rotateY(180deg)}
+.face{position:absolute;inset:0;backface-visibility:hidden;border:5px solid var(--edge);border-radius:24px;display:grid;place-items:center;text-align:center;padding:16px;box-shadow:0 10px 0 var(--edge)}
+.face.front{background:var(--peach);color:#fff;font-family:var(--f-d);font-size:clamp(30px,5vw,48px);background-image:repeating-linear-gradient(45deg,rgba(255,255,255,.14) 0 14px,transparent 14px 28px)}
+.face.back{background:#fff;color:var(--ink);transform:rotateY(180deg);gap:6px;align-content:center}
+.face.back .ic{font-size:44px;line-height:1}
+.face.back .t{font-family:var(--f-d);font-size:clamp(26px,4vw,40px)}
+.face.back .d{font-size:16px;color:var(--muted)}
+.gstart{position:absolute;inset:0;z-index:6;display:none;place-items:center;background:radial-gradient(circle,rgba(255,224,102,.95),rgba(255,170,0,.92));pointer-events:none}
+.gstart.on{display:grid}
+.gstart span{font-family:var(--f-d);font-size:clamp(90px,18vw,200px);color:#fff;-webkit-text-stroke:6px var(--edge);paint-order:stroke;text-shadow:0 10px 0 var(--edge);line-height:1;text-align:center}
+.gstart span.small{font-size:clamp(54px,10vw,120px)}
+.gstart span.pop{animation:gpop .8s cubic-bezier(.2,1.6,.4,1)}
+@keyframes gpop{0%{transform:scale(3);opacity:0}60%{opacity:1}100%{transform:scale(1)}}
+.flash{position:absolute;inset:0;z-index:4;pointer-events:none;background:#fff;opacity:0}
+.flash.go{animation:flash .45s ease-out}
+@keyframes flash{0%{opacity:.9}100%{opacity:0}}
+.board.shake{animation:shake .5s}
+@keyframes shake{20%{transform:translateX(-10px)}40%{transform:translateX(9px)}60%{transform:translateX(-6px)}80%{transform:translateX(4px)}}
+.replay{position:absolute;inset:0;display:none;background:#fff;z-index:6;padding:16px;grid-template-rows:auto 1fr auto;gap:10px}
+.replay.on{display:grid}
+.replay h4{margin:0;font-family:var(--f-d);font-weight:400;font-size:clamp(24px,3.4vw,38px);text-align:center}
+.graph{border:3px solid var(--line);border-radius:14px;padding:6px;background:#f7fbff}
+.graph svg{display:block;width:100%;height:120px}
+.win{position:absolute;inset:0;z-index:7;display:none;place-items:center;text-align:center;padding:16px;background:rgba(255,255,255,.55)}
+.win.on{display:grid}
+.win .box{background:#fff;color:var(--ink);border:5px solid var(--edge);border-radius:28px;padding:22px 30px;box-shadow:0 10px 0 var(--edge);display:grid;gap:6px;animation:claim .6s cubic-bezier(.3,1.6,.5,1)}
+.win .big{font-family:var(--f-d);font-size:clamp(40px,7vw,72px);line-height:1.1}
+.fx{position:absolute;inset:0;pointer-events:none;overflow:hidden;z-index:8}
+.fx i{position:absolute;top:-30px;width:12px;height:18px;border-radius:3px;animation:fall linear forwards}
+.fx i.coin{width:26px;height:26px;border-radius:50%;background:radial-gradient(circle at 35% 35%,#fff6b0,#ffc400 55%,#d99a00);border:2px solid #a87300}
+@keyframes fall{to{transform:translateY(130vh) rotate(720deg)}}
+
+/* 계획 */
+.plan{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:18px}
+.plan h3{font-size:26px;display:flex;align-items:center;gap:10px}
+.plan h3 .n{display:grid;place-items:center;width:42px;height:42px;border-radius:50%;border:3px solid var(--edge);font-size:22px;flex:none}
+.plan ul{margin:0;padding-left:20px;display:grid;gap:6px}
+.tag{display:inline-block;font-family:var(--f-d);font-size:15px;padding:1px 10px;border-radius:999px;border:2px solid var(--edge);background:var(--paper)}
+.missions{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px}
+.mi{border:3px solid var(--edge);border-radius:16px;padding:10px 14px;background:#fff}
+.mi b{font-family:var(--f-d);font-weight:400;font-size:21px;display:block}
+.mi span{font-size:15px;color:var(--muted)}
+.done{background:#e3f8ea}
+@media (max-width:640px){.scores{grid-template-columns:1fr 1fr}.vs{display:none}.sc{padding:6px 12px}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+
+<div class="wrap">
+  <header>
+    <h1>땅따먹기 점수판 계획</h1>
+    <p class="lead">칠판 점수판을 <b>육각형 땅따먹기</b>로 바꾸고, <b>배경음악</b>·<b>황금 시간</b>·<b>미션 카드</b>·<b>끝나고 다시 보기</b>를 넣는 계획이에요. 아래에서 팀 이름과 색을 바꾸고 버튼을 눌러 실제처럼 움직여 볼 수 있어요. (예시 화면이라 실제 게임과는 연결되어 있지 않아요.)</p>
+  </header>
+
+  <section class="panel">
+    <h2>① 팀 이름과 색 (게임 만들 때 정해요)</h2>
+    <div class="teams-set">
+      <div class="tset"><label for="nA">첫째 팀 이름</label><input id="nA" value="번개 팀" maxlength="10"><div class="sw" id="swA"></div></div>
+      <div class="tset"><label for="nB">둘째 팀 이름</label><input id="nB" value="새싹 팀" maxlength="10"><div class="sw" id="swB"></div></div>
+    </div>
+    <p class="hint">색은 8가지 중에서 골라요. 두 팀이 같은 색은 고를 수 없어요. 출제자 태블릿, 칠판, 진행 화면이 모두 이 이름과 색으로 바뀌어요.</p>
+  </section>
+
+  <section class="panel">
+    <h2>② 점수판 예시</h2>
+    <div class="ctrl">
+      <button class="btn ta" data-a="pass" data-t="A" id="bA">번개 팀 통과!</button>
+      <button class="btn tb" data-a="pass" data-t="B" id="bB">새싹 팀 통과!</button>
+      <button class="btn g" data-a="gold" id="goldBtn">황금 시간 시작 (남은 2번)</button>
+      <button class="btn p" data-a="end">게임 끝 → 다시 보기</button>
+      <button class="btn" data-a="auto">자동으로 한 판</button>
+      <button class="btn" data-a="reset">처음부터</button>
+    </div>
+    <p class="hint">소리가 나요. 점수판 오른쪽 위 🔊 버튼으로 음악을 켜고 끌 수 있어요. 실제 게임에서는 출제자 태블릿의 ‘맞았어요’로 마지막 단계를 통과하면 저절로 땅이 칠해져요.</p>
+
+    <div class="board" id="board">
+      <div class="bhead"><h3>5학년 1반 · 우리 역사 정리</h3><div class="right"><button class="mute" data-a="mute" id="muteBtn">🔊 음악 켜기</button><span class="timer" id="timer">20:00</span></div></div>
+      <div class="gold-band">✨ 황금 시간! 통과하면 땅 2칸 ✨ <b id="goldLeft">60</b></div>
+      <div class="scores">
+        <div class="sc A" id="scA"><span class="nm" id="nmA">번개 팀</span><span class="pt"><span id="ptA">0</span><small>칸</small></span></div>
+        <div class="vs">VS</div>
+        <div class="sc B" id="scB"><span class="nm" id="nmB">새싹 팀</span><span class="pt"><span id="ptB">0</span><small>칸</small></span></div>
+      </div>
+      <div class="ann" id="ann">통과하면 우리 팀 땅이 한 칸씩 넓어져요!</div>
+      <div class="mapbox"><svg class="map" id="map"></svg></div>
+      <div class="swaps"><span><span id="sA">번개 팀</span> 다음 교대: <b id="swAt">1단계</b></span><span>미션 카드까지 통과 <b id="toM">5</b>번</span><span><span id="sB">새싹 팀</span> 다음 교대: <b id="swBt">1단계</b></span></div>
+
+      <div class="flash" id="flash"></div>
+      <div class="overlay" id="ov"><div class="mcard" id="mc"><div class="in"><div class="face front">미션 카드!</div><div class="face back"><div class="ic" id="mIc"></div><div class="t" id="mT"></div><div class="d" id="mD"></div></div></div></div></div>
+      <div class="gstart" id="gs"><span id="gsT">3</span></div>
+      <div class="replay" id="rp"><h4 id="rpTitle">다시 보기</h4><svg class="map" id="rpMap"></svg><div class="graph"><svg id="gr" viewBox="0 0 600 120" preserveAspectRatio="none"></svg></div></div>
+      <div class="win" id="win"><div class="box"><div class="big" id="winT"></div><div id="winD"></div><div class="ctrl" style="justify-content:center;margin-top:8px"><button class="btn p" data-a="replay">다시 보기</button><button class="btn" data-a="reset">처음부터</button></div></div></div>
+      <div class="fx" id="fx"></div>
+    </div>
+  </section>
+
+  <section class="plan">
+    <div class="panel">
+      <h3><span class="n" style="background:#22b35e;color:#fff">1</span>육각형 땅따먹기</h3>
+      <ul>
+        <li>흰 바탕 위에 육각형 땅 <b>50칸</b>(가로 10 × 세로 5). 첫째 팀은 왼쪽 끝, 둘째 팀은 오른쪽 끝에서 시작해요.</li>
+        <li>마지막 단계를 통과하면 <b>우리 땅 옆 빈 칸 1칸</b>이 우리 팀 색으로 ‘뿅’ 칠해져요.</li>
+        <li>빈 땅이 다 차면 다음부터는 <b>상대 땅을 빼앗아요</b>(빙글 도는 효과 + 소리).</li>
+        <li>점수 = <b>가진 땅 칸 수</b>. 끝났을 때 땅이 많은 팀이 우승! 앞선 팀 이름 앞에 👑.</li>
+        <li>출제자 교대 규칙은 그대로 두고, 지도 아래에 ‘다음 교대: ○단계’로 보여요.</li>
+      </ul>
+    </div>
+    <div class="panel">
+      <h3><span class="n" style="background:#ff5fa2;color:#fff">2</span>팀 이름과 색</h3>
+      <ul>
+        <li>‘노랑 팀/파랑 팀’ 대신 <b>게임 만들 때 적은 팀 이름</b>이 모든 화면에 나와요.</li>
+        <li>팀 색은 <b>8가지</b>(빨강·주황·노랑·초록·하늘·파랑·보라·분홍) 중에서 골라요. 글자 색은 바탕색에 맞춰 저절로 흰색/검은색이 돼요.</li>
+        <li>출제자 태블릿 윗부분, 출제자 고르기 버튼, 진행 화면 점수, 결과 화면까지 팀 색으로 바뀌어요.</li>
+      </ul>
+    </div>
+    <div class="panel">
+      <h3><span class="n" style="background:#ffc400">3</span>황금 시간 (1분 · 한 판에 2번)</h3>
+      <ul>
+        <li>선생님 진행 화면의 <span class="tag">황금 시간 시작</span>을 누르면 칠판에 <b>3 · 2 · 1 카운트다운</b> → 화면 번쩍 + “황금 시간!!” 큰 글자.</li>
+        <li>1분 동안 테두리가 금색으로 두근두근, <b>금화가 쏟아지고</b> 큰 초시계가 줄어들어요. 배경음악도 <b>더 빠르고 높게</b> 바뀌어요.</li>
+        <li>이때 통과하면 <b>땅 2칸</b>, 칠해진 땅에 금색 테두리가 남아요.</li>
+        <li>끝날 때 “황금 시간 끝!” + 화면 흔들림. 출제자 태블릿에도 금색 띠가 떠요.</li>
+      </ul>
+    </div>
+    <div class="panel">
+      <h3><span class="n" style="background:var(--peach);color:#fff">4</span>미션 카드</h3>
+      <ul><li>두 팀 합쳐 <b>통과 5번마다</b> 카드가 뒤집혀요(북소리 + 짠!). 5번째로 통과한 팀이 미션을 받아요.</li></ul>
+      <div class="missions">
+        <div class="mi"><b>🎁 땅 2칸 선물</b><span>지금 바로 우리 땅 2칸 더</span></div>
+        <div class="mi"><b>⚔️ 빼앗기 찬스</b><span>상대 땅 1칸을 빼앗아요</span></div>
+        <div class="mi"><b>★ 보물 칸 등장</b><span>빈 땅에 별. 먼저 차지하면 +2칸</span></div>
+        <div class="mi"><b>🤝 사이좋게</b><span>두 팀 모두 땅 1칸씩</span></div>
+      </div>
+    </div>
+    <div class="panel">
+      <h3><span class="n" style="background:#2f7fec;color:#fff">5</span>배경음악 · 효과음</h3>
+      <ul>
+        <li>게임을 시작하면 <b>신나는 배경음악</b>(쿵쿵 북 + 베이스 + 멜로디)이 칠판에서 나와요. 파일 없이 화면에서 바로 만들어요.</li>
+        <li>효과음: 땅 차지 ‘뿅’, 빼앗기 ‘휘익’, 미션 카드 북소리, 황금 시간 팡파르, 우승 팡파르.</li>
+        <li>남은 시간 1분이 되면 음악이 빨라져요. 칠판 오른쪽 위 🔊 버튼으로 켜고 끌 수 있어요. (TV에 연결된 칠판 화면에서만 소리가 나요)</li>
+      </ul>
+    </div>
+    <div class="panel">
+      <h3><span class="n" style="background:#8b5cf6;color:#fff">6</span>끝나고 다시 보기</h3>
+      <ul>
+        <li>끝나면 이긴 팀 색으로 우승 화면 + 꽃가루 + 팡파르, 진 팀에는 “잘 싸웠어요!”.</li>
+        <li><span class="tag">다시 보기</span>: 빈 땅부터 칠해지는 과정을 <b>10초</b>로 빠르게. 아래 그래프에 앞선 팀 흐름, 황금 시간(금색), 역전한 곳(★).</li>
+      </ul>
+    </div>
+    <div class="panel done">
+      <h3><span class="n" style="background:#fff">✔</span>정한 것</h3>
+      <ul>
+        <li>땅 50칸, 육각형, 흰 바탕</li>
+        <li>팀 이름은 등록한 이름, 팀 색은 8가지 중 선택</li>
+        <li>황금 시간 1분 · 한 판에 2번, 더 화려하게</li>
+        <li>미션 카드 4가지 그대로</li>
+        <li>새 게임 만들기에서 <b>점수판 고르기: 땅따먹기(기본) / 동그라미(예전 방식)</b></li>
+        <li>지금처럼 통과 기록만 저장하고 땅은 기록으로 계산 → 모든 화면이 같은 지도, 무료 사용량 그대로</li>
+      </ul>
+    </div>
+  </section>
+</div>
+
+<script>
+(function(){
+"use strict";
+const $=id=>document.getElementById(id);
+/* ---------- 팀 색 ---------- */
+const COLORS=[['빨강','#ef4b4b'],['주황','#ff8a1f'],['노랑','#ffd23f'],['초록','#22b35e'],['하늘','#22c3ee'],['파랑','#2f7fec'],['보라','#8b5cf6'],['분홍','#ff5fa2']];
+const team={A:{name:'번개 팀',color:'#ff5fa2'},B:{name:'새싹 팀',color:'#22b35e'}};
+const inkFor=hex=>{const n=parseInt(hex.slice(1),16),r=n>>16,g=n>>8&255,b=n&255;return (0.299*r+0.587*g+0.114*b)>170?'#1d2846':'#ffffff'};
+function applyTeams(){
+  const st=document.documentElement.style;
+  st.setProperty('--ca',team.A.color);st.setProperty('--ca-ink',inkFor(team.A.color));
+  st.setProperty('--cb',team.B.color);st.setProperty('--cb-ink',inkFor(team.B.color));
+  ['A','B'].forEach(t=>{$('nm'+t).textContent=team[t].name;$('s'+t).textContent=team[t].name;$('b'+t).textContent=team[t].name+' 통과!';
+    const sw=$('sw'+t);sw.innerHTML='';const other=team[t==='A'?'B':'A'].color;
+    COLORS.forEach(([nm,c])=>{const b=document.createElement('button');b.style.background=c;b.title=nm;b.setAttribute('aria-label',nm);
+      if(c===team[t].color)b.className='on';if(c===other)b.disabled=true;b.onclick=()=>{team[t].color=c;applyTeams()};sw.appendChild(b)})});
+}
+['A','B'].forEach(t=>$('n'+t).addEventListener('input',e=>{team[t].name=e.target.value.trim()||(t==='A'?'첫째 팀':'둘째 팀');applyTeams()}));
+const NM=t=>team[t].name;
+
+/* ---------- 육각형 지도 ---------- */
+const W=10,H=5,N=W*H,R=30,HW=Math.sqrt(3)*R,PAD=8;
+const cx=i=>{const x=i%W,y=(i/W)|0;return PAD+HW/2+x*HW+(y%2?HW/2:0)},cy=i=>{const y=(i/W)|0;return PAD+R+y*1.5*R};
+const VW=PAD*2+W*HW+HW/2,VH=PAD*2+2*R+(H-1)*1.5*R;
+const hexPts=i=>{const p=[];for(let k=0;k<6;k++){const a=Math.PI/180*(60*k-30);p.push((cx(i)+(R-2)*Math.cos(a)).toFixed(1)+','+(cy(i)+(R-2)*Math.sin(a)).toFixed(1))}return p.join(' ')};
+function buildMap(svg){svg.setAttribute('viewBox',`0 0 ${VW.toFixed(1)} ${VH.toFixed(1)}`);let h='';for(let i=0;i<N;i++)h+=`<polygon class="hex" data-i="${i}" points="${hexPts(i)}"/>`;
+  for(let i=0;i<N;i++)h+=`<text class="star" data-s="${i}" x="${cx(i).toFixed(1)}" y="${cy(i).toFixed(1)}" style="display:none">★</text>`;svg.innerHTML=h}
+const nb=i=>{const x=i%W,y=(i/W)|0;const d=y%2?[[1,0],[-1,0],[1,-1],[0,-1],[1,1],[0,1]]:[[1,0],[-1,0],[0,-1],[-1,-1],[0,1],[-1,1]];
+  return d.map(([dx,dy])=>[x+dx,y+dy]).filter(([a,b])=>a>=0&&a<W&&b>=0&&b<H).map(([a,b])=>b*W+a)};
+
+/* ---------- 소리 (배경음악 + 효과음, 파일 없이 만들기) ---------- */
+let ac=null,master=null,musicOn=false,nextT=0,step=0,schedT=null,mode='normal',noiseBuf=null;
+function audio(){if(!ac){const C=window.AudioContext||window.webkitAudioContext;if(!C)return null;ac=new C();master=ac.createGain();master.gain.value=.5;master.connect(ac.destination);
+  noiseBuf=ac.createBuffer(1,ac.sampleRate*.5,ac.sampleRate);const d=noiseBuf.getChannelData(0);for(let i=0;i<d.length;i++)d[i]=Math.random()*2-1}
+  if(ac.state==='suspended')ac.resume();return ac}
+function tone(f,t,dur,type,vol,f2){const o=ac.createOscillator(),g=ac.createGain();o.type=type||'square';o.frequency.setValueAtTime(f,t);if(f2)o.frequency.exponentialRampToValueAtTime(f2,t+dur);
+  g.gain.setValueAtTime(vol||.1,t);g.gain.exponentialRampToValueAtTime(.0008,t+dur);o.connect(g);g.connect(master);o.start(t);o.stop(t+dur+.02)}
+function noise(t,dur,vol,ftype,freq){const s=ac.createBufferSource();s.buffer=noiseBuf;const f=ac.createBiquadFilter();f.type=ftype||'highpass';f.frequency.value=freq||7000;const g=ac.createGain();
+  g.gain.setValueAtTime(vol,t);g.gain.exponentialRampToValueAtTime(.0008,t+dur);s.connect(f);f.connect(g);g.connect(master);s.start(t);s.stop(t+dur+.02)}
+const CH=[[110,[220,261.6,329.6,440]],[87.31,[174.6,220,261.6,349.2]],[130.8,[261.6,329.6,392,523.3]],[98,[196,246.9,293.7,392]]];
+function schedule(){
+  const bpm=mode==='gold'?168:144,sp=60/bpm/4;
+  while(nextT<ac.currentTime+.12){
+    const s=step%16,bar=Math.floor(step/16)%4,[root,arp]=CH[bar],t=nextT;
+    if(s%4===0)tone(150,t,.16,'sine',.9,40);
+    if(s===4||s===12){noise(t,.14,.35,'bandpass',1800)}
+    if(s%2===0)noise(t,.03,.07,'highpass',8000);else if(mode==='gold')noise(t,.02,.05,'highpass',9000);
+    if(s%2===0)tone(s%4===2?root*2:root,t,sp*1.6,'sawtooth',.09);
+    const g=mode==='gold';
+    if(g||s%2===0){const f=arp[(g?s:s/2)%4]*(g?2:1);tone(f,t,sp*.9,g?'square':'triangle',g?.05:.07)}
+    if(g&&s%8===0)tone(arp[3]*4,t,sp*3,'sine',.04);
+    nextT+=sp;step++;
+  }
+}
+function startMusic(){if(!audio())return;musicOn=true;nextT=ac.currentTime+.05;clearInterval(schedT);schedT=setInterval(schedule,25);$('muteBtn').textContent='🔊 음악 끄기'}
+function stopMusic(){musicOn=false;clearInterval(schedT);$('muteBtn').textContent='🔈 음악 켜기'}
+const sfx={
+  pop(){if(!ac)return;const t=ac.currentTime;tone(660,t,.08,'square',.12);tone(990,t+.07,.12,'square',.12)},
+  steal(){if(!ac)return;const t=ac.currentTime;noise(t,.35,.3,'bandpass',900);tone(700,t,.35,'sawtooth',.1,150)},
+  drum(){if(!ac)return;const t=ac.currentTime;for(let k=0;k<14;k++)noise(t+k*.045,.05,.18+k*.015,'bandpass',1600)},
+  tada(){if(!ac)return;const t=ac.currentTime;[523.3,659.3,784].forEach(f=>tone(f,t,.6,'triangle',.12));tone(1046.5,t+.12,.7,'triangle',.12)},
+  beep(hi){if(!ac)return;tone(hi?1320:880,ac.currentTime,hi?.5:.18,'square',.14)},
+  fanfare(){if(!ac)return;const t=ac.currentTime;[523.3,659.3,784,1046.5].forEach((f,k)=>tone(f,t+k*.11,.35,'triangle',.14));noise(t+.44,.8,.2,'highpass',5000);[523.3,659.3,784,1046.5].forEach(f=>tone(f,t+.44,.9,'triangle',.08))},
+  end(){if(!ac)return;const t=ac.currentTime;tone(523.3,t,.25,'square',.1,262)},
+  win(){if(!ac)return;const t=ac.currentTime;const m=[523.3,523.3,523.3,659.3,784,659.3,784,1046.5];m.forEach((f,k)=>tone(f,t+k*.14,k===7?1:.18,'triangle',.14));noise(t+.98,1,.2,'highpass',5000)}
+};
+
+/* ---------- 게임 흐름 ---------- */
+let seed,rnd,own,stars,ops,hist,passes,goldUntil,goldUsed,clock,busy,autoOn,goldT,swap;
+const MISSIONS=[{k:'gift',ic:'🎁',t:'땅 2칸 선물',d:'지금 바로 우리 땅 2칸 더!'},{k:'steal',ic:'⚔️',t:'빼앗기 찬스',d:'상대 땅 1칸을 빼앗아요!'},{k:'star',ic:'★',t:'보물 칸 등장',d:'별 칸을 먼저 차지하면 +2칸!'},{k:'both',ic:'🤝',t:'사이좋게',d:'두 팀 모두 땅 1칸씩!'}];
+const OT=t=>t==='A'?'B':'A';
+const isGold=()=>Date.now()<goldUntil;
+function reset(){
+  seed=4321;rnd=()=>{seed=(seed*1103515245+12345)&0x7fffffff;return seed/0x7fffffff};
+  own=Array(N).fill('');stars=new Set();ops=[];hist=[[0,0,0]];passes=0;goldUntil=0;goldUsed=0;clock=1200;swap={A:0,B:0};busy=false;autoOn=false;clearInterval(goldT);
+  ['ov','rp','win','gs'].forEach(i=>$(i).classList.remove('on'));$('board').classList.remove('golden');$('fx').innerHTML='';mode='normal';
+  goldBtn();buildMap($('map'));draw();tick();say('통과하면 우리 팀 땅이 한 칸씩 넓어져요!');
+}
+function goldBtn(){const b=$('goldBtn');b.disabled=goldUsed>=2||isGold();b.textContent=goldUsed>=2?'황금 시간 다 썼어요':`황금 시간 시작 (남은 ${2-goldUsed}번)`}
+const count=t=>own.filter(o=>o===t).length;
+function pick(t,want){
+  const mine=[];own.forEach((o,i)=>{if(o===t)mine.push(i)});let cand;
+  if(!mine.length){cand=[];for(let y=0;y<H;y++){const i=y*W+(t==='A'?0:W-1);if(own[i]===want)cand.push(i)}}
+  else{const s=new Set();mine.forEach(i=>nb(i).forEach(j=>{if(own[j]===want)s.add(j)}));cand=[...s]}
+  if(!cand.length)return -1;
+  const st=cand.filter(i=>stars.has(i));if(st.length)return st[0];
+  cand.sort((a,b)=>t==='A'?(a%W)-(b%W):(b%W)-(a%W));
+  return cand[Math.min(cand.length-1,Math.floor(rnd()*rnd()*cand.length))];
+}
+function claimOne(t){let i=pick(t,''),stolen=false;if(i<0){i=pick(t,OT(t));stolen=true}if(i<0)return null;
+  own[i]=t;ops.push({i,t,stolen});let bonus=0;if(stars.has(i)){stars.delete(i);bonus=2}return {i,stolen,bonus}}
+function gain(t,n){const got=[];let star=false;for(let k=0;k<n;k++){const r=claimOne(t);if(!r)break;got.push(r);if(r.bonus){star=true;n+=r.bonus}}
+  hist.push([count('A'),count('B'),isGold()?1:0]);draw(got,t);return {got,star}}
+function draw(got,t){
+  const hx=$('map').querySelectorAll('.hex');
+  hx.forEach((h,i)=>{h.setAttribute('class','hex'+(own[i]?' '+own[i]:''))});
+  $('map').querySelectorAll('.star').forEach(s=>{s.style.display=stars.has(+s.dataset.s)?'':'none'});
+  (got||[]).forEach(r=>{const h=hx[r.i];h.getBoundingClientRect();h.classList.add(r.stolen?'stolen':'new');if(isGold())h.classList.add('gold')});
+  const a=count('A'),b=count('B');$('ptA').textContent=a;$('ptB').textContent=b;
+  $('scA').classList.toggle('lead',a>b);$('scB').classList.toggle('lead',b>a);
+  if(t){const sc=$('sc'+t);sc.classList.remove('bump');sc.getBoundingClientRect();sc.classList.add('bump')}
+  $('swAt').textContent=(swap.A%6+1)+'단계';$('swBt').textContent=(swap.B%6+1)+'단계';$('toM').textContent=5-(passes%5);
+}
+function say(t){const a=$('ann');a.textContent=t;a.classList.remove('hot');a.getBoundingClientRect();a.classList.add('hot')}
+const sleep=ms=>new Promise(r=>setTimeout(r,ms));
+function flash(){const f=$('flash');f.classList.remove('go');f.getBoundingClientRect();f.classList.add('go')}
+function shake(){const b=$('board');b.classList.remove('shake');b.getBoundingClientRect();b.classList.add('shake')}
+async function pass(t){
+  if(busy)return;busy=true;audio();
+  const before=Math.sign(count('A')-count('B'));
+  passes++;swap[t]++;clock=Math.max(0,clock-33);tick();
+  const r=gain(t,isGold()?2:1);
+  r.got.some(x=>x.stolen)?sfx.steal():sfx.pop();
+  const after=Math.sign(count('A')-count('B'));
+  let msg=`${NM(t)} 통과! 땅 ${r.got.length}칸`+(r.got.some(x=>x.stolen)?' (빼앗았다!)':'')+(isGold()?' ✨':'');
+  if(r.star){msg=`${NM(t)} 보물 칸 차지! +2칸 더!`;sfx.tada()}
+  if(before!==0&&after!==0&&before!==after){msg=`역전!! ${NM(t)}가 앞서요!`;flash();shake()}
+  else if(after===0&&count('A')>0)msg='동점! 다음 통과가 승부!';
+  say(msg);
+  if(passes%5===0){await sleep(650);await mission(t)}
+  busy=false;
+}
+async function mission(t){
+  const m=MISSIONS[Math.floor(rnd()*MISSIONS.length)];
+  $('mIc').textContent=m.ic;$('mT').textContent=m.t;$('mD').textContent=`${NM(t)}: ${m.d}`;
+  const mc=$('mc');mc.classList.remove('flip');$('ov').classList.add('on');sfx.drum();
+  await sleep(700);mc.classList.add('flip');sfx.tada();await sleep(1900);$('ov').classList.remove('on');
+  if(m.k==='gift'){gain(t,2);sfx.pop();say(`🎁 ${NM(t)} 땅 2칸 선물!`)}
+  else if(m.k==='steal'){const i=pick(t,OT(t));if(i>=0){own[i]=t;ops.push({i,t,stolen:true});hist.push([count('A'),count('B'),0]);draw([{i,stolen:true}],t);sfx.steal()}say(`⚔️ ${NM(t)}가 상대 땅을 빼앗았어요!`)}
+  else if(m.k==='star'){const free=own.map((o,i)=>o?-1:i).filter(i=>i>=0);if(free.length){free.sort((a,b)=>Math.abs(a%W-4.5)-Math.abs(b%W-4.5));stars.add(free[Math.floor(rnd()*Math.min(6,free.length))]);draw()}say('★ 보물 칸 등장! 먼저 차지하면 +2칸!')}
+  else{gain('A',1);gain('B',1);sfx.pop();say('🤝 사이좋게 두 팀 모두 1칸씩!')}
+}
+function tick(){const m=Math.floor(clock/60),s=clock%60;$('timer').textContent=`${m}:${String(s).padStart(2,'0')}`}
+let coinT=null;
+function coins(on){clearInterval(coinT);if(!on)return;const fx=$('fx');coinT=setInterval(()=>{if(fx.childElementCount>40)fx.firstChild.remove();const e=document.createElement('i');e.className='coin';e.style.left=Math.random()*100+'%';e.style.animationDuration=(2+Math.random()*1.5)+'s';fx.appendChild(e)},160)}
+async function gold(){
+  if(goldUsed>=2||isGold()||busy)return;busy=true;goldUsed++;goldBtn();audio();
+  const gs=$('gs'),tt=$('gsT');gs.classList.add('on');
+  for(const n of ['3','2','1']){tt.className='';tt.textContent=n;tt.getBoundingClientRect();tt.className='pop';sfx.beep(false);await sleep(700)}
+  tt.className='small';tt.textContent='황금 시간!!';tt.getBoundingClientRect();tt.className='small pop';sfx.beep(true);sfx.fanfare();flash();
+  await sleep(1100);gs.classList.remove('on');
+  goldUntil=Date.now()+60000;mode='gold';$('board').classList.add('golden');coins(true);goldBtn();say('✨ 1분 동안 통과하면 땅 2칸! ✨');busy=false;
+  clearInterval(goldT);goldT=setInterval(()=>{const left=Math.max(0,Math.ceil((goldUntil-Date.now())/1000));$('goldLeft').textContent=left;
+    if(!left)endGold()},200);
+}
+function endGold(){clearInterval(goldT);goldUntil=0;mode='normal';coins(false);$('board').classList.remove('golden');goldBtn();sfx.end();shake();say('황금 시간 끝!')}
+function confetti(){const fx=$('fx');fx.innerHTML='';const cs=[team.A.color,team.B.color,'#ffc400','#ff6a2b','#1d2846'];
+  for(let i=0;i<80;i++){const e=document.createElement('i');e.style.left=Math.random()*100+'%';e.style.background=cs[i%5];e.style.animationDuration=(1.8+Math.random()*1.6)+'s';e.style.animationDelay=(Math.random()*.6)+'s';fx.appendChild(e)}}
+function end(){
+  autoOn=false;if(isGold())endGold();
+  const a=count('A'),b=count('B'),w=a>b?'A':'B';
+  $('winT').textContent=a===b?'무승부!':`${NM(w)} 우승!`;$('winT').style.color=a===b?'var(--ink)':team[w].color;
+  $('winD').textContent=a===b?`두 팀 모두 ${a}칸! 정말 팽팽했어요.`:`${Math.max(a,b)}칸 대 ${Math.min(a,b)}칸 · ${NM(OT(w))}도 잘 싸웠어요!`;
+  $('win').classList.add('on');confetti();sfx.win();
+}
+async function replay(){
+  $('win').classList.remove('on');$('fx').innerHTML='';const rp=$('rp');rp.classList.add('on');buildMap($('rpMap'));
+  const hx=$('rpMap').querySelectorAll('.hex');const gr=$('gr');const n=hist.length;const maxD=Math.max(4,...hist.map(h=>Math.abs(h[0]-h[1])));
+  const X=k=>(k/Math.max(1,n-1))*600,Y=d=>60-(d/maxD)*52;
+  let bands='',st=-1;for(let k=0;k<=n;k++){const on=k<n&&hist[k][2];if(on&&st<0)st=k;if(!on&&st>=0){bands+=`<rect x="${X(st)-6}" y="0" width="${X(k-1)-X(st)+12}" height="120" fill="rgba(255,196,0,.35)"/>`;st=-1}}
+  let marks='';for(let k=1;k<n;k++){const p=Math.sign(hist[k-1][0]-hist[k-1][1]),c=Math.sign(hist[k][0]-hist[k][1]);if(p&&c&&p!==c)marks+=`<text x="${X(k)}" y="${Y(hist[k][0]-hist[k][1])-8}" text-anchor="middle" font-size="20" fill="#ffc400" stroke="#1d2846" stroke-width="1.5" paint-order="stroke">★</text>`}
+  gr.innerHTML=`<rect x="0" y="0" width="600" height="60" fill="${team.A.color}" opacity=".16"/><rect x="0" y="60" width="600" height="60" fill="${team.B.color}" opacity=".16"/>${bands}
+    <line x1="0" y1="60" x2="600" y2="60" stroke="#1d2846" stroke-opacity=".4" stroke-dasharray="6 6"/>
+    <text x="8" y="18" font-size="15" fill="#1d2846">${NM('A')} 앞섬</text><text x="8" y="112" font-size="15" fill="#1d2846">${NM('B')} 앞섬</text>
+    <polyline id="pl" fill="none" stroke="#1d2846" stroke-width="4" stroke-linejoin="round" points=""/>${marks}`;
+  const pl=$('pl'),pts=[];const per=Math.max(40,Math.min(250,10000/Math.max(1,ops.length)));let hk=0;
+  $('rpTitle').textContent='다시 보기 · 우리 땅이 이렇게 넓어졌어요';
+  for(let k=0;k<ops.length;k++){const o=ops[k];hx[o.i].setAttribute('class','hex '+o.t+' '+(o.stolen?'stolen':'new'));if(ac)o.stolen?sfx.steal():tone(660+k*6,ac.currentTime,.05,'square',.05);
+    const target=Math.round((k+1)/ops.length*(n-1));while(hk<=target){pts.push(`${X(hk).toFixed(1)},${Y(hist[hk][0]-hist[hk][1]).toFixed(1)}`);hk++}
+    pl.setAttribute('points',pts.join(' '));await sleep(per);if(!rp.classList.contains('on'))return}
+  const a=count('A'),b=count('B');$('rpTitle').textContent=a===b?`무승부 · ${a}칸 대 ${b}칸`:`${NM(a>b?'A':'B')} 우승 · ${Math.max(a,b)}칸 대 ${Math.min(a,b)}칸`;
+  await sleep(1800);rp.classList.remove('on');$('win').classList.add('on');
+}
+async function auto(){
+  reset();autoOn=true;if(!musicOn)startMusic();
+  const sc=[];for(let i=0;i<34;i++)sc.push(i<12?(i%3===0?'B':'A'):i<24?(i%4===0?'A':'B'):(i%2?'A':'B'));
+  for(let k=0;k<sc.length;k++){if(!autoOn)return;if(k===13){await gold()}await pass(sc[k]);await sleep(isGold()?420:560)}
+  if(autoOn)end();
+}
+document.addEventListener('click',e=>{const b=e.target.closest('[data-a]');if(!b)return;const a=b.dataset.a;
+  if(a==='pass'){if(!musicOn&&!ac)startMusic();pass(b.dataset.t)}
+  else if(a==='gold'){if(!musicOn&&!ac)startMusic();gold()}
+  else if(a==='end')end();else if(a==='reset')reset();else if(a==='replay')replay();
+  else if(a==='auto'){if(!autoOn)auto()}
+  else if(a==='mute'){musicOn?stopMusic():startMusic()}});
+applyTeams();reset();
+})();
+</script>
+
+</body></html>
